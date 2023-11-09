@@ -1,6 +1,6 @@
 package com.example.project.config.jwt;
 
-import com.example.project.domain.Member;
+import com.example.project.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
@@ -21,12 +21,12 @@ public class TokenProvider {
 
     private final JwtProperties jwtProperties;
 
-    public String generateToken(Member member, Duration expiredAt) {
+    public String generateToken(User member, Duration expiredAt) {
         Date now = new Date();
         return makeToken(new Date(now.getTime() + expiredAt.toMillis()), member);
     }
 
-    private String makeToken(Date expiry, Member member) {
+    private String makeToken(Date expiry, User member) {
         Date now = new Date();
 
         return Jwts.builder()

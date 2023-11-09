@@ -1,7 +1,7 @@
 package com.example.project.config.jwt;
 
-import com.example.project.domain.Member;
-import com.example.project.repository.MemberRepository;
+import com.example.project.domain.User;
+import com.example.project.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class TokenProviderTest {
     private TokenProvider tokenProvider;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private UserRepository memberRepository;
 
     @Autowired
     private JwtProperties jwtProperties;
@@ -32,7 +32,7 @@ class TokenProviderTest {
     @Test
     void generateToken() {
         //given
-        Member member = memberRepository.save(Member.builder()
+        User member = memberRepository.save(User.builder()
                 .email("user@gmail.com")
                 .password("test")
                 .build());

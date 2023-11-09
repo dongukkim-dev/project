@@ -1,14 +1,18 @@
+/*
 package com.example.project.config;
 
 import com.example.project.service.MemberDetailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -22,15 +26,17 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
-                //.requestMatchers(toH2Console())
+                .requestMatchers(PathRequest.toH2Console())
+//                .requestMatchers(toH2Console())
                 .requestMatchers("/static/**");
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
+        return http.httpBasic(HttpBasicConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/login", "/signup", "/user").permitAll()
+                .requestMatchers("/login", "/signup", "/user", "/api/**").permitAll()
                 .anyRequest().authenticated()
             ).formLogin(login -> login
                 .loginPage("/login")
@@ -38,9 +44,11 @@ public class WebSecurityConfig {
             ).logout(logout -> logout
                 .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true)
-        ).build();
+            ).build();
     }
 
+*/
+/*
     @Bean
     public DaoAuthenticationConfigurer<AuthenticationManagerBuilder, MemberDetailService> authenticationManager(HttpSecurity http,
                                                                                                                 BCryptPasswordEncoder bCryptPasswordEncoder, MemberDetailService memberService) throws Exception {
@@ -49,9 +57,22 @@ public class WebSecurityConfig {
                 .passwordEncoder(bCryptPasswordEncoder);
 
     }
+*//*
+
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() throws Exception {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+
+        daoAuthenticationProvider.setUserDetailsService(memberService);
+        daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
+
+        return daoAuthenticationProvider;
+    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
+*/

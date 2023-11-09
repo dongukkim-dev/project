@@ -2,10 +2,10 @@ package com.example.project.controller;
 
 import com.example.project.config.jwt.JwtFactory;
 import com.example.project.config.jwt.JwtProperties;
-import com.example.project.domain.Member;
+import com.example.project.domain.User;
 import com.example.project.domain.RefreshToken;
 import com.example.project.dto.CreateAccessTokenRequest;
-import com.example.project.repository.MemberRepository;
+import com.example.project.repository.UserRepository;
 import com.example.project.repository.RefreshTokenRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,7 +43,7 @@ class TokenApiControllerTest {
     JwtProperties jwtProperties;
 
     @Autowired
-    MemberRepository memberRepository;
+    UserRepository memberRepository;
 
     @Autowired
     RefreshTokenRepository refreshTokenRepository;
@@ -62,7 +61,7 @@ class TokenApiControllerTest {
         // given
         final String url = "/api/token";
 
-        Member member = memberRepository.save(Member.builder()
+        User member = memberRepository.save(User.builder()
                 .email("user@gmail.com")
                 .password("test")
                 .build());
