@@ -5,12 +5,16 @@ import com.example.project.config.oauth.OAuth2AuthorizationRequestBasedOnCookieR
 import com.example.project.config.oauth.OAuth2SuccessHandler;
 import com.example.project.config.oauth.OAuth2UserCustomService;
 import com.example.project.repository.RefreshTokenRepository;
+import com.example.project.service.UserDetailService;
 import com.example.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -31,6 +35,7 @@ public class WebOAuthSecurityConfig {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserService userService;
+    private final UserDetailService userDetailService;
 
     @Bean
     public WebSecurityCustomizer configure() {
@@ -64,6 +69,10 @@ public class WebOAuthSecurityConfig {
                 .userInfoEndpoint(userInfo -> userInfo
                         .userService(oAuth2UserCustomService)));
 
+        http.formLogin(login -> login
+                .loginPage("/login")
+                .defaultSuccessUrl("/articles"));
+
         http.logout(logout -> logout
                 .logoutSuccessUrl("/login"));
 
@@ -92,6 +101,28 @@ public class WebOAuthSecurityConfig {
     @Bean
     public OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
         return new OAuth2AuthorizationRequestBasedOnCookieRepository();
+    }
+
+    /**
+     * 그냥 로그인에 대비한 코드 
+     */
+    @Bean
+    public DaoAuthenticationConfigurer<AuthenticationManagerBuilder, UserDetailService> authenticationManager(HttpSecurity http,
+                                                                                                              BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userDetailService)
+                .passwordEncoder(bCryptPasswordEncoder);
+
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() throws Exception {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+
+        daoAuthenticationProvider.setUserDetailsService(userDetailService);
+        daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
+
+        return daoAuthenticationProvider;
     }
 
     @Bean

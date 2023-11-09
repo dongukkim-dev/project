@@ -4,6 +4,7 @@ import com.example.project.domain.Article;
 import com.example.project.dto.ArticleListViewResponse;
 import com.example.project.dto.ArticleViewResponse;
 import com.example.project.service.BlogService;
+import com.example.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import java.util.List;
 public class BlogViewController {
 
     private final BlogService blogService;
+    private final UserService userService;
 
     @GetMapping("/articles")
     public String getArticles(Model model) {
@@ -25,7 +27,10 @@ public class BlogViewController {
                 .stream()
                 .map(ArticleListViewResponse::new)
                 .toList();
+        //articleList 페이지에서 item 목록을 불러올 때 사용
         model.addAttribute("articles", articles);
+
+        //여기서 목록을 받아올 때 로그인 사용자 이름도 같이 받아오면 됨 or session 사용
 
         return "articleList";
     }

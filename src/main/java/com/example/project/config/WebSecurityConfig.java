@@ -1,9 +1,8 @@
 /*
 package com.example.project.config;
 
-import com.example.project.service.MemberDetailService;
+import com.example.project.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -20,14 +19,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private final MemberDetailService memberService;
+    private final UserDetailService userDetailService;
 
     //스프링 시큐리티 기능 비활성화
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
-                .requestMatchers(PathRequest.toH2Console())
-//                .requestMatchers(toH2Console())
+//                .requestMatchers(PathRequest.toH2Console())
                 .requestMatchers("/static/**");
     }
 
@@ -47,24 +45,20 @@ public class WebSecurityConfig {
             ).build();
     }
 
-*/
-/*
     @Bean
-    public DaoAuthenticationConfigurer<AuthenticationManagerBuilder, MemberDetailService> authenticationManager(HttpSecurity http,
-                                                                                                                BCryptPasswordEncoder bCryptPasswordEncoder, MemberDetailService memberService) throws Exception {
+    public DaoAuthenticationConfigurer<AuthenticationManagerBuilder, UserDetailService> authenticationManager(HttpSecurity http,
+                                                                                                                BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(memberService)
+                .userDetailsService(userDetailService)
                 .passwordEncoder(bCryptPasswordEncoder);
 
     }
-*//*
-
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() throws Exception {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 
-        daoAuthenticationProvider.setUserDetailsService(memberService);
+        daoAuthenticationProvider.setUserDetailsService(userDetailService);
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
 
         return daoAuthenticationProvider;
