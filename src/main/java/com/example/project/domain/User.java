@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,20 +32,32 @@ public class User implements UserDetails {
     @Column(name = "nickname", unique = true)
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    private int point; //적립금
+    private LocalDateTime addUserTime;
+    private LocalDateTime updateUserTime;
+
+    @Enumerated(EnumType.STRING)
+    private Grade grade; //일단 등급은 테이블 없이
+
     @Builder
-    public User(String email, String password, String nickname) {
+    public User(String email, String password, String nickname, Gender gender, int point, LocalDateTime addUserTime, LocalDateTime updateUserTime, Grade grade) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
+        this.gender = gender;
+        this.point = point;
+        this.addUserTime = addUserTime;
+        this.updateUserTime = updateUserTime;
+        this.grade = grade;
     }
 
     public User update(String nickname) {
         this.nickname = nickname;
-
         return this;
     }
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
