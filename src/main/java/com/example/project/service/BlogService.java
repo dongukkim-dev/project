@@ -1,8 +1,8 @@
 package com.example.project.service;
 
 import com.example.project.domain.Article;
-import com.example.project.dto.AddArticleRequest;
-import com.example.project.dto.UpdateArticleRequest;
+import com.example.project.dto.article.AddArticleRequest;
+import com.example.project.dto.article.UpdateArticleRequest;
 import com.example.project.repository.BlogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;

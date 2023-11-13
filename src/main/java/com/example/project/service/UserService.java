@@ -1,5 +1,6 @@
 package com.example.project.service;
 
+import com.example.project.domain.Grade;
 import com.example.project.domain.User;
 import com.example.project.dto.AddUserRequest;
 import com.example.project.repository.UserRepository;
@@ -20,7 +21,11 @@ public class UserService {
 
         return userRepository.save(User.builder()
                 .email(request.getEmail())
+                .nickname(request.getName())
                 .password(encoder.encode(request.getPassword()))
+                .gender(request.getGender())
+                .grade(Grade.BRONZE)
+                .point(0)
                 .build()).getId();
     }
 

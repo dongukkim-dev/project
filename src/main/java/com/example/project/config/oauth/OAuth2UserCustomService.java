@@ -1,5 +1,6 @@
 package com.example.project.config.oauth;
 
+import com.example.project.domain.Grade;
 import com.example.project.domain.User;
 import com.example.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
                 .orElse(User.builder()
                         .email(email)
                         .nickname(name)
+                        .grade(Grade.BRONZE) //처음 회원은 브론즈부터 시작
                         .build());
 
         return userRepository.save(user);

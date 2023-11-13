@@ -1,8 +1,8 @@
 package com.example.project.controller;
 
 import com.example.project.domain.Article;
-import com.example.project.dto.ArticleListViewResponse;
-import com.example.project.dto.ArticleViewResponse;
+import com.example.project.dto.article.ArticleListViewResponse;
+import com.example.project.dto.article.ArticleViewResponse;
 import com.example.project.service.BlogService;
 import com.example.project.service.UserService;
 import lombok.RequiredArgsConstructor;

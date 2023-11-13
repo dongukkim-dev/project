@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +18,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User implements UserDetails {
+public class User extends BaseTimeEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
@@ -36,21 +37,17 @@ public class User implements UserDetails {
     private Gender gender;
 
     private int point; //적립금
-    private LocalDateTime addUserTime;
-    private LocalDateTime updateUserTime;
 
     @Enumerated(EnumType.STRING)
     private Grade grade; //일단 등급은 테이블 없이
 
     @Builder
-    public User(String email, String password, String nickname, Gender gender, int point, LocalDateTime addUserTime, LocalDateTime updateUserTime, Grade grade) {
+    public User(String email, String password, String nickname, Gender gender, int point, Grade grade) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.gender = gender;
         this.point = point;
-        this.addUserTime = addUserTime;
-        this.updateUserTime = updateUserTime;
         this.grade = grade;
     }
 

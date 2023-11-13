@@ -68,7 +68,7 @@ public class WebOAuthSecurityConfig {
 
         http.formLogin(login -> login
                 .loginPage("/login")
-                .defaultSuccessUrl("/articles"));
+                .defaultSuccessUrl("/stores"));
 
         http.logout(logout -> logout
                 .logoutSuccessUrl("/login"));

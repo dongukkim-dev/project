@@ -1,9 +1,9 @@
 package com.example.project.controller;
 
 import com.example.project.domain.Article;
-import com.example.project.dto.AddArticleRequest;
-import com.example.project.dto.ArticleResponse;
-import com.example.project.dto.UpdateArticleRequest;
+import com.example.project.dto.article.AddArticleRequest;
+import com.example.project.dto.article.ArticleResponse;
+import com.example.project.dto.article.UpdateArticleRequest;
 import com.example.project.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
