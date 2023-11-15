@@ -56,6 +56,7 @@ public class User extends BaseTimeEntity implements UserDetails {
         return this;
     }
 
+    //권한 반환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("user"));
@@ -89,5 +90,18 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", gender=" + gender +
+                ", point=" + point +
+                ", grade=" + grade +
+                '}';
     }
 }

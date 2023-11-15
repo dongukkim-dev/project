@@ -28,6 +28,8 @@ public class Store extends BaseTimeEntity {
     //평점 0 ~ 5까지 리뷰에서 평점을 등록하는데 사람이 많아지면 불러서 계산하는 것도 리소스를 많이 먹나? 안먹으면 평점 삭제 먹으면 평점 유지
     private float rating;
 
+    //여기서 상품 목록이 필요한지 생각해보기(음식점에서 상품목록은 많이 쓰인다)
+    
     @Builder
     public Store(String name, String boss, String picture, String content, float rating) {
         this.name = name;

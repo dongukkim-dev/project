@@ -7,11 +7,14 @@
 </head>
 <body>
 <div class="p-5 mb-5 text-center</> bg-light">
-    <h1 class="mb-3">? 음식점</h1>
-    <h4 class="mb-3">??음식점에 오신 것을 환영합니다.</h4>
+    <h1 class="mb-3" th:text="${store.name}"> 음식점</h1>
+    <h4 class="mb-3">음식점에 오신 것을 환영합니다.</h4>
 </div>
 
 <div class="container mt-5">
+    <button type="button" id="create-btn"
+            th:onclick="|location.href='@{/new-item}'|"
+            class="btn btn-secondary btn-sm mb-3">메뉴 등록</button>
     <div class="row">
         <div class="col-lg-8">
             <article>
