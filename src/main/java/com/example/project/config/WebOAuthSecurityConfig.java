@@ -29,6 +29,13 @@ public class WebOAuthSecurityConfig {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserService userService;
 
+    //Swagger Endpoint 활성화
+    private static final String[] AUTH_WHITELIST = {
+            "/api/**", "/graphiql", "/graphql",
+            "/swagger-ui/**", "/api-docs", "/swagger-ui-custom.html",
+            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html"
+    };
+
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
@@ -50,7 +57,8 @@ public class WebOAuthSecurityConfig {
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/test").authenticated() //인증 확인이 된 경우만
+//                .requestMatchers("/test").authenticated() //인증 확인이 된 경우만
+                .requestMatchers(AUTH_WHITELIST).permitAll() //swagger 관련은 다 허용
                 .requestMatchers("/**").permitAll() //인증 안해도 접근 허용
 //                .requestMatchers("/api/token").permitAll()
                 // /api로 들어오는 경로를 인증이 필요하다고 했으니 PostMan에서 테스트가 안되지
@@ -97,28 +105,6 @@ public class WebOAuthSecurityConfig {
     public OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
         return new OAuth2AuthorizationRequestBasedOnCookieRepository();
     }
-
-    /**
-     * 그냥 로그인에 대비한 코드 
-     */
-//    @Bean
-//    public DaoAuthenticationConfigurer<AuthenticationManagerBuilder, UserDetailService> authenticationManager(HttpSecurity http,
-//                                                                                                              BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService) throws Exception {
-//        return http.getSharedObject(AuthenticationManagerBuilder.class)
-//                .userDetailsService(userDetailService)
-//                .passwordEncoder(bCryptPasswordEncoder);
-//
-//    }
-//
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider() throws Exception {
-//        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-//
-//        daoAuthenticationProvider.setUserDetailsService(userDetailService);
-//        daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
-//
-//        return daoAuthenticationProvider;
-//    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {

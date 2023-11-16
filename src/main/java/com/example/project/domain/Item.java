@@ -41,4 +41,13 @@ public class Item extends BaseTimeEntity {
         this.stockQuantity = stockQuantity;
         this.store = store;
     }
+
+    //아이템 수정
+    public void update(String name, int price, String picture, String content, int stockQuantity) {
+        this.name = name;
+        this.price = price;
+        this.picture = picture;
+        this.content = content;
+        this.stockQuantity = stockQuantity;
+    }
 }

@@ -1,6 +1,6 @@
 package com.example.project.controller;
 
-import com.example.project.dto.AddUserRequest;
+import com.example.project.dto.signup.AddUserRequest;
 import com.example.project.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
