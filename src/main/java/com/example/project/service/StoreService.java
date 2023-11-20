@@ -22,6 +22,10 @@ public class StoreService {
 
     public Store save(AddStoreRequest request, String userName) {
         return storeRepository.save(request.toEntity(userName));
+
+        //회원과 음식점 주인 계정 테이블을 분리할지 말지 고민중
+/*        return storeRepository.save(request.toEntity(userRepository.findByEmail(userName)
+                .orElseThrow(() -> new IllegalArgumentException("not found ")).getNickname()));*/
     }
 
     public List<Store> findAll() {

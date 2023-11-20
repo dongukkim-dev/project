@@ -28,5 +28,6 @@ public class UserDto {
         this.point = user.getPoint();
         this.grade = user.getGrade();
         //여기서 날짜도 같이 보내고 싶은데 어떻게 보내지
+        this.createdDate = user.getCreatedDate();
     }
 }

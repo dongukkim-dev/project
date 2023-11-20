@@ -12,7 +12,7 @@ public class StoreListViewResponse {
     private final String boss;
     private final String picture;
     private final String content;
-    private final float rating;
+    private final double rating;
 
     public StoreListViewResponse(Store store) {
         this.id = store.getId();

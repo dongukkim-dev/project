@@ -99,7 +99,7 @@ public class UserApiController {
         return user.toString();
     }
 
-    @PostMapping("/api/login")
+    @PostMapping("/login")
     public ResponseEntity<SignResponse> login(@RequestBody LoginRequest request) {
 
         //여기서 바로 로그인 로직 진행하지 말고 service에서 처리

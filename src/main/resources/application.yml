@@ -16,6 +16,7 @@ spring:
     user:
       name: users
       password: 1234
+      roles: ADMIN
     oauth2:
       client:
         registration:
