@@ -27,11 +27,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password")
     private String password;
-
-    @Column(name = "nickname", unique = true)
-    private String nickname;
+    private String name;
+    private String phone;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -41,25 +39,30 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Grade grade; //일단 등급은 테이블 없이
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Builder
-    public User(String email, String password, String nickname, Gender gender, int point, Grade grade) {
+    public User(String email, String password, String name, String phone, Gender gender, int point, Grade grade, Role role) {
         this.email = email;
         this.password = password;
-        this.nickname = nickname;
+        this.name = name;
+        this.phone = phone;
         this.gender = gender;
         this.point = point;
         this.grade = grade;
+        this.role = role;
     }
 
-    public User update(String nickname) {
-        this.nickname = nickname;
+    public User update(String name) {
+        this.name = name;
         return this;
     }
 
     //권한 반환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
+        return List.of(new SimpleGrantedAuthority(getRole().name()));
     }
 
     @Override
@@ -98,7 +101,7 @@ public class User extends BaseTimeEntity implements UserDetails {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", nickname='" + nickname + '\'' +
+                ", nickname='" + name + '\'' +
                 ", gender=" + gender +
                 ", point=" + point +
                 ", grade=" + grade +

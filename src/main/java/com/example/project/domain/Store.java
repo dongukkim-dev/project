@@ -1,9 +1,6 @@
 package com.example.project.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,8 +17,14 @@ public class Store extends BaseTimeEntity {
     @Column(name = "store_id")
     private Long id;
 
+    //가게 이름은 유일하게 설정
+    @Column(unique = true)
     private String name;
-    private String boss; //가게 주인은 음식점을 생성할 때 가져오면 된다.
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private String picture;
     private String content;
 
@@ -31,9 +34,9 @@ public class Store extends BaseTimeEntity {
     //여기서 상품 목록이 필요한지 생각해보기(음식점에서 상품목록은 많이 쓰인다)
     
     @Builder
-    public Store(String name, String boss, String picture, String content, double rating) {
+    public Store(String name, User user, String picture, String content, double rating) {
         this.name = name;
-        this.boss = boss;
+        this.user = user;
         this.picture = picture;
         this.content = content;
         this.rating = rating;

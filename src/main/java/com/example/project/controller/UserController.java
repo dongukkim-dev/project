@@ -1,6 +1,6 @@
 package com.example.project.controller;
 
-import com.example.project.dto.signup.AddUserRequest;
+import com.example.project.dto.signup.SignUpRequest;
 import com.example.project.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public String signup(AddUserRequest request) {
+    public String signup(SignUpRequest request) {
         userService.save(request);
         return "redirect:/login";
     }

@@ -24,14 +24,14 @@ public class ItemApiController {
 
     private final ItemService itemService;
 
-    //principal 에는 아마 이름밖에 없던걸로 아는데
-//    @PostMapping("/api/items")
-//    public ResponseEntity<Item> addItem(@RequestBody AddItemRequest request, Principal principal) {
-//        Item savedItem = itemService.save(request, principal.getName());
-//
-//        return ResponseEntity.status(HttpStatus.CREATED)
-//                .body(savedItem);
-//    }
+    //storeName을 이대로 받을 수 있나? pathvariable 방식으로 받을수 있나
+    @PostMapping("/api/items")
+    public ResponseEntity<Item> addItem(@RequestBody AddItemRequest request) {
+        Item savedItem = itemService.save(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(savedItem);
+    }
 
     @GetMapping("/api/items")
     public ResponseEntity<List<ItemResponse>> findAllItems() {

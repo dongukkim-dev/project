@@ -14,6 +14,7 @@ public class AddItemRequest {
     private String picture;
     private String content;
     private int stockQuantity;
+    private String storeName;
 
     public Item toEntity(Store store) {
         return Item.builder()

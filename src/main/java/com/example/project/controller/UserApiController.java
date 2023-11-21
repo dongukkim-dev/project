@@ -6,18 +6,18 @@ import com.example.project.domain.Grade;
 import com.example.project.domain.User;
 import com.example.project.dto.UserDto;
 import com.example.project.dto.login.LoginRequest;
-import com.example.project.dto.signup.AddUserRequest;
+import com.example.project.dto.signup.SignUpRequest;
 import com.example.project.dto.signup.SignResponse;
 import com.example.project.repository.UserRepository;
 import com.example.project.service.LoginService;
 import com.example.project.service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,14 +50,15 @@ public class UserApiController {
     User user = User.builder()
             .email(email)
             .password(password)
-            .nickname(name)
+            .name(name)
             .gender(gender)
             .point(point)
             .grade(grade)
             .build();
 
+    //회원가입
     @PostMapping("/api/users")
-    public ResponseEntity<Long> addUser(@RequestBody AddUserRequest request) {
+    public ResponseEntity<Long> addUser(@RequestBody @Validated SignUpRequest request) {
         Long savedUser = userService.save(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -91,15 +92,7 @@ public class UserApiController {
         return new Result(user);
     }
 
-    @Operation(summary = "Join member", description = "회원가입을 시도한다.")
-    @PostMapping("/join")
-    public String join() {
-        log.info("로그인 시도됨");
-        userRepository.save(user);
-        return user.toString();
-    }
-
-    @PostMapping("/login")
+    @PostMapping("/api/login")
     public ResponseEntity<SignResponse> login(@RequestBody LoginRequest request) {
 
         //여기서 바로 로그인 로직 진행하지 말고 service에서 처리

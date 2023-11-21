@@ -1,11 +1,13 @@
 package com.example.project.service;
 
 import com.example.project.domain.Store;
+import com.example.project.domain.User;
 import com.example.project.dto.store.AddStoreRequest;
 import com.example.project.dto.store.StoreListViewResponse;
 import com.example.project.dto.store.StoreViewResponse;
 import com.example.project.dto.store.UpdateStoreRequest;
 import com.example.project.repository.StoreRepository;
+import com.example.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -19,13 +21,13 @@ import java.util.stream.Collectors;
 public class StoreService {
     
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
 
-    public Store save(AddStoreRequest request, String userName) {
-        return storeRepository.save(request.toEntity(userName));
+    public Store save(AddStoreRequest request, String email) {
 
         //회원과 음식점 주인 계정 테이블을 분리할지 말지 고민중
-/*        return storeRepository.save(request.toEntity(userRepository.findByEmail(userName)
-                .orElseThrow(() -> new IllegalArgumentException("not found ")).getNickname()));*/
+        return storeRepository.save(request.toEntity(userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("not found "))));
     }
 
     public List<Store> findAll() {
@@ -35,6 +37,11 @@ public class StoreService {
     public Store findById(long id) {
         return storeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
+    }
+
+    public Store findByName(String name) {
+        return storeRepository.findByName(name)
+                .orElseThrow(() -> new IllegalArgumentException("not found name: " + name));
     }
 
     public void delete(long id) {
@@ -65,7 +72,7 @@ public class StoreService {
     //음식점을 추가한 유저인지 확인
     private static void authorizeArticleAuthor(Store store) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!store.getBoss().equals(userName)) {
+        if (!store.getUser().getName().equals(userName)) {
             throw new IllegalArgumentException("not authorized");
         }
     }
