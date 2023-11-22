@@ -17,7 +17,7 @@ public class StoreListViewResponse {
     public StoreListViewResponse(Store store) {
         this.id = store.getId();
         this.name = store.getName();
-        this.boss = store.getBoss();
+        this.boss = store.getUser().getName();
         this.picture = store.getPicture();
         this.content = store.getContent();
         this.rating = store.getRating();

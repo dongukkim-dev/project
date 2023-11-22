@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class LoginService {
 
@@ -30,10 +30,12 @@ public class LoginService {
         }
 
         return SignResponse.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .name(user.getNickname())
+                .name(user.getName())
                 .token(tokenProvider.generateToken(user, Duration.ofHours(2)))
+                .role(user.getRole().name())
                 .build();
     }
 }

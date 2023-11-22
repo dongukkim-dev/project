@@ -1,6 +1,7 @@
 package com.example.project.service;
 
 import com.example.project.domain.Grade;
+import com.example.project.domain.Role;
 import com.example.project.domain.User;
 import com.example.project.dto.signup.SignUpRequest;
 import com.example.project.repository.UserRepository;
@@ -26,9 +27,11 @@ public class UserService {
                 .email(request.getEmail())
                 .name(request.getName())
                 .password(encoder.encode(request.getPassword()))
+                .phone(request.getPhone())
                 .gender(request.getGender())
                 .grade(Grade.BRONZE)
                 .point(0)
+                .role(Role.ROLE_USER)
                 .build()).getId();
     }
 

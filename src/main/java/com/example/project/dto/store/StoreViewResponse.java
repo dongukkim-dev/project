@@ -21,7 +21,7 @@ public class StoreViewResponse {
     public StoreViewResponse(Store store) {
         this.id = store.getId();
         this.name = store.getName();
-        this.boss = store.getBoss();
+        this.boss = store.getUser().getName();
         this.content = store.getContent();
         this.rating = store.getRating();
         this.createdDate = store.getCreatedDate();

@@ -6,8 +6,8 @@ import com.example.project.domain.Grade;
 import com.example.project.domain.User;
 import com.example.project.dto.UserDto;
 import com.example.project.dto.login.LoginRequest;
-import com.example.project.dto.signup.SignUpRequest;
 import com.example.project.dto.signup.SignResponse;
+import com.example.project.dto.signup.SignUpRequest;
 import com.example.project.repository.UserRepository;
 import com.example.project.service.LoginService;
 import com.example.project.service.UserService;
@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 public class UserApiController {
 
     private final UserService userService;
-    private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
     private final LoginService loginService;
 
@@ -56,7 +55,7 @@ public class UserApiController {
             .grade(grade)
             .build();
 
-    //회원가입
+    //회원 가입
     @PostMapping("/api/users")
     public ResponseEntity<Long> addUser(@RequestBody @Validated SignUpRequest request) {
         Long savedUser = userService.save(request);
@@ -65,18 +64,7 @@ public class UserApiController {
                 .body(savedUser);
     }
 
-    @PostMapping("/api/test")
-    public String test() {
-//        return SecurityUtil.getCurrentUsername() + "hello";
-        return "hello";
-    }
-
-    @GetMapping("/api/test")
-    public String testAPI() {
-        log.info("react 에서 test 요청 들어옴");
-        return "React, Spring 통신 성공";
-    }
-
+    //회원 조회
     @GetMapping("/api/members")
     public Result members() {
         List<UserDto> collect = userRepository.findAll().stream()
@@ -87,9 +75,9 @@ public class UserApiController {
     }
 
     @GetMapping("/api/member")
-    public Result member(String email) {
-        UserDto user = new UserDto(userService.findByEmail("test@asd.123"));
-        return new Result(user);
+    public ResponseEntity<UserDto> member(String email) {
+        UserDto user = new UserDto(userService.findByEmail(email));
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/api/login")

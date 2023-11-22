@@ -23,7 +23,7 @@ public class UserDto {
     public UserDto(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
-        this.name = user.getNickname();
+        this.name = user.getName();
         this.gender = user.getGender();
         this.point = user.getPoint();
         this.grade = user.getGrade();

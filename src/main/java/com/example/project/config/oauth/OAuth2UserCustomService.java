@@ -37,7 +37,7 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
                 .map(entity -> entity.update(name))
                 .orElse(User.builder()
                         .email(email)
-                        .nickname(name)
+                        .name(name)
                         .grade(Grade.BRONZE) //처음 회원은 브론즈부터 시작
                         .build());
 
