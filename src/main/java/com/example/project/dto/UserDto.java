@@ -12,22 +12,23 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserDto {
 
-    private Long id;
     private String email;
     private String name;
+    private String phone;
     private Gender gender;
     private int point;
     private Grade grade;
+    private String address;
     private LocalDateTime createdDate;
 
     public UserDto(User user) {
-        this.id = user.getId();
         this.email = user.getEmail();
         this.name = user.getName();
+        this.phone = user.getPhone();
         this.gender = user.getGender();
         this.point = user.getPoint();
         this.grade = user.getGrade();
-        //여기서 날짜도 같이 보내고 싶은데 어떻게 보내지
+        this.address = user.getAddress();
         this.createdDate = user.getCreatedDate();
     }
 }

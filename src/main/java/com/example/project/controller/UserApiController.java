@@ -17,11 +17,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,23 +36,6 @@ public class UserApiController {
     private final UserRepository userRepository;
     private final LoginService loginService;
 
-    final Long id = Long.valueOf(1);
-    final String email = "test@asd.123";
-    final String password = "1234";
-    final String name = "kim";
-    final Gender gender = Gender.MAN;
-    final int point = 0;
-    final Grade grade = Grade.BRONZE;
-
-    User user = User.builder()
-            .email(email)
-            .password(password)
-            .name(name)
-            .gender(gender)
-            .point(point)
-            .grade(grade)
-            .build();
-
     //회원 가입
     @PostMapping("/api/users")
     public ResponseEntity<Long> addUser(@RequestBody @Validated SignUpRequest request) {
@@ -64,32 +45,37 @@ public class UserApiController {
                 .body(savedUser);
     }
 
-    //회원 조회
+    //회원 목록 조회
     @GetMapping("/api/members")
-    public Result members() {
+    public ResponseEntity<List<UserDto>> members() {
         List<UserDto> collect = userRepository.findAll().stream()
                 .map(UserDto::new)
                 .collect(Collectors.toList());
 
-        return new Result(collect);
+        return new ResponseEntity<>(collect, HttpStatus.OK);
     }
 
     @GetMapping("/api/member")
-    public ResponseEntity<UserDto> member(String email) {
-        UserDto user = new UserDto(userService.findByEmail(email));
+    public ResponseEntity<UserDto> member() {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("지금 username은 = {}", userName);
+        UserDto user = new UserDto(userService.findByEmail(userName));
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    
+    //회원 삭제
+    @DeleteMapping("/api/member")
+    public void deleteMember() {
+        //삭제 로직
     }
 
     @PostMapping("/api/login")
-    public ResponseEntity<SignResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
-        //여기서 바로 로그인 로직 진행하지 말고 service에서 처리
-        return new ResponseEntity<>(loginService.login(request), HttpStatus.OK);
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class Result<T> {
-        private T data;
+        try {
+            return new ResponseEntity<>(loginService.login(request), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }

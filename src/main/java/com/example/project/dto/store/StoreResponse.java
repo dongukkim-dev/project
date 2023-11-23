@@ -8,10 +8,12 @@ import lombok.Getter;
 public class StoreResponse {
 
     private final String name;
+    private final String picture;
     private final String content;
 
     public StoreResponse(Store store) {
         this.name = store.getName();
+        this.picture = store.getPicture();
         this.content = store.getContent();
     }
 }

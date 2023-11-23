@@ -39,11 +39,13 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Grade grade; //일단 등급은 테이블 없이
 
+    private String address;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Builder
-    public User(String email, String password, String name, String phone, Gender gender, int point, Grade grade, Role role) {
+    public User(String email, String password, String name, String phone, Gender gender, int point, Grade grade, String address, Role role) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -51,6 +53,7 @@ public class User extends BaseTimeEntity implements UserDetails {
         this.gender = gender;
         this.point = point;
         this.grade = grade;
+        this.address = address;
         this.role = role;
     }
 

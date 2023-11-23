@@ -1,6 +1,7 @@
 package com.example.project.dto.signup;
 
 import com.example.project.domain.Gender;
+import com.example.project.domain.Role;
 import com.example.project.domain.User;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class SignUpRequest {
     private String password;
     private String phone;
     private Gender gender;
+    private Role role;
 
     public User toEntity() {
         return User.builder()
@@ -30,6 +32,7 @@ public class SignUpRequest {
                 .password(this.password)
                 .phone(this.phone)
                 .gender(this.gender)
+                .role(this.role)
                 .build();
     }
 }

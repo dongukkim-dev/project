@@ -26,7 +26,7 @@ public class LoginService {
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 계정정보입니다."));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new IllegalStateException("잘못된 비밀번호 입니다.");
+            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
 
         return SignResponse.builder()

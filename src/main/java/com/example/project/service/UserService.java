@@ -31,7 +31,7 @@ public class UserService {
                 .gender(request.getGender())
                 .grade(Grade.BRONZE)
                 .point(0)
-                .role(Role.ROLE_USER)
+                .role(request.getRole())
                 .build()).getId();
     }
 

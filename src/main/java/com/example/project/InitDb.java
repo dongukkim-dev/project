@@ -36,7 +36,7 @@ public class InitDb {
                     .name("kim")
                     .grade(Grade.BRONZE)
                     .point(0)
-                    .gender(Gender.MAN)
+                    .gender(Gender.MALE)
                     .build();
             em.persist(user);
 
@@ -76,7 +76,7 @@ public class InitDb {
                     .name("park")
                     .grade(Grade.BRONZE)
                     .point(0)
-                    .gender(Gender.MAN)
+                    .gender(Gender.MALE)
                     .build();
             em.persist(user);
 

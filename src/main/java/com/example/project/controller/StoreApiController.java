@@ -5,12 +5,10 @@ import com.example.project.dto.store.AddStoreRequest;
 import com.example.project.dto.store.StoreResponse;
 import com.example.project.dto.store.UpdateStoreRequest;
 import com.example.project.service.StoreService;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -23,8 +21,10 @@ public class StoreApiController {
     private final StoreService storeService;
 
     @PostMapping("/api/stores")
-    public ResponseEntity<Store> addStore(@RequestBody AddStoreRequest request, Principal principal) {
-        Store savedStore = storeService.save(request, principal.getName());
+    public ResponseEntity<Store> addStore(@RequestBody AddStoreRequest request) {
+
+//        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Store savedStore = storeService.save(request, request.getEmail());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedStore);
