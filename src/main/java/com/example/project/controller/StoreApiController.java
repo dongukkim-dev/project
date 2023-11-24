@@ -23,8 +23,8 @@ public class StoreApiController {
     @PostMapping("/api/stores")
     public ResponseEntity<Store> addStore(@RequestBody AddStoreRequest request) {
 
-//        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Store savedStore = storeService.save(request, request.getEmail());
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Store savedStore = storeService.save(request, email);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedStore);
@@ -41,8 +41,8 @@ public class StoreApiController {
                 .body(stores);
     }
     @GetMapping("/api/stores/{id}")
-    public ResponseEntity<StoreResponse> findStore(@PathVariable long id) {
-        Store store = storeService.findById(id);
+    public ResponseEntity<StoreResponse> findStore(@PathVariable String storeName) {
+        Store store = storeService.findByName(storeName);
 
         return ResponseEntity.ok()
                 .body(new StoreResponse(store));

@@ -9,6 +9,7 @@ import com.example.project.dto.store.UpdateStoreRequest;
 import com.example.project.repository.StoreRepository;
 import com.example.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StoreService {
@@ -27,7 +30,7 @@ public class StoreService {
 
         //회원과 음식점 주인 계정 테이블을 분리할지 말지 고민중
         return storeRepository.save(request.toEntity(userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("not found "))));
+                .orElseThrow(() -> new IllegalArgumentException("not found " + email))));
     }
 
     public List<Store> findAll() {
@@ -42,6 +45,11 @@ public class StoreService {
     public Store findByName(String name) {
         return storeRepository.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException("not found name: " + name));
+    }
+
+    public Store findByUser(User user) {
+        return storeRepository.findByUser(user)
+                .orElse(null);
     }
 
     public void delete(long id) {

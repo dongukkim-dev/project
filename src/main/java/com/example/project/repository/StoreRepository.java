@@ -1,6 +1,7 @@
 package com.example.project.repository;
 
 import com.example.project.domain.Store;
+import com.example.project.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,4 +13,5 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     List<Store> findAllDesc();
 
     Optional<Store> findByName(String name);
+    Optional<Store> findByUser(User user);
 }

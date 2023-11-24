@@ -1,5 +1,6 @@
 package com.example.project.dto.signup;
 
+import com.example.project.domain.Store;
 import com.example.project.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class SignResponse {
     private String password;
     private String token;
     private String role;
+    private Long storeId;
 
     public SignResponse(User user) {
         this.id = user.getId();
