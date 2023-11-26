@@ -97,17 +97,4 @@ public class User extends BaseTimeEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", nickname='" + name + '\'' +
-                ", gender=" + gender +
-                ", point=" + point +
-                ", grade=" + grade +
-                '}';
-    }
 }

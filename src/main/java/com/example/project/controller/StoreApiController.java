@@ -40,7 +40,7 @@ public class StoreApiController {
         return ResponseEntity.ok()
                 .body(stores);
     }
-    @GetMapping("/api/stores/{id}")
+    @GetMapping("/api/stores/{storeName}")
     public ResponseEntity<StoreResponse> findStore(@PathVariable String storeName) {
         Store store = storeService.findByName(storeName);
 

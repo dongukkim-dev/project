@@ -1,11 +1,17 @@
 package com.example.project.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * 장바구니 Entity
  */
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cart {
 
     @Id @GeneratedValue
@@ -21,4 +27,11 @@ public class Cart {
     private Item item;
 
     private int count;
+
+    @Builder
+    public Cart(User user, Item item, int count) {
+        this.user = user;
+        this.item = item;
+        this.count = count;
+    }
 }
