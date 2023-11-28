@@ -25,29 +25,26 @@ public class Item extends BaseTimeEntity {
     private String picture;
     private String content;
 
-    //근데 배달 주문에서 재고가 의미가 있나 고민중
-    private int stockQuantity;
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "store_id") //외래키 명
     private Store store;
+    
+    //여기에 완판 여부 들어가야 함
 
     @Builder
-    public Item(String name, int price, String picture, String content, int stockQuantity, Store store) {
+    public Item(String name, int price, String picture, String content, Store store) {
         this.name = name;
         this.price = price;
         this.picture = picture;
         this.content = content;
-        this.stockQuantity = stockQuantity;
         this.store = store;
     }
 
     //아이템 수정
-    public void update(String name, int price, String picture, String content, int stockQuantity) {
+    public void update(String name, int price, String picture, String content) {
         this.name = name;
         this.price = price;
         this.picture = picture;
         this.content = content;
-        this.stockQuantity = stockQuantity;
     }
 }

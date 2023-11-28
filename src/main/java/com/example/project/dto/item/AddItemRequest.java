@@ -4,17 +4,19 @@ import com.example.project.domain.Item;
 import com.example.project.domain.Store;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter
+@Getter @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class AddItemRequest {
 
     private String name;
     private int price;
     private String picture;
     private String content;
-    private int stockQuantity;
-    private String storeName;
+    private Long storeId;
 
     public Item toEntity(Store store) {
         return Item.builder()
@@ -22,7 +24,6 @@ public class AddItemRequest {
                 .price(price)
                 .picture(picture)
                 .content(content)
-                .stockQuantity(stockQuantity)
                 .store(store)
                 .build();
     }

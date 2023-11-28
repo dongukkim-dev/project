@@ -3,7 +3,6 @@ package com.example.project.service;
 import com.example.project.domain.Store;
 import com.example.project.domain.User;
 import com.example.project.dto.store.AddStoreRequest;
-import com.example.project.dto.store.StoreListViewResponse;
 import com.example.project.dto.store.StoreViewResponse;
 import com.example.project.dto.store.UpdateStoreRequest;
 import com.example.project.repository.StoreRepository;
@@ -52,12 +51,13 @@ public class StoreService {
                 .orElse(null);
     }
 
+    @Transactional
     public void delete(long id) {
         Store store = storeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
-        authorizeArticleAuthor(store);
-        storeRepository.delete(store);
+        authorizeStoreAuthor(store);
+        store.deletedChange();
     }
 
     @Transactional
@@ -65,7 +65,7 @@ public class StoreService {
         Store store = storeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
-        authorizeArticleAuthor(store);
+        authorizeStoreAuthor(store);
         store.update(request.getName(), request.getPicture(), request.getContent(), request.getRating());
 
         return store;
@@ -78,9 +78,9 @@ public class StoreService {
     }
 
     //음식점을 추가한 유저인지 확인
-    private static void authorizeArticleAuthor(Store store) {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!store.getUser().getName().equals(userName)) {
+    private static void authorizeStoreAuthor(Store store) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!store.getUser().getEmail().equals(email)) {
             throw new IllegalArgumentException("not authorized");
         }
     }

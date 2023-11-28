@@ -28,7 +28,7 @@ public class ItemService {
     private final StoreService storeService; //service가 service를 의존하는건 아닌거 같은데 현재 service가 findByName 같은 간단한 작업만 해서 그냥 사용
 
     public Item save(AddItemRequest request) {
-        Store store = storeService.findByName(request.getStoreName());
+        Store store = storeService.findById(request.getStoreId());
         return itemRepository.save(request.toEntity(store));
     }
 
@@ -55,7 +55,7 @@ public class ItemService {
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
         authorizeArticleAuthor(item);
-        item.update(request.getName(), request.getPrice(), request.getPicture(), request.getContent(), request.getStockQuantity());
+        item.update(request.getName(), request.getPrice(), request.getPicture(), request.getContent());
 
         return item;
     }
@@ -68,8 +68,8 @@ public class ItemService {
 
     //음식점을 추가한 유저인지 확인
     private static void authorizeArticleAuthor(Item item) {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!item.getStore().getUser().getName().equals(userName)) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!item.getStore().getUser().getEmail().equals(email)) {
             throw new IllegalArgumentException("not authorized");
         }
     }

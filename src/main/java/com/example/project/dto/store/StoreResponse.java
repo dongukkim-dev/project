@@ -11,11 +11,17 @@ public class StoreResponse {
     private final String name;
     private final String picture;
     private final String content;
+    private final double rating;
+    private final String address;
 
     public StoreResponse(Store store) {
-        this.id = store.getUser().getId();
+        this.id = store.getId();
         this.name = store.getName();
         this.picture = store.getPicture();
         this.content = store.getContent();
+        this.rating = store.getRating();
+        this.address = store.getUser().getAddress();
+
+        //리뷰도 가져와야 한다.
     }
 }

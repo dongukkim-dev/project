@@ -53,7 +53,6 @@ public class InitDb {
                     .price(2000)
                     .picture("사진1 url")
                     .content("김치가 들어간 만두입니다.")
-                    .stockQuantity(1000)
                     .store(store)
                     .build();
             em.persist(item1);
@@ -63,7 +62,6 @@ public class InitDb {
                     .price(1500)
                     .picture("사진2 url")
                     .content("고기가 들어간 만두입니다.")
-                    .stockQuantity(1000)
                     .store(store)
                     .build();
             em.persist(item2);
@@ -93,7 +91,6 @@ public class InitDb {
                     .price(12000)
                     .picture("사진1 url")
                     .content("파인애플이 들어간 피자입니다.")
-                    .stockQuantity(300)
                     .store(store)
                     .build();
             em.persist(item1);
@@ -103,7 +100,6 @@ public class InitDb {
                     .price(10000)
                     .picture("사진2 url")
                     .content("치즈가 들어간 피자입니다.")
-                    .stockQuantity(400)
                     .store(store)
                     .build();
             em.persist(item2);
@@ -113,7 +109,6 @@ public class InitDb {
                     .price(13000)
                     .picture("사진3 url")
                     .content("감자가 들어간 피자입니다.")
-                    .stockQuantity(400)
                     .store(store)
                     .build();
             em.persist(item3);

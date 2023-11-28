@@ -10,13 +10,11 @@ public class ItemListViewResponse {
     private final int price;
     private final String picture;
     private final String content;
-    private final int stockQuantity;
 
     public ItemListViewResponse(Item item) {
         this.name = item.getName();
         this.price = item.getPrice();
         this.picture = item.getPicture();
         this.content = item.getContent();
-        this.stockQuantity = item.getStockQuantity();
     }
 }
