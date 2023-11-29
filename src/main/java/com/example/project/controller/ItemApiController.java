@@ -3,6 +3,7 @@ package com.example.project.controller;
 import com.example.project.domain.Item;
 import com.example.project.domain.Store;
 import com.example.project.dto.item.AddItemRequest;
+import com.example.project.dto.item.ItemListViewResponse;
 import com.example.project.dto.item.ItemResponse;
 import com.example.project.dto.item.UpdateItemRequest;
 import com.example.project.dto.store.AddStoreRequest;
@@ -26,11 +27,11 @@ public class ItemApiController {
 
     //storeName을 이대로 받을 수 있나? pathvariable 방식으로 받을수 있나
     @PostMapping("/api/items")
-    public ResponseEntity<Item> addItem(@RequestBody AddItemRequest request) {
+    public ResponseEntity<ItemResponse> addItem(@RequestBody AddItemRequest request) {
         Item savedItem = itemService.save(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(savedItem);
+                .body(new ItemResponse(savedItem));
     }
 
     @GetMapping("/api/items")

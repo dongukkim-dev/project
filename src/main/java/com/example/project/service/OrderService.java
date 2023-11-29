@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -26,7 +27,7 @@ public class OrderService {
     /**
      * 주문
      */
-    public Order order(List<OrderRequest> request, String email) {
+    public Order addOrder(List<OrderRequest> request, String email) {
 
         //엔티티 조회
         User user = userRepository.findByEmail(email)
@@ -42,6 +43,8 @@ public class OrderService {
                     .orderPrice(item.getPrice())
                     .count(orderRequest.getAmount())
                     .build();
+
+            //여기서 order 뭔가를 추가해주면 좋을거 같은데
             orderItems.add(orderItem);
         }
 
@@ -52,6 +55,12 @@ public class OrderService {
                 .store(orderItems.get(0).getItem().getStore())
                 .orderItems(orderItems)
                 .build();
+
+        Iterator<OrderItem> iterator = orderItems.iterator();
+        while (iterator.hasNext()) {
+            OrderItem orderItem = iterator.next();
+            orderItem.setOrder(order);
+        }
 
         //주문 저장
         orderRepository.save(order);

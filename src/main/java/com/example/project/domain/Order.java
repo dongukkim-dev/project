@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -43,8 +44,23 @@ public class Order {
 
         this.store = store;
         this.status = status;
-
         this.orderItems = orderItems;
-//        OrderItem.builder().order(this).build();
+        OrderItem.builder().order(this).build();
+    }
+
+    //==생성 메소드==//
+    public static Order createOrder(User user, Store store, OrderItem... orderItems) {
+        return builder()
+                .user(user)
+                .store(store)
+                .orderItems(Arrays.asList(orderItems))
+                .status(OrderStatus.ORDER)
+                .build();
+    }
+
+    //== 연관관계 메서드 ==//
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
     }
 }

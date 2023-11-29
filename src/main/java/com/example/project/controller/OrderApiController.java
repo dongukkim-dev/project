@@ -24,7 +24,7 @@ public class OrderApiController {
     public ResponseEntity<List<OrderRequest>> addOrder(@RequestBody List<OrderRequest> request) {
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Order savedOrder = orderService.order(request, email);
+        Order savedOrder = orderService.addOrder(request, email);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(request);
