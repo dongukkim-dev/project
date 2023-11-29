@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Table(name = "orders")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+public class Order extends BaseTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "order_id")
@@ -28,6 +28,8 @@ public class Order {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    //배송 완료 시간 저장 예정
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
@@ -40,22 +42,26 @@ public class Order {
     public Order(User user, Store store, OrderStatus status, List<OrderItem> orderItems) {
         //== 연관관계 편의 메서드 ==//
         this.user = user;
-        user.getOrders().add(this);
+//        user.getOrders().add(this);
 
         this.store = store;
         this.status = status;
         this.orderItems = orderItems;
-        OrderItem.builder().order(this).build();
+//        OrderItem.builder().order(this).build();
     }
 
     //==생성 메소드==//
     public static Order createOrder(User user, Store store, OrderItem... orderItems) {
-        return builder()
+        final Order order = Order.builder()
                 .user(user)
                 .store(store)
-                .orderItems(Arrays.asList(orderItems))
                 .status(OrderStatus.ORDER)
+                .orderItems(new ArrayList<>())
                 .build();
+
+        Arrays.stream(orderItems).forEach(order::addOrderItem);
+
+        return order;
     }
 
     //== 연관관계 메서드 ==//

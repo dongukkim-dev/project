@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Review {
+public class Review extends BaseTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "review_id")
@@ -22,6 +22,6 @@ public class Review {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    private String name;
+    private String title;
     private String content;
 }
