@@ -11,6 +11,7 @@ import com.example.project.dto.signup.SignUpRequest;
 import com.example.project.repository.UserRepository;
 import com.example.project.service.LoginService;
 import com.example.project.service.UserService;
+import com.example.project.util.SecurityUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,7 @@ public class UserApiController {
 
     @GetMapping("/api/member")
     public ResponseEntity<UserDto> member() {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        String userName = SecurityUtil.getCurrentUsername();
         log.info("지금 username은 = {}", userName);
         UserDto user = new UserDto(userService.findByEmail(userName));
         return new ResponseEntity<>(user, HttpStatus.OK);

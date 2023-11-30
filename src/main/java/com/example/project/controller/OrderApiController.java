@@ -4,6 +4,7 @@ import com.example.project.domain.Order;
 import com.example.project.dto.order.OrderDto;
 import com.example.project.dto.order.OrderRequest;
 import com.example.project.service.OrderService;
+import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class OrderApiController {
     @PostMapping("/api/orders")
     public ResponseEntity<List<OrderRequest>> addOrder(@RequestBody List<OrderRequest> request) {
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = SecurityUtil.getCurrentUsername();
         Order savedOrder = orderService.addOrder(request, email);
 
         return ResponseEntity.status(HttpStatus.CREATED)

@@ -2,18 +2,13 @@ package com.example.project.service;
 
 import com.example.project.domain.Item;
 import com.example.project.domain.Store;
-import com.example.project.domain.User;
+import com.example.project.dto.CartResponse;
 import com.example.project.dto.item.AddItemRequest;
 import com.example.project.dto.item.ItemViewResponse;
 import com.example.project.dto.item.UpdateItemRequest;
-import com.example.project.dto.store.AddStoreRequest;
-import com.example.project.dto.store.StoreViewResponse;
-import com.example.project.dto.store.UpdateStoreRequest;
 import com.example.project.repository.ItemRepository;
-import com.example.project.repository.StoreRepository;
-import com.example.project.repository.UserRepository;
+import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,11 +36,16 @@ public class ItemService {
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
     }
 
+    //장바구니에 item_id, price만 반환할 코드
+    public CartResponse findCartById(long id, int amount) {
+        return itemRepository.findByNameAndPrice(id, amount);
+    }
+
     public void delete(long id) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
-        authorizeArticleAuthor(item);
+        authorizeStoreAuthor(item);
         itemRepository.delete(item);
     }
 
@@ -54,7 +54,7 @@ public class ItemService {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
-        authorizeArticleAuthor(item);
+        authorizeStoreAuthor(item);
         item.update(request.getName(), request.getPrice(), request.getPicture(), request.getContent());
 
         return item;
@@ -67,8 +67,8 @@ public class ItemService {
     }
 
     //음식점을 추가한 유저인지 확인
-    private static void authorizeArticleAuthor(Item item) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    private static void authorizeStoreAuthor(Item item) {
+        String email = SecurityUtil.getCurrentUsername();
         if (!item.getStore().getUser().getEmail().equals(email)) {
             throw new IllegalArgumentException("not authorized");
         }
