@@ -2,7 +2,7 @@ package com.example.project.service;
 
 import com.example.project.domain.Item;
 import com.example.project.domain.Store;
-import com.example.project.dto.CartResponse;
+import com.example.project.dto.cart.CartResponse;
 import com.example.project.dto.item.AddItemRequest;
 import com.example.project.dto.item.ItemViewResponse;
 import com.example.project.dto.item.UpdateItemRequest;
@@ -45,7 +45,7 @@ public class ItemService {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
-        authorizeStoreAuthor(item);
+        authorizeItemAuthor(item);
         itemRepository.delete(item);
     }
 
@@ -54,7 +54,7 @@ public class ItemService {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
-        authorizeStoreAuthor(item);
+        authorizeItemAuthor(item);
         item.update(request.getName(), request.getPrice(), request.getPicture(), request.getContent());
 
         return item;
@@ -66,8 +66,8 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
-    //음식점을 추가한 유저인지 확인
-    private static void authorizeStoreAuthor(Item item) {
+    //아이템을 추가한 유저인지 확인
+    private static void authorizeItemAuthor(Item item) {
         String email = SecurityUtil.getCurrentUsername();
         if (!item.getStore().getUser().getEmail().equals(email)) {
             throw new IllegalArgumentException("not authorized");

@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +27,22 @@ public class OrderApiController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(request);
+    }
+
+    //음식점에서 들어온 주문 정보들 조회
+    @GetMapping("/api/orders/{id}")
+    public ResponseEntity<List<Order>> getOrders(@PathVariable("id") long store_id) {
+        List<Order> orders = orderService.findAllByStore(store_id);
+
+        return ResponseEntity.ok()
+                .body(orders);
+    }
+
+    @DeleteMapping("/api/orders/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable long id) {
+        orderService.delete(id);
+
+        return ResponseEntity.ok()
+                .build();
     }
 }

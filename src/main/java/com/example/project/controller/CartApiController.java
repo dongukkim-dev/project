@@ -1,23 +1,15 @@
 package com.example.project.controller;
 
-import com.example.project.dto.CartDto;
-import com.example.project.dto.CartResponse;
-import com.example.project.dto.item.ItemResponse;
+import com.example.project.dto.cart.CartDto;
+import com.example.project.dto.cart.CartResponse;
 import com.example.project.service.ItemService;
 import com.example.project.util.SecurityUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController

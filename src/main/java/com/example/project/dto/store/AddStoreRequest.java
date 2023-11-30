@@ -16,7 +16,6 @@ public class AddStoreRequest {
     private String picture;
     private String content;
     private double rating; //임시 테스트 용
-//    private String email; //임시 테스트 용
 
     public Store toEntity(User user) {
         return Store.builder()

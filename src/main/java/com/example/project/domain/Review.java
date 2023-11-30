@@ -22,6 +22,10 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    //사진 추가
+    private String picture;
+
     private String title;
     private String content;
+    private double rating;
 }

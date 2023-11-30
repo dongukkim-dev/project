@@ -5,6 +5,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +16,8 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "orders")
+@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE orders SET deleted = true WHERE order_id = ?")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order extends BaseTimeEntity {
 
@@ -36,6 +41,9 @@ public class Order extends BaseTimeEntity {
     //주문 상태, 수령자는 그냥 주문한 사람으로 다 통일하자 -> 주소
     @Enumerated(EnumType.STRING)
     private OrderStatus status; //주문 상태 [ORDER, CANCEL]
+
+    @ColumnDefault("false")
+    private boolean deleted = Boolean.FALSE;
 
     //== 빌더 생성자 ==//
     @Builder
@@ -68,5 +76,9 @@ public class Order extends BaseTimeEntity {
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
+    }
+
+    public void deletedChange() {
+        this.deleted = true;
     }
 }

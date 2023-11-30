@@ -7,6 +7,7 @@ import com.example.project.dto.store.StoreViewResponse;
 import com.example.project.dto.store.UpdateStoreRequest;
 import com.example.project.repository.StoreRepository;
 import com.example.project.repository.UserRepository;
+import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -79,7 +80,7 @@ public class StoreService {
 
     //음식점을 추가한 유저인지 확인
     private static void authorizeStoreAuthor(Store store) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = SecurityUtil.getCurrentUsername();
         if (!store.getUser().getEmail().equals(email)) {
             throw new IllegalArgumentException("not authorized");
         }
