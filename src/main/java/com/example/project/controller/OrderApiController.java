@@ -3,6 +3,7 @@ package com.example.project.controller;
 import com.example.project.domain.Order;
 import com.example.project.dto.order.OrderDto;
 import com.example.project.dto.order.OrderRequest;
+import com.example.project.dto.order.OrderResponse;
 import com.example.project.service.OrderService;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,11 +33,15 @@ public class OrderApiController {
 
     //음식점에서 들어온 주문 정보들 조회
     @GetMapping("/api/orders/{id}")
-    public ResponseEntity<List<Order>> getOrders(@PathVariable("id") long store_id) {
+    public ResponseEntity<List<OrderResponse>> getOrders(@PathVariable("id") long store_id) {
         List<Order> orders = orderService.findAllByStore(store_id);
 
+        List<OrderResponse> orderResponse = orders.stream()
+                .map(OrderResponse::new)
+                .collect(Collectors.toList());
+
         return ResponseEntity.ok()
-                .body(orders);
+                .body(orderResponse);
     }
 
     @DeleteMapping("/api/orders/{id}")

@@ -32,7 +32,11 @@ public class CartApiController {
                 .map(id -> itemService.findCartById(id.getItem_id(), id.getAmount()))
                 .toList();
 
-        log.info("resCart에 담긴 정보, name = {}, price = {}", resCart.get(0).getName(), resCart.get(0).getPrice());
+        for (CartResponse cartResponse : resCart) {
+            log.info("resCart data : {}", cartResponse.getItem_id());
+        }
+
+//        log.info("resCart에 담긴 정보, name = {}, price = {}", resCart.get(0).getName(), resCart.get(0).getPrice());
 
         return ResponseEntity.ok()
                 .body(resCart);
