@@ -8,6 +8,7 @@ import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,6 +18,9 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class OrderService {
+
+    //SSE 기본 타임아웃 설정
+    private static final long DEFAULT_TIMEOUT = 60L * 1000 * 60;
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
@@ -78,4 +82,20 @@ public class OrderService {
             throw new IllegalArgumentException("not authorized");
         }
     }
+
+    /**
+     * SSE 통신을 위해 클라이언트가 구독을 위해 호출하는 메서드
+     */
+//    public SseEmitter subscribe(Long userId) {
+//        SseEmitter emitter;
+//
+//        sendTo
+//    }
+//
+//    //클라이언트에게 데이터를 전송
+//
+//    //사용자 아이디를 기반으로 이벤트 Emitter를 생성
+//    private SseEmitter createEmitter(Long id) {
+//        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
+//    }
 }

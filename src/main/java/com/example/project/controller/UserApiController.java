@@ -47,8 +47,8 @@ public class UserApiController {
     }
 
     //회원 목록 조회
-    @GetMapping("/api/members")
-    public ResponseEntity<List<UserDto>> members() {
+    @GetMapping("/api/users")
+    public ResponseEntity<List<UserDto>> users() {
         List<UserDto> collect = userRepository.findAll().stream()
                 .map(UserDto::new)
                 .collect(Collectors.toList());
@@ -56,11 +56,11 @@ public class UserApiController {
         return new ResponseEntity<>(collect, HttpStatus.OK);
     }
 
-    @GetMapping("/api/member")
-    public ResponseEntity<UserDto> member() {
-        String userName = SecurityUtil.getCurrentUsername();
-        log.info("지금 username은 = {}", userName);
-        UserDto user = new UserDto(userService.findByEmail(userName));
+    @GetMapping("/api/user")
+    public ResponseEntity<UserDto> user() {
+        String email = SecurityUtil.getCurrentUsername();
+
+        UserDto user = new UserDto(userService.findByEmail(email));
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
     

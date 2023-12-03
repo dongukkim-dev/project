@@ -37,6 +37,9 @@ public class Store extends BaseTimeEntity {
     @ColumnDefault("false")
     private boolean deleted = Boolean.FALSE;
 
+    //category 임시
+    private int category;
+
     //여기서 상품 목록이 필요한지 생각해보기(음식점에서 상품목록은 많이 쓰인다)
     
     @Builder

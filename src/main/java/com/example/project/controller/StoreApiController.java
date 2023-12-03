@@ -1,6 +1,8 @@
 package com.example.project.controller;
 
+import com.example.project.domain.Review;
 import com.example.project.domain.Store;
+import com.example.project.dto.review.AddReviewRequest;
 import com.example.project.dto.store.AddStoreRequest;
 import com.example.project.dto.store.StoreResponse;
 import com.example.project.dto.store.UpdateStoreRequest;
@@ -9,6 +11,7 @@ import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +44,13 @@ public class StoreApiController {
         return ResponseEntity.ok()
                 .body(stores);
     }
+
+    //category를 이용한 음식점 찾기
+//    @GetMapping("/api/stores/{category}")
+//    public String store(@PathVariable long category) {
+//        storeService.findByCategory();
+//    }
+
     @GetMapping("/api/stores/{id}")
     public ResponseEntity<StoreResponse> findStore(@PathVariable long id) {
         Store store = storeService.findById(id);
@@ -65,4 +75,12 @@ public class StoreApiController {
         return ResponseEntity.ok()
                 .body(updatedStore);
     }
+
+    /**
+     * 리뷰 API
+     */
+//    @PostMapping("/api/review")
+//    public ResponseEntity<String> addReview(AddReviewRequest request) {
+//
+//    }
 }

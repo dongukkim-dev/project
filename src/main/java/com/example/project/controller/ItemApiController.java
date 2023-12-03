@@ -1,22 +1,15 @@
 package com.example.project.controller;
 
 import com.example.project.domain.Item;
-import com.example.project.domain.Store;
 import com.example.project.dto.item.AddItemRequest;
-import com.example.project.dto.item.ItemListViewResponse;
 import com.example.project.dto.item.ItemResponse;
 import com.example.project.dto.item.UpdateItemRequest;
-import com.example.project.dto.store.AddStoreRequest;
-import com.example.project.dto.store.StoreResponse;
-import com.example.project.dto.store.UpdateStoreRequest;
 import com.example.project.service.ItemService;
-import com.example.project.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController

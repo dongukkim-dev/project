@@ -42,11 +42,6 @@ public class StoreService {
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
     }
 
-    public Store findByName(String name) {
-        return storeRepository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("not found name: " + name));
-    }
-
     public Store findByUser(User user) {
         return storeRepository.findByUser(user)
                 .orElse(null);
@@ -77,6 +72,11 @@ public class StoreService {
                 .map(StoreViewResponse::new)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * review 관련 코드
+     */
+
 
     //음식점을 추가한 유저인지 확인
     private static void authorizeStoreAuthor(Store store) {
