@@ -58,9 +58,19 @@ public class OrderService {
         return order;
     }
 
+    public Order findById(Long id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 주문을 찾을 수 없습니다. id=" + id));
+    }
+
     //해당 음식점에 들어온 주문들 반환
     public List<Order> findAllByStore(Long store_id) {
         return orderRepository.findAllByStore(store_id);
+    }
+
+    //마지막으로 추가된 주문만 반환
+    public Order findLastOrderByStore(Long store_id, Long order_id) {
+        return orderRepository.findLastOrderByStore(store_id, order_id);
     }
 
     //update

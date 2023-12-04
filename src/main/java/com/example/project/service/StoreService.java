@@ -73,11 +73,6 @@ public class StoreService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * review 관련 코드
-     */
-
-
     //음식점을 추가한 유저인지 확인
     private static void authorizeStoreAuthor(Store store) {
         String email = SecurityUtil.getCurrentUsername();

@@ -23,7 +23,7 @@ import java.util.List;
 public class User extends BaseTimeEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
+    @Column(name = "user_id", updatable = false)
     private Long id;
 
     @Column(name = "email", nullable = false, unique = true)

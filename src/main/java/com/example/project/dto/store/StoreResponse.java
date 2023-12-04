@@ -21,7 +21,5 @@ public class StoreResponse {
         this.content = store.getContent();
         this.rating = store.getRating();
         this.address = store.getUser().getAddress();
-
-        //리뷰도 가져와야 한다.
     }
 }
