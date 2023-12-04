@@ -2,6 +2,7 @@ package com.example.project.repository;
 
 import com.example.project.domain.QUser;
 import com.example.project.domain.User;
+import com.example.project.dto.UserSearchCondition;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
@@ -55,4 +56,9 @@ public class UserJpaRepository {
                 .where(user.email.eq(email))
                 .fetch();
     }
+
+//    public List<User> searchByBuilder(UserSearchCondition condition) {
+//        return queryFactory
+//                .select(new )
+//    }
 }
