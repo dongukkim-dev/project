@@ -1,11 +1,9 @@
 package com.example.project.service;
 
 import com.example.project.config.jwt.TokenProvider;
-import com.example.project.domain.Store;
 import com.example.project.domain.User;
 import com.example.project.dto.login.LoginRequest;
 import com.example.project.dto.signup.SignResponse;
-import com.example.project.repository.StoreRepository;
 import com.example.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

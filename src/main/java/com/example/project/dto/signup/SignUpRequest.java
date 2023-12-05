@@ -25,7 +25,7 @@ public class SignUpRequest {
     private Gender gender;
     private Role role;
 
-    public User toEntity() {
+    public User toEntity(User user) {
         return User.builder()
                 .email(this.email)
                 .name(this.name)

@@ -28,7 +28,7 @@ class UserRepositoryTest {
     JPAQueryFactory queryFactory = new JPAQueryFactory(em);
 
     @Autowired
-    UserJpaRepository userJpaRepository;
+    UserRepository userRepository;
 
     @Test
     public void basicTest() {
@@ -44,12 +44,12 @@ class UserRepositoryTest {
                 .role(Role.ROLE_USER)
                 .build();
 
-        userJpaRepository.save(user);
+        userRepository.save(user);
 
-        User findUser = userJpaRepository.findByEmail_Querydsl(user.getEmail()).get(0);
+        User findUser = userRepository.findByEmail(user.getEmail()).get();
         assertThat(findUser).isEqualTo(user);
 
-        List<User> result1 = userJpaRepository.findAll_Querydsl();
+        List<User> result1 = userRepository.findAll();
         assertThat(result1).containsExactly(user);
     }
 

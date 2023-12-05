@@ -1,4 +1,4 @@
-package com.example.project.repository;
+package com.example.project.repository.store;
 
 import com.example.project.domain.Store;
 import com.example.project.domain.User;
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface StoreRepository extends JpaRepository<Store, Long> {
+public interface StoreRepository extends JpaRepository<Store, Long>, StoreRepositoryCustom {
     @Query("select s from Store s order by s.id desc")
     List<Store> findAllDesc();
 

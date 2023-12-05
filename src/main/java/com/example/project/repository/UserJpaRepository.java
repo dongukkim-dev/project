@@ -56,9 +56,4 @@ public class UserJpaRepository {
                 .where(user.email.eq(email))
                 .fetch();
     }
-
-//    public List<User> searchByBuilder(UserSearchCondition condition) {
-//        return queryFactory
-//                .select(new )
-//    }
 }

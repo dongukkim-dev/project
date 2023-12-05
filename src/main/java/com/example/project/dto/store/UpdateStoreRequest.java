@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 public class UpdateStoreRequest {
 
     private String name;
+    private String address;
+    private String phone;
     private String picture;
     private String content;
-    private float rating;
+    private String openTime;
+    private String closeTime;
 }

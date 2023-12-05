@@ -1,11 +1,11 @@
 package com.example.project.controller;
 
 import com.example.project.domain.Item;
-import com.example.project.dto.item.AddItemRequest;
-import com.example.project.dto.item.ItemResponse;
-import com.example.project.dto.item.UpdateItemRequest;
+import com.example.project.dto.item.*;
 import com.example.project.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,11 +38,11 @@ public class ItemApiController {
                 .body(items);
     }
     @GetMapping("/api/items/{id}")
-    public ResponseEntity<ItemResponse> findItem(@PathVariable long id) {
-        Item item = itemService.findById(id);
+    public ResponseEntity<Page<ItemStoreDto>> findItem(@PathVariable long id, ItemSearchCondition condition, Pageable pageable) {
+        Page<ItemStoreDto> items = itemService.searchItem(id, condition, pageable);
 
         return ResponseEntity.ok()
-                .body(new ItemResponse(item));
+                .body(items);
     }
 
     @DeleteMapping("/api/items/{id}")

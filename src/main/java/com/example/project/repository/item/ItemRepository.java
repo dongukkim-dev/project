@@ -1,4 +1,4 @@
-package com.example.project.repository;
+package com.example.project.repository.item;
 
 import com.example.project.domain.Item;
 import com.example.project.dto.cart.CartResponse;

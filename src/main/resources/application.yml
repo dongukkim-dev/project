@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: local
   datasource:
     url: jdbc:h2:tcp://localhost/~/testproject
     username: sa
@@ -12,6 +14,7 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+        use_sql_comments: true
   security:
     user:
       name: users

@@ -5,12 +5,11 @@ import com.example.project.domain.User;
 import com.example.project.dto.store.AddStoreRequest;
 import com.example.project.dto.store.StoreViewResponse;
 import com.example.project.dto.store.UpdateStoreRequest;
-import com.example.project.repository.StoreRepository;
+import com.example.project.repository.store.StoreRepository;
 import com.example.project.repository.UserRepository;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,7 +61,7 @@ public class StoreService {
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
         authorizeStoreAuthor(store);
-        store.update(request.getName(), request.getPicture(), request.getContent(), request.getRating());
+        store.update(request.getName(), request.getAddress(), request.getPhone(), request.getPicture(), request.getContent(), request.getOpenTime(), request.getCloseTime());
 
         return store;
     }

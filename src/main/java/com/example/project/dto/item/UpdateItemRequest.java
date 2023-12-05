@@ -1,5 +1,6 @@
 package com.example.project.dto.item;
 
+import com.example.project.domain.ItemStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,5 +13,5 @@ public class UpdateItemRequest {
     private int price;
     private String picture;
     private String content;
-    private int stockQuantity;
+    private ItemStatus status;
 }

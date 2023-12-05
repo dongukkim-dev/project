@@ -11,15 +11,21 @@ public class StoreResponse {
     private final String name;
     private final String picture;
     private final String content;
+    private final String phone;
     private final double rating;
     private final String address;
+    private final String openTime;
+    private final String closeTime;
 
     public StoreResponse(Store store) {
         this.id = store.getId();
         this.name = store.getName();
         this.picture = store.getPicture();
         this.content = store.getContent();
+        this.phone = store.getPhone();
         this.rating = store.getRating();
         this.address = store.getUser().getAddress();
+        this.openTime = store.getOpenTime();
+        this.closeTime = store.getCloseTime();
     }
 }
