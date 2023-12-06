@@ -63,12 +63,6 @@ public class ItemService {
         return item;
     }
 
-    public List<ItemViewResponse> findAllDesc() {
-        return itemRepository.findAllDesc().stream()
-                .map(ItemViewResponse::new)
-                .collect(Collectors.toList());
-    }
-
     //아이템 목록 페이징 처리
     public Page<ItemStoreDto> searchItem(long id, ItemSearchCondition condition, Pageable pageable) {
         return itemQueryRepository.search(id, condition, pageable);

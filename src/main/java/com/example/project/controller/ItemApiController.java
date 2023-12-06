@@ -37,6 +37,8 @@ public class ItemApiController {
         return ResponseEntity.ok()
                 .body(items);
     }
+
+    //음식점 id에 따른 상품 목록들 전체 조회
     @GetMapping("/api/items/{id}")
     public ResponseEntity<Page<ItemStoreDto>> findItem(@PathVariable long id, ItemSearchCondition condition, Pageable pageable) {
         Page<ItemStoreDto> items = itemService.searchItem(id, condition, pageable);

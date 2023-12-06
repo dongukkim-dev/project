@@ -45,9 +45,22 @@ public class InitDb {
          * yser1이 생성된 store1에서 item을 order하는 테스트
          */
         public void dbInit1() {
+            User user1 = User.builder()
+                    .email("test@test.123")
+                    .password(encoder.encode("asdf1234!"))
+                    .name("lee")
+                    .phone("010-8888-3333")
+                    .address("주소4")
+                    .grade(Grade.BRONZE)
+                    .gender(Gender.MALE)
+                    .point(0)
+                    .role(Role.ROLE_USER)
+                    .build();
+            em.persist(user1);
+
             User user = User.builder()
                     .email("test@asd.123")
-                    .password(encoder.encode("1234"))
+                    .password(encoder.encode("asdf1234!"))
                     .name("kim")
                     .phone("010-1111-2222")
                     .address("주소1")
@@ -61,9 +74,13 @@ public class InitDb {
             Store store = Store.builder()
                     .user(user)
                     .name("일성만두")
+                    .address("경기도 하남시")
+                    .phone("070-1111-2222")
                     .picture("대표 사진 url")
                     .content("상세 내용1")
                     .rating(4.3)
+                    .openTime("10:00")
+                    .closeTime("21:00")
                     .build();
             em.persist(store);
 
@@ -73,6 +90,7 @@ public class InitDb {
                     .picture("사진1 url")
                     .content("김치가 들어간 만두입니다.")
                     .store(store)
+                    .status(ItemStatus.SALE)
                     .build();
             em.persist(item1);
 
@@ -82,6 +100,7 @@ public class InitDb {
                     .picture("사진2 url")
                     .content("고기가 들어간 만두입니다.")
                     .store(store)
+                    .status(ItemStatus.SALE)
                     .build();
             em.persist(item2);
         }
@@ -89,7 +108,7 @@ public class InitDb {
         public void dbInit2() {
             User user = User.builder()
                     .email("test@qwe.456")
-                    .password(encoder.encode("4567"))
+                    .password(encoder.encode("asdf1234!"))
                     .name("park")
                     .phone("010-3333-2222")
                     .address("주소2")
@@ -103,9 +122,13 @@ public class InitDb {
             Store store = Store.builder()
                     .user(user)
                     .name("피자나라")
+                    .address("서울시")
+                    .phone("070-2222-1111")
                     .picture("대표 사진 url")
                     .content("상세 내용1")
                     .rating(4.7)
+                    .openTime("10:00")
+                    .closeTime("22:00")
                     .build();
             em.persist(store);
 
@@ -115,6 +138,7 @@ public class InitDb {
                     .picture("사진1 url")
                     .content("파인애플이 들어간 피자입니다.")
                     .store(store)
+                    .status(ItemStatus.SALE)
                     .build();
             em.persist(item1);
 
@@ -124,6 +148,7 @@ public class InitDb {
                     .picture("사진2 url")
                     .content("치즈가 들어간 피자입니다.")
                     .store(store)
+                    .status(ItemStatus.SOLD)
                     .build();
             em.persist(item2);
 
@@ -133,6 +158,7 @@ public class InitDb {
                     .picture("사진3 url")
                     .content("감자가 들어간 피자입니다.")
                     .store(store)
+                    .status(ItemStatus.SALE)
                     .build();
             em.persist(item3);
         }
@@ -140,7 +166,7 @@ public class InitDb {
         public void dbInit3() {
             User user = User.builder()
                     .email("test@zxc.456")
-                    .password(encoder.encode("1234"))
+                    .password(encoder.encode("asdf1234!"))
                     .name("choi")
                     .phone("010-5555-1111")
                     .address("주소3")
@@ -154,9 +180,13 @@ public class InitDb {
             Store store = Store.builder()
                     .user(user)
                     .name("과자공장")
+                    .address("경기도 남양주시")
+                    .phone("031-571-1111")
                     .picture("대표 사진 url3")
                     .content("상세 내용3")
                     .rating(3.9)
+                    .openTime("12:00")
+                    .closeTime("19:00")
                     .build();
             em.persist(store);
 
@@ -166,8 +196,29 @@ public class InitDb {
                     .picture("사진1 url")
                     .content("파인애플이 들어간 피자입니다.")
                     .store(store)
+                    .status(ItemStatus.SALE)
                     .build();
             em.persist(item1);
+
+            Item item2 = Item.builder()
+                    .name("파인애플피자")
+                    .price(10000)
+                    .picture("사진2 url")
+                    .content("파인애플이 들어간 피자")
+                    .store(store)
+                    .status(ItemStatus.SOLD)
+                    .build();
+            em.persist(item2);
+
+            Item item3 = Item.builder()
+                    .name("파인애플조각피자")
+                    .price(12000)
+                    .picture("사진3 url")
+                    .content("파인애플이 들어간 조각피자입니다.")
+                    .store(store)
+                    .status(ItemStatus.SOLD)
+                    .build();
+            em.persist(item3);
 
            for (int i=0; i<100; i++) {
                em.persist(Item.builder()
@@ -176,6 +227,7 @@ public class InitDb {
                                .price(1000 + i)
                                .picture("대표 사진" + i)
                                .content("상세 내용" + i)
+                               .status(ItemStatus.SALE)
                        .build());
            }
         }

@@ -50,7 +50,7 @@ public class ItemQueryRepository {
                         priceGoe(condition.getPriceGoe()),
                         priceLoe(condition.getPriceLoe()),
                         storeName(condition.getStoreName()),
-//                        itemStatus(condition.getStatus()),
+                        itemStatus(condition.getStatus()),
                         store.id.eq(id)
                 )
                 .offset(pageable.getOffset())
@@ -64,8 +64,8 @@ public class ItemQueryRepository {
                         itemNameEq(condition.getItemName()),
                         priceGoe(condition.getPriceGoe()),
                         priceLoe(condition.getPriceLoe()),
-                        storeName(condition.getStoreName())
-//                        itemStatus(condition.getStatus())
+                        storeName(condition.getStoreName()),
+                        itemStatus(condition.getStatus())
                 );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery.fetch()::size);
@@ -87,7 +87,7 @@ public class ItemQueryRepository {
         return hasText(storeName) ? store.name.eq(storeName) : null;
     }
 
-    private BooleanExpression itemStatus(ItemStatus status) {
-        return hasText(String.valueOf(status)) ? item.status.eq(status) : null;
+    private BooleanExpression itemStatus(String status) {
+        return hasText(status) ? item.status.eq(ItemStatus.valueOf(status)) : null;
     }
 }

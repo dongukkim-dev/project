@@ -11,5 +11,5 @@ public class ItemSearchCondition {
     private Integer priceGoe;
     private Integer priceLoe;
     private String storeName;
-    private ItemStatus status;
+    private String status;
 }

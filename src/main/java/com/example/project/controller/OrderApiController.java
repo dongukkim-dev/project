@@ -26,8 +26,7 @@ import java.util.stream.Collectors;
 public class OrderApiController {
 
     private final OrderService orderService;
-    private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
-    private volatile long lastOrderId = 0L;
+    private final SseEmitters sseEmitters;
 
     @PostMapping("/api/orders")
     public ResponseEntity<List<OrderRequest>> addOrder(@RequestBody List<OrderRequest> request) {
@@ -35,52 +34,43 @@ public class OrderApiController {
         String email = SecurityUtil.getCurrentUsername();
         Order savedOrder = orderService.addOrder(request, email);
 
-        //마지막으로 추가된 주문의 ID 갱신@
-        log.info("saveOrder 데이터 존재 여부 order = {}, order_id = {}", savedOrder, savedOrder.getId());
-        lastOrderId = savedOrder.getId();
+        //마지막으로 추가된 주문의 ID 갱신
+        log.info("saveOrder 데이터 존재 여부 orderSize = {}, order_id = {}", savedOrder.getOrderItems().size(), savedOrder.getId());
 
         // SSE를 통해 새로운 주문을 클라이언트에게 알리기
-//        sendOrderUpdate();
+        sseEmitters.order(savedOrder);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(request);
     }
 
-    @GetMapping(value = "/api/orders/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ResponseEntity<SseEmitter> getOrders(@PathVariable("id") long store_id) {
-        SseEmitter emitter = new SseEmitter();
-        emitters.add(emitter);
-
-        try {
-            //여기서 마지막으로 추가된 주문만 받아와야 함
-            Order order = orderService.findLastOrderByStore(store_id, lastOrderId);
-            log.info("order 값: {}", order);
-
-            if (order != null) {
-                try {
-                    emitter.send(SseEmitter.event().data(new OrderResponse(order)).name("order"));
-                } catch (IOException e) {
-                    // 오류 발생 시 Emitter를 완료하고 제거
-                    emitter.complete();
-                    emitters.remove(emitter);
-                    e.printStackTrace();
-                }
-            }
-        } catch (Exception e) {
-            // 다른 예외 처리 코드
-            e.printStackTrace();
-        }
-
-        // 클라이언트 연결 종료 시 Emitter를 완료하고 제거
-        emitter.onCompletion(() -> emitters.remove(emitter));
-        emitter.onTimeout(() -> {
-            emitter.complete();
-            emitters.remove(emitter);
-        });
-
-        return ResponseEntity.ok()
-                .body(emitter);
-    }
+//    @GetMapping(value = "/api/orders/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+//    public ResponseEntity<SseEmitter> getOrders(@PathVariable("id") long store_id) {
+//        SseEmitter emitter = new SseEmitter(60 * 1000L);
+//        sseEmitters.add(emitter);
+//
+//        try {
+//            //여기서 마지막으로 추가된 주문만 받아와야 함
+//            Order order = orderService.findLastOrderByStore(store_id, lastOrderId);
+//            log.info("order 값: {}", order);
+//
+//            if (order != null) {
+//                try {
+//                    emitter.send(SseEmitter.event()
+//                            .data(new OrderResponse(order))
+//                            .name("order"));
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        } catch (Exception e) {
+//            // 다른 예외 처리 코드
+//            throw new RuntimeException(e);
+//        }
+//
+//        return ResponseEntity.ok()
+//                .body(emitter);
+//    }
 
     @DeleteMapping("/api/orders/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable long id) {
@@ -90,15 +80,20 @@ public class OrderApiController {
                 .build();
     }
 
-    private void sendOrderUpdate() {
-        emitters.forEach(emitter -> {
-            try {
-                emitter.send(SseEmitter.event().data("Order updated!").name("orderUpdate"));
-            } catch (IOException e) {
-                emitter.complete();
-                emitters.remove(emitter);
-                e.printStackTrace();
-            }
-        });
+    /**
+     * sse connect 함수
+     */
+    @GetMapping(value = "/api/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public ResponseEntity<SseEmitter> connect() {
+        SseEmitter emitter = new SseEmitter(60 * 1000L * 60);
+        sseEmitters.add(emitter);
+        try {
+            emitter.send(SseEmitter.event()
+                    .name("connect")
+                    .data("connected!"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok(emitter);
     }
 }

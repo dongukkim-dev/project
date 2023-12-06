@@ -30,6 +30,7 @@ public class Item extends BaseTimeEntity {
     private Store store;
     
     //여기에 완판 여부 들어가야 함
+    @Enumerated(EnumType.STRING)
     private ItemStatus status;
 
     @Builder

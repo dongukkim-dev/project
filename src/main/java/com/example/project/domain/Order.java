@@ -49,14 +49,10 @@ public class Order extends BaseTimeEntity {
     //== 빌더 생성자 ==//
     @Builder
     public Order(User user, Store store, OrderStatus status, List<OrderItem> orderItems) {
-        //== 연관관계 편의 메서드 ==//
         this.user = user;
-//        user.getOrders().add(this);
-
         this.store = store;
         this.status = status;
         this.orderItems = orderItems;
-//        OrderItem.builder().order(this).build();
     }
 
     //==생성 메소드==//
@@ -75,10 +71,10 @@ public class Order extends BaseTimeEntity {
 
     //== 연관관계 메서드 ==//
     public void addOrderItem(OrderItem orderItem) {
-        orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
 
+    //== 주문을 지우는 deleted flag ==//
     public void deletedChange() {
         this.deleted = true;
     }

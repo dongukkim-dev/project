@@ -6,21 +6,21 @@ import com.example.project.repository.OrderRepository;
 import com.example.project.repository.UserRepository;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class OrderService {
-
-    //SSE 기본 타임아웃 설정
-    private static final long DEFAULT_TIMEOUT = 60L * 1000 * 60;
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
@@ -39,6 +39,8 @@ public class OrderService {
 
         //주문 상품 생성
         OrderItem[] orderItems = new OrderItem[request.size()];
+        log.info("request size = {}", request.size());
+        log.info("orderItems size = {}", orderItems.length);
         for (int i=0; i< request.size(); ++i) {
             Item item = itemService.findById(request.get(i).getItem_id());
             OrderItem orderItem = OrderItem.builder()
@@ -50,8 +52,12 @@ public class OrderService {
             orderItems[i] = orderItem;
         }
 
+        log.info("최종 orderItems 사이즈: {}", Arrays.stream(orderItems).count());
+
         //주문 생성
         Order order = Order.createOrder(user, orderItems[0].getItem().getStore(), orderItems);
+
+        log.info("order에서의 orderItems size = {}", order.getOrderItems().size());
 
         //주문 저장
         orderRepository.save(order);
@@ -92,20 +98,4 @@ public class OrderService {
             throw new IllegalArgumentException("not authorized");
         }
     }
-
-    /**
-     * SSE 통신을 위해 클라이언트가 구독을 위해 호출하는 메서드
-     */
-//    public SseEmitter subscribe(Long userId) {
-//        SseEmitter emitter;
-//
-//        sendTo
-//    }
-//
-//    //클라이언트에게 데이터를 전송
-//
-//    //사용자 아이디를 기반으로 이벤트 Emitter를 생성
-//    private SseEmitter createEmitter(Long id) {
-//        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
-//    }
 }
