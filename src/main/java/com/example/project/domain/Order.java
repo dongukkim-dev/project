@@ -75,11 +75,12 @@ public class Order extends BaseTimeEntity {
         orderItem.setOrder(this);
     }
 
-    //== 주문을 지우는 deleted flag ==//
+    //== 주문을 지우는 deleted flag ==// 주문에서 삭제가 굳이 필요한지 생각해봐야 함
     public void deletedChange() {
         this.deleted = true;
     }
 
+    //== 주문관리 페이지 status 변경 ==//
     public void updateStatus(String status) {
         if (status.equals("READY")) {
             this.status = OrderStatus.READY;

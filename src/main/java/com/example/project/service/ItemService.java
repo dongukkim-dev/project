@@ -26,8 +26,8 @@ public class ItemService {
     private final StoreService storeService; //service가 service를 의존하는건 아닌거 같은데 현재 service가 findByName 같은 간단한 작업만 해서 그냥 사용
     private final ItemQueryRepository itemQueryRepository;
 
-    public Item save(AddItemRequest request) {
-        Store store = storeService.findById(request.getStoreId());
+    public Item save(long id, AddItemRequest request) {
+        Store store = storeService.findById(id);
         return itemRepository.save(request.toEntity(store));
     }
 

@@ -21,9 +21,9 @@ public class ItemApiController {
     private final ItemService itemService;
 
     //storeName을 이대로 받을 수 있나? pathvariable 방식으로 받을수 있나
-    @PostMapping("/api/items")
-    public ResponseEntity<ItemResponse> addItem(@RequestBody AddItemRequest request) {
-        Item savedItem = itemService.save(request);
+    @PostMapping("/api/items/{id}")
+    public ResponseEntity<ItemResponse> addItem(@PathVariable long id, @RequestBody AddItemRequest request) {
+        Item savedItem = itemService.save(id, request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ItemResponse(savedItem));

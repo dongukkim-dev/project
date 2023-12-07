@@ -42,7 +42,7 @@ public class InitDb {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         /**
-         * yser1이 생성된 store1에서 item을 order하는 테스트
+         * 일반 회원, 가맹점 회원
          */
         public void dbInit1() {
             User user1 = User.builder()

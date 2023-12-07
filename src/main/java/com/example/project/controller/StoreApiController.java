@@ -1,12 +1,17 @@
 package com.example.project.controller;
 
+import com.example.project.domain.Review;
 import com.example.project.domain.Store;
+import com.example.project.dto.review.AddReviewRequest;
+import com.example.project.dto.review.ReviewResponse;
+import com.example.project.dto.review.UpdateReviewRequest;
 import com.example.project.dto.store.StoreSearchCondition;
 import com.example.project.dto.store.AddStoreRequest;
 import com.example.project.dto.store.StoreResponse;
 import com.example.project.dto.store.StoreUserDto;
 import com.example.project.dto.store.UpdateStoreRequest;
 import com.example.project.repository.store.StoreRepository;
+import com.example.project.service.ReviewService;
 import com.example.project.service.StoreService;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +29,7 @@ public class StoreApiController {
 
     private final StoreService storeService;
     private final StoreRepository storeRepository;
+    private final ReviewService reviewService;
 
     @PostMapping("/api/stores")
     public ResponseEntity<Store> addStore(@RequestBody AddStoreRequest request) {
@@ -81,5 +87,24 @@ public class StoreApiController {
 
         return ResponseEntity.ok()
                 .body(updatedStore);
+    }
+
+    /**
+     * 리뷰 관련 코드
+     */
+    @PostMapping("/api/review")
+    public ResponseEntity<ReviewResponse> addReview(@RequestBody AddReviewRequest request) {
+        Review savedReview = reviewService.save(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ReviewResponse(savedReview));
+    }
+
+    @PutMapping("/api/review/{id}")
+    public ResponseEntity<Review> updateReview(@PathVariable long id, @RequestBody UpdateReviewRequest request) {
+        Review updatedReview = reviewService.update(id, request);
+
+        return ResponseEntity.ok()
+                .body(updatedReview);
     }
 }

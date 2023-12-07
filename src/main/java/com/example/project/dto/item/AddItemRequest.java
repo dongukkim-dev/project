@@ -16,7 +16,6 @@ public class AddItemRequest {
     private int price;
     private String picture;
     private String content;
-    private Long storeId;
 
     public Item toEntity(Store store) {
         return Item.builder()

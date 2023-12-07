@@ -19,7 +19,7 @@ public class ReviewService {
     private final OrderService orderService;
 
     public Review save(AddReviewRequest request) {
-        Order order = orderService.findById(request.getOrder_id());
+        Order order = orderService.findById(request.getOrderId());
 
         return reviewRepository.save(request.toEntity(order.getStore(), order.getUser()));
     }
