@@ -2,13 +2,14 @@ package com.example.project.repository.item;
 
 import com.example.project.domain.Item;
 import com.example.project.domain.ItemStatus;
-import com.example.project.domain.QItem;
-import com.example.project.domain.QStore;
+import com.example.project.dto.cart.CartResponse;
+import com.example.project.dto.cart.QCartResponse;
 import com.example.project.dto.item.ItemSearchCondition;
 import com.example.project.dto.item.ItemStoreDto;
 import com.example.project.dto.item.QItemStoreDto;
-import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -16,13 +17,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-import static com.example.project.domain.QItem.*;
-import static com.example.project.domain.QStore.*;
-import static org.springframework.util.StringUtils.*;
+import static com.example.project.domain.QItem.item;
+import static com.example.project.domain.QStore.store;
+import static org.springframework.util.StringUtils.hasText;
 
 @Repository
 public class ItemQueryRepository {
@@ -31,6 +31,19 @@ public class ItemQueryRepository {
 
     public ItemQueryRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
+    }
+
+    public CartResponse searchCartData(long id, int amount) {
+        return queryFactory
+                .select(new QCartResponse(
+                        item.id,
+                        item.name,
+                        item.price,
+                        Expressions.as(Expressions.constant(amount), "amount")
+                ))
+                .from(item)
+                .where(item.id.eq(id))
+                .fetchOne();
     }
 
     public Page<ItemStoreDto> search(long id, ItemSearchCondition condition, Pageable pageable) {

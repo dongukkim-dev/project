@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,5 +78,17 @@ public class Order extends BaseTimeEntity {
     //== 주문을 지우는 deleted flag ==//
     public void deletedChange() {
         this.deleted = true;
+    }
+
+    public void updateStatus(String status) {
+        if (status.equals("READY")) {
+            this.status = OrderStatus.READY;
+        }
+        else if (status.equals("COMP")) {
+            this.status = OrderStatus.COMP;
+        }
+        else {
+            this.status = OrderStatus.CANCEL;
+        }
     }
 }

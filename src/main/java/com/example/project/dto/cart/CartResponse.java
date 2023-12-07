@@ -1,5 +1,6 @@
 package com.example.project.dto.cart;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,6 @@ import lombok.Setter;
  */
 
 @Getter @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class CartResponse {
 
@@ -18,4 +18,12 @@ public class CartResponse {
     private String name;
     private int price;
     private int amount;
+
+    @QueryProjection
+    public CartResponse(Long item_id, String name, int price, int amount) {
+        this.item_id = item_id;
+        this.name = name;
+        this.price = price;
+        this.amount = amount;
+    }
 }

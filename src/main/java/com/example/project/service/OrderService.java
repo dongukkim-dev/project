@@ -80,6 +80,13 @@ public class OrderService {
     }
 
     //update
+    @Transactional
+    public Order updateStatus(long id, String status) {
+        Order order = findById(id);
+        order.updateStatus(status);
+
+        return order;
+    }
 
     //delete
     @Transactional

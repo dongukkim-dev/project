@@ -2,6 +2,7 @@ package com.example.project.service;
 
 import com.example.project.domain.Item;
 import com.example.project.domain.Store;
+import com.example.project.dto.cart.CartDto;
 import com.example.project.dto.cart.CartResponse;
 import com.example.project.dto.item.*;
 import com.example.project.repository.item.ItemQueryRepository;
@@ -39,9 +40,13 @@ public class ItemService {
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
     }
 
-    //장바구니에 item_id, price만 반환할 코드
-    public CartResponse findCartById(long id, int amount) {
-        return itemRepository.findByNameAndPrice(id, amount);
+    //장바구니에 itemId, itemName, price, amount만 반환할 코드
+    public List<CartResponse> findCartItems(List<CartDto> cartDtos) {
+
+        return cartDtos.stream()
+                .map(cart -> itemQueryRepository.searchCartData(cart.getItem_id(), cart.getAmount()))
+                .collect(Collectors.toList());
+
     }
 
     public void delete(long id) {

@@ -34,11 +34,23 @@ public class SseEmitters {
         return emitter;
     }
 
-    public void order(Order order) {
+    public void newOrder(Order order) {
         emitters.forEach(emitter -> {
             try {
                 emitter.send(SseEmitter.event()
-                        .name("order")
+                        .name("newOrder")
+                        .data(new OrderResponse(order)));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public void processingOrder(Order order) {
+        emitters.forEach(emitter -> {
+            try {
+                emitter.send(SseEmitter.event()
+                        .name("processingOrder")
                         .data(new OrderResponse(order)));
             } catch (IOException e) {
                 throw new RuntimeException(e);

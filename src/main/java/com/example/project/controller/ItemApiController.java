@@ -1,6 +1,8 @@
 package com.example.project.controller;
 
 import com.example.project.domain.Item;
+import com.example.project.dto.cart.CartDto;
+import com.example.project.dto.cart.CartResponse;
 import com.example.project.dto.item.*;
 import com.example.project.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +48,6 @@ public class ItemApiController {
         return ResponseEntity.ok()
                 .body(items);
     }
-
     @DeleteMapping("/api/items/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable long id) {
         itemService.delete(id);
@@ -62,5 +63,18 @@ public class ItemApiController {
 
         return ResponseEntity.ok()
                 .body(updatedItem);
+    }
+
+    /**
+     * 장바구니 관련 코드
+     */
+    //장바구니에서 [itemId, amount] json 데이터를 받아 필요한 값들 [itemName, amount, price] 반환 하기
+    @PostMapping("/api/cart")
+    public ResponseEntity<List<CartResponse>> cartItem(@RequestBody List<CartDto> cartDto) {
+
+        List<CartResponse> cartItems = itemService.findCartItems(cartDto);
+
+        return ResponseEntity.ok()
+                .body(cartItems);
     }
 }
