@@ -3,11 +3,13 @@ package com.example.project.service;
 import com.example.project.domain.Grade;
 import com.example.project.domain.Role;
 import com.example.project.domain.User;
+import com.example.project.dto.UpdateUserRequest;
 import com.example.project.dto.signup.SignUpRequest;
 import com.example.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,22 @@ public class UserService {
                 .point(0)
                 .role(request.getRole())
                 .build()).getId();
+    }
+
+    @Transactional
+    public User update(String email, UpdateUserRequest request) {
+        User user = findByEmail(email);
+
+        user.updateUser(request.getEmail(), request.getName(), request.getPhone(), request.getAddress());
+
+        return user;
+    }
+
+    @Transactional
+    public void delete(String email) {
+        User user = findByEmail(email);
+
+        user.deletedChange();
     }
 
     public User findById(Long memberId) {

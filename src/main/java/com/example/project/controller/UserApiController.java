@@ -4,6 +4,7 @@ import com.example.project.config.jwt.TokenProvider;
 import com.example.project.domain.Gender;
 import com.example.project.domain.Grade;
 import com.example.project.domain.User;
+import com.example.project.dto.UpdateUserRequest;
 import com.example.project.dto.UserDto;
 import com.example.project.dto.login.LoginRequest;
 import com.example.project.dto.signup.SignResponse;
@@ -63,11 +64,28 @@ public class UserApiController {
         UserDto user = new UserDto(userService.findByEmail(email));
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    //회원 수정
+    @PutMapping("/api/user")
+    public ResponseEntity<UserDto> updateUser(@RequestBody UpdateUserRequest request) {
+        String email = SecurityUtil.getCurrentUsername();
+
+        User updateUser = userService.update(email, request);
+
+        return ResponseEntity.ok()
+                .body(new UserDto(updateUser));
+    }
     
     //회원 삭제
-    @DeleteMapping("/api/member")
-    public void deleteMember() {
+    @DeleteMapping("/api/user")
+    public ResponseEntity<Void> deleteMember() {
         //삭제 로직
+        String email = SecurityUtil.getCurrentUsername();
+
+        userService.delete(email);
+
+        return ResponseEntity.ok()
+                .build();
     }
 
     @PostMapping("/api/login")

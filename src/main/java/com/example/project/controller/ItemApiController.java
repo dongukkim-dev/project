@@ -57,12 +57,12 @@ public class ItemApiController {
     }
 
     @PutMapping("/api/items/{id}")
-    public ResponseEntity<Item> updateItem(@PathVariable long id,
+    public ResponseEntity<ItemResponse> updateItem(@PathVariable long id,
                                                  @RequestBody UpdateItemRequest request) {
         Item updatedItem = itemService.update(id, request);
 
         return ResponseEntity.ok()
-                .body(updatedItem);
+                .body(new ItemResponse(updatedItem));
     }
 
     /**

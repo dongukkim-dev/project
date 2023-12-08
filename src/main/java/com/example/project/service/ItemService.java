@@ -49,14 +49,6 @@ public class ItemService {
 
     }
 
-    public void delete(long id) {
-        Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
-
-        authorizeItemAuthor(item);
-        itemRepository.delete(item);
-    }
-
     @Transactional
     public Item update(long id, UpdateItemRequest request) {
         Item item = itemRepository.findById(id)
@@ -66,6 +58,15 @@ public class ItemService {
         item.update(request.getName(), request.getPrice(), request.getPicture(), request.getContent(), request.getStatus());
 
         return item;
+    }
+
+    @Transactional
+    public void delete(long id) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
+
+        authorizeItemAuthor(item);
+        item.deletedChange();
     }
 
     //아이템 목록 페이징 처리

@@ -107,4 +107,16 @@ public class StoreApiController {
         return ResponseEntity.ok()
                 .body(updatedReview);
     }
+
+    /**
+     * 찜하기 관련 코드
+     */
+    @PostMapping("/api/bookmark/{id}")
+    public ResponseEntity<Void> addBookMark(@PathVariable long id) {
+        String email = SecurityUtil.getCurrentUsername();
+
+//        Book
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
+    }
 }

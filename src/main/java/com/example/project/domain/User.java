@@ -6,6 +6,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,6 +22,8 @@ import java.util.List;
 @Table(name = "users")
 @Entity
 @Getter
+@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE user_id = ?")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity implements UserDetails {
 
@@ -26,7 +31,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(name = "user_id", updatable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false)
     private String email;
 
     private String password;
@@ -49,6 +54,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
 
+    @ColumnDefault("false")
+    private boolean deleted = Boolean.FALSE;
+
     @Builder
     public User(String email, String password, String name, String phone, Gender gender, int point, Grade grade, String address, Role role) {
         this.email = email;
@@ -62,9 +70,19 @@ public class User extends BaseTimeEntity implements UserDetails {
         this.role = role;
     }
 
+
+    //OAuth2 전용 update
     public User update(String name) {
         this.name = name;
         return this;
+    }
+    
+    //일반 업데이트
+    public void updateUser(String email, String name, String phone, String address) {
+        this.email = email;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
     }
 
     //권한 반환
@@ -101,5 +119,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void deletedChange() {
+        this.deleted = true;
     }
 }

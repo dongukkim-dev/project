@@ -3,9 +3,11 @@ package com.example.project.dto.item;
 import com.example.project.domain.ItemStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class UpdateItemRequest {
 
@@ -13,5 +15,5 @@ public class UpdateItemRequest {
     private int price;
     private String picture;
     private String content;
-    private ItemStatus status;
+    private String status;
 }
