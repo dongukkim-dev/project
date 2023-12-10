@@ -28,6 +28,7 @@ public class InitDb {
         initService.dbInit1();
         initService.dbInit2();
         initService.dbInit3();
+        initService.dbInit4();
     }
 
     @Component
@@ -45,6 +46,19 @@ public class InitDb {
          * 일반 회원, 가맹점 회원
          */
         public void dbInit1() {
+            User admin = User.builder()
+                    .email("test@admin.123")
+                    .password(encoder.encode("asdf1234!"))
+                    .name("lee")
+                    .phone("010-8888-3333")
+                    .address("주소4")
+                    .grade(Grade.BRONZE)
+                    .gender(Gender.MALE)
+                    .point(0)
+                    .role(Role.ROLE_ADMIN)
+                    .build();
+            em.persist(admin);
+
             User user1 = User.builder()
                     .email("test@test.123")
                     .password(encoder.encode("asdf1234!"))
@@ -67,7 +81,7 @@ public class InitDb {
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
-                    .role(Role.ROLE_ADMIN)
+                    .role(Role.ROLE_STORE)
                     .build();
             em.persist(user);
 
@@ -115,7 +129,7 @@ public class InitDb {
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
-                    .role(Role.ROLE_ADMIN)
+                    .role(Role.ROLE_STORE)
                     .build();
             em.persist(user);
 
@@ -164,7 +178,20 @@ public class InitDb {
         }
 
         public void dbInit3() {
-            User user = User.builder()
+            User user1 = User.builder()
+                    .email("test2@asd.123")
+                    .password(encoder.encode("asdf1234!"))
+                    .name("일반회원2")
+                    .phone("010-5555-1111")
+                    .address("일반 회원 주소2")
+                    .grade(Grade.BRONZE)
+                    .gender(Gender.MALE)
+                    .point(0)
+                    .role(Role.ROLE_USER)
+                    .build();
+            em.persist(user1);
+
+            User user2 = User.builder()
                     .email("test@zxc.456")
                     .password(encoder.encode("asdf1234!"))
                     .name("choi")
@@ -173,12 +200,12 @@ public class InitDb {
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
-                    .role(Role.ROLE_ADMIN)
+                    .role(Role.ROLE_STORE)
                     .build();
-            em.persist(user);
+            em.persist(user2);
 
             Store store = Store.builder()
-                    .user(user)
+                    .user(user2)
                     .name("과자공장")
                     .address("경기도 남양주시")
                     .phone("031-571-1111")
@@ -230,6 +257,26 @@ public class InitDb {
                                .status(ItemStatus.SALE)
                        .build());
            }
+
+           //주문 코드 생각하기
+//            Order order = Order.createOrder(user1, store, item1, item2, item3);
+
+        }
+
+        //주문 테스트 추가
+        public void dbInit4() {
+            User user = User.builder()
+                    .email("test3@asd.123")
+                    .password(encoder.encode("asdf1234!"))
+                    .name("일반회원3")
+                    .phone("010-5555-1111")
+                    .address("일반 회원 주소3")
+                    .grade(Grade.BRONZE)
+                    .gender(Gender.MALE)
+                    .point(0)
+                    .role(Role.ROLE_USER)
+                    .build();
+            em.persist(user);
         }
     }
 }

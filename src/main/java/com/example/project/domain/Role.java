@@ -2,6 +2,7 @@ package com.example.project.domain;
 
 public enum Role {
     ROLE_USER("USER"),
+    ROLE_STORE("STORE"),
     ROLE_ADMIN("ADMIN");
 
     private String value;

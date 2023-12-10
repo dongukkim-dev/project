@@ -1,5 +1,8 @@
 package com.example.project.repository.store;
 
+import com.example.project.domain.QBookmark;
+import com.example.project.dto.BookmarkResponse;
+import com.example.project.dto.QBookmarkResponse;
 import com.example.project.dto.store.StoreSearchCondition;
 import com.example.project.dto.store.QStoreUserDto;
 import com.example.project.dto.store.StoreUserDto;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.example.project.domain.QBookmark.*;
 import static com.example.project.domain.QStore.store;
 import static com.example.project.domain.QUser.user;
 import static org.springframework.util.StringUtils.hasText;
@@ -40,6 +44,23 @@ public class StoreQueryRepository {
                 .where(
                         storeNameEq(condition.getStoreName()),
                         userNameEq(condition.getUserName())
+                )
+                .fetch();
+    }
+
+    //bookmark 불러오기
+    public List<BookmarkResponse> searchBookmark(String email) {
+        return queryFactory
+                .select(new QBookmarkResponse(
+                        bookmark.id,
+                        store.id,
+                        store.name
+                ))
+                .from(bookmark)
+                .leftJoin(bookmark.store, store)
+                .leftJoin(bookmark.user, user)
+                .where(
+                        user.email.eq(email)
                 )
                 .fetch();
     }

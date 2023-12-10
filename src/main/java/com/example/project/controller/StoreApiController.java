@@ -2,6 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.domain.Review;
 import com.example.project.domain.Store;
+import com.example.project.dto.BookmarkResponse;
 import com.example.project.dto.review.AddReviewRequest;
 import com.example.project.dto.review.ReviewResponse;
 import com.example.project.dto.review.UpdateReviewRequest;
@@ -10,7 +11,9 @@ import com.example.project.dto.store.AddStoreRequest;
 import com.example.project.dto.store.StoreResponse;
 import com.example.project.dto.store.StoreUserDto;
 import com.example.project.dto.store.UpdateStoreRequest;
+import com.example.project.repository.store.StoreQueryRepository;
 import com.example.project.repository.store.StoreRepository;
+import com.example.project.service.BookMarkService;
 import com.example.project.service.ReviewService;
 import com.example.project.service.StoreService;
 import com.example.project.util.SecurityUtil;
@@ -30,6 +33,8 @@ public class StoreApiController {
     private final StoreService storeService;
     private final StoreRepository storeRepository;
     private final ReviewService reviewService;
+    private final BookMarkService bookMarkService;
+    private final StoreQueryRepository storeQueryRepository;
 
     @PostMapping("/api/stores")
     public ResponseEntity<Store> addStore(@RequestBody AddStoreRequest request) {
@@ -111,12 +116,24 @@ public class StoreApiController {
     /**
      * 찜하기 관련 코드
      */
+    //store_id 를 가져와서 저장해야 한다.
     @PostMapping("/api/bookmark/{id}")
-    public ResponseEntity<Void> addBookMark(@PathVariable long id) {
+    public ResponseEntity<String> addBookMark(@PathVariable long id) {
         String email = SecurityUtil.getCurrentUsername();
 
-//        Book
+        bookMarkService.addBookmark(id, email);
+
         return ResponseEntity.status(HttpStatus.CREATED)
-                .build();
+                .body("완료");
+    }
+
+    @GetMapping("/api/bookmark")
+    public ResponseEntity<List<BookmarkResponse>> findBookmark() {
+        String email = SecurityUtil.getCurrentUsername();
+
+        List<BookmarkResponse> bookmark = storeQueryRepository.searchBookmark(email);
+
+        return ResponseEntity.ok()
+                .body(bookmark);
     }
 }
