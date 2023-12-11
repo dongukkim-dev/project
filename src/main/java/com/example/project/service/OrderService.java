@@ -2,18 +2,15 @@ package com.example.project.service;
 
 import com.example.project.domain.*;
 import com.example.project.dto.order.OrderRequest;
-import com.example.project.repository.OrderRepository;
+import com.example.project.repository.order.OrderRepository;
 import com.example.project.repository.UserRepository;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 @Slf4j

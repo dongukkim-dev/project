@@ -1,4 +1,4 @@
-package com.example.project.repository;
+package com.example.project.repository.order;
 
 import com.example.project.domain.Order;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,12 +1,18 @@
 package com.example.project.repository.store;
 
 import com.example.project.domain.QBookmark;
+import com.example.project.domain.Store;
+import com.example.project.domain.User;
 import com.example.project.dto.BookmarkResponse;
+import com.example.project.dto.BookmarkStatusResponse;
 import com.example.project.dto.QBookmarkResponse;
+import com.example.project.dto.QBookmarkStatusResponse;
 import com.example.project.dto.store.StoreSearchCondition;
 import com.example.project.dto.store.QStoreUserDto;
 import com.example.project.dto.store.StoreUserDto;
+import com.example.project.repository.BookmarkRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
@@ -25,9 +31,11 @@ import static org.springframework.util.StringUtils.hasText;
 public class StoreQueryRepository {
 
     private final JPAQueryFactory queryFactory;
+    private final BookmarkRepository bookmarkRepository;
 
-    public StoreQueryRepository(EntityManager em) {
+    public StoreQueryRepository(EntityManager em, BookmarkRepository bookmarkRepository) {
         this.queryFactory = new JPAQueryFactory(em);
+        this.bookmarkRepository = bookmarkRepository;
     }
 
     public List<StoreUserDto> search(StoreSearchCondition condition) {
@@ -63,6 +71,28 @@ public class StoreQueryRepository {
                         user.email.eq(email)
                 )
                 .fetch();
+    }
+
+    //해당 가게의 bookmark 여부와 총 인원 수 반환
+    public BookmarkStatusResponse bookmarkStatus(User user, Store storeInfo) {
+        BookmarkStatusResponse content = queryFactory
+                .select(new QBookmarkStatusResponse(
+                        Expressions.asBoolean(false),
+                        store.bookmarks.size()
+                ))
+                .from(store)
+                .where(
+                        store.id.eq(storeInfo.getId())
+                )
+                .fetchFirst();
+
+        if (user != null) {
+            if (bookmarkRepository.existsBookmarkByUserAndStore(user, storeInfo)) {
+                content.setStatus(true);
+            }
+        }
+
+        return content;
     }
 
     //뭐 이런 식으로 엮어서 쓸 수 있다? 대신 null 체크 조심해야 함

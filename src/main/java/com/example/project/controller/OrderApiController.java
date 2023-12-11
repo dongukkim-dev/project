@@ -1,26 +1,19 @@
 package com.example.project.controller;
 
 import com.example.project.domain.Order;
-import com.example.project.domain.OrderStatus;
-import com.example.project.dto.order.OrderDto;
 import com.example.project.dto.order.OrderRequest;
-import com.example.project.dto.order.OrderResponse;
 import com.example.project.service.OrderService;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -46,7 +39,7 @@ public class OrderApiController {
                 .body(request);
     }
 
-    //음식점 id과 condition에 따라 [주문취소, 배달완료] 출력
+    //음식점 id과 condition에 따라 [ORDER, READY, CANCEL, COMP] 출력
 //    @GetMapping("/api/orders/{id}")
 //    public
 

@@ -1,12 +1,11 @@
 package com.example.project.service;
 
-import com.example.project.domain.Bookmark;
 import com.example.project.domain.Store;
 import com.example.project.domain.User;
 import com.example.project.dto.store.AddStoreRequest;
 import com.example.project.dto.store.StoreViewResponse;
 import com.example.project.dto.store.UpdateStoreRequest;
-import com.example.project.repository.BookMarkRepository;
+import com.example.project.repository.BookmarkRepository;
 import com.example.project.repository.store.StoreRepository;
 import com.example.project.repository.UserRepository;
 import com.example.project.util.SecurityUtil;
@@ -26,7 +25,7 @@ public class StoreService {
     
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
-    private final BookMarkRepository bookMarkRepository;
+    private final BookmarkRepository bookMarkRepository;
 
     public Store save(AddStoreRequest request, String email) {
 

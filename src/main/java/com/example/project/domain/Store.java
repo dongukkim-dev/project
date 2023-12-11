@@ -10,6 +10,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,9 +43,6 @@ public class Store extends BaseTimeEntity {
     @ColumnDefault("false")
     private boolean deleted = Boolean.FALSE;
 
-    //상품 판매 상태 [SOLD, ?]
-//    private
-
     //category 임시
     private int category;
 
@@ -51,6 +50,9 @@ public class Store extends BaseTimeEntity {
     private String closeTime;
 
     //여기서 상품 목록이 필요한지 생각해보기(음식점에서 상품목록은 많이 쓰인다)
+
+    @OneToMany(mappedBy = "store")
+    private List<Bookmark> bookmarks = new ArrayList<>();
     
     @Builder
     public Store(String name, User user, String picture, String content, String address, String phone, double rating, String openTime, String closeTime) {

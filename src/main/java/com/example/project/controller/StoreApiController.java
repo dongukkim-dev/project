@@ -1,8 +1,10 @@
 package com.example.project.controller;
 
+import com.example.project.domain.Bookmark;
 import com.example.project.domain.Review;
 import com.example.project.domain.Store;
 import com.example.project.dto.BookmarkResponse;
+import com.example.project.dto.BookmarkStatusResponse;
 import com.example.project.dto.review.AddReviewRequest;
 import com.example.project.dto.review.ReviewResponse;
 import com.example.project.dto.review.UpdateReviewRequest;
@@ -13,7 +15,7 @@ import com.example.project.dto.store.StoreUserDto;
 import com.example.project.dto.store.UpdateStoreRequest;
 import com.example.project.repository.store.StoreQueryRepository;
 import com.example.project.repository.store.StoreRepository;
-import com.example.project.service.BookMarkService;
+import com.example.project.service.BookmarkService;
 import com.example.project.service.ReviewService;
 import com.example.project.service.StoreService;
 import com.example.project.util.SecurityUtil;
@@ -33,7 +35,7 @@ public class StoreApiController {
     private final StoreService storeService;
     private final StoreRepository storeRepository;
     private final ReviewService reviewService;
-    private final BookMarkService bookMarkService;
+    private final BookmarkService bookmarkService;
     private final StoreQueryRepository storeQueryRepository;
 
     @PostMapping("/api/stores")
@@ -113,6 +115,15 @@ public class StoreApiController {
                 .body(updatedReview);
     }
 
+    //order_id를 받아서 해당 주문에 대한 리뷰를 삭제
+    @DeleteMapping("/api/review/{id}")
+    public ResponseEntity<Void> deleteReview(@PathVariable long id) {
+
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
     /**
      * 찜하기 관련 코드
      */
@@ -121,7 +132,7 @@ public class StoreApiController {
     public ResponseEntity<String> addBookMark(@PathVariable long id) {
         String email = SecurityUtil.getCurrentUsername();
 
-        bookMarkService.addBookmark(id, email);
+        Bookmark bookmark = bookmarkService.addBookmark(id, email);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("완료");
@@ -135,5 +146,24 @@ public class StoreApiController {
 
         return ResponseEntity.ok()
                 .body(bookmark);
+    }
+
+    //store_id를 이용해 이용 유저가 해당 store를 찜했는지 안했는지 true/false 와 총 찜한 인원 수 반환
+    @GetMapping("/api/bookmark/{id}")
+    public ResponseEntity<BookmarkStatusResponse> bookmarkStatus(@PathVariable long id) {
+        String email = SecurityUtil.getCurrentUsername();
+
+        BookmarkStatusResponse bookmarkStatus = bookmarkService.bookmarkStatus(id, email);
+
+        return ResponseEntity.ok()
+                .body(bookmarkStatus);
+    }
+
+    @DeleteMapping("/api/bookmark/{id}")
+    public ResponseEntity<Void> deleteBookmark(@PathVariable long id) {
+        bookmarkService.deleteBookmark(id);
+
+        return ResponseEntity.ok()
+                .build();
     }
 }

@@ -10,6 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 public class CartDto {
 
-    private Long item_id;
+    private Long itemId;
     private int amount;
 }

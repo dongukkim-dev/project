@@ -19,11 +19,11 @@ public class AddReviewRequest {
 
     private Long orderId;
     private String title;
+    private String picture;
     private String content;
     private List<Item> itemNames;
     private double rating;
 
-    private String picture;
     private MultipartFile file;
 
     public Review toEntity(Store store, User user) {

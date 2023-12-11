@@ -44,7 +44,7 @@ public class ItemService {
     public List<CartResponse> findCartItems(List<CartDto> cartDtos) {
 
         return cartDtos.stream()
-                .map(cart -> itemQueryRepository.searchCartData(cart.getItem_id(), cart.getAmount()))
+                .map(cart -> itemQueryRepository.searchCartData(cart.getItemId(), cart.getAmount()))
                 .collect(Collectors.toList());
 
     }

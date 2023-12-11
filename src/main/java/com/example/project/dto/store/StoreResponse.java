@@ -16,6 +16,7 @@ public class StoreResponse {
     private final String address;
     private final String openTime;
     private final String closeTime;
+    private final Integer count;
 
     public StoreResponse(Store store) {
         this.id = store.getId();
@@ -27,5 +28,6 @@ public class StoreResponse {
         this.address = store.getUser().getAddress();
         this.openTime = store.getOpenTime();
         this.closeTime = store.getCloseTime();
+        this.count = store.getBookmarks().size();
     }
 }
