@@ -1,25 +1,18 @@
 package com.example.project.controller;
 
-import com.example.project.config.jwt.TokenProvider;
-import com.example.project.domain.Gender;
-import com.example.project.domain.Grade;
 import com.example.project.domain.User;
 import com.example.project.dto.UpdateUserRequest;
 import com.example.project.dto.UserDto;
 import com.example.project.dto.login.LoginRequest;
-import com.example.project.dto.signup.SignResponse;
 import com.example.project.dto.signup.SignUpRequest;
-import com.example.project.repository.UserRepository;
+import com.example.project.repository.user.UserRepository;
 import com.example.project.service.LoginService;
 import com.example.project.service.UserService;
 import com.example.project.util.SecurityUtil;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

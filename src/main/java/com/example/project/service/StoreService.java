@@ -7,7 +7,7 @@ import com.example.project.dto.store.StoreViewResponse;
 import com.example.project.dto.store.UpdateStoreRequest;
 import com.example.project.repository.BookmarkRepository;
 import com.example.project.repository.store.StoreRepository;
-import com.example.project.repository.UserRepository;
+import com.example.project.repository.user.UserRepository;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

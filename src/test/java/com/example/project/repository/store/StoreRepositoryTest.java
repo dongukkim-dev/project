@@ -3,7 +3,7 @@ package com.example.project.repository.store;
 import com.example.project.domain.*;
 import com.example.project.dto.store.StoreSearchCondition;
 import com.example.project.dto.store.StoreUserDto;
-import com.example.project.repository.UserRepository;
+import com.example.project.repository.user.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

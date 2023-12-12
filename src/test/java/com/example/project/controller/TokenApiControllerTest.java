@@ -5,7 +5,7 @@ import com.example.project.config.jwt.JwtProperties;
 import com.example.project.domain.User;
 import com.example.project.domain.RefreshToken;
 import com.example.project.dto.CreateAccessTokenRequest;
-import com.example.project.repository.UserRepository;
+import com.example.project.repository.user.UserRepository;
 import com.example.project.repository.RefreshTokenRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,15 +66,15 @@ class TokenApiControllerTest {
                 .password("test")
                 .build());
 
-        String refreshToekn = JwtFactory.builder()
+        String refreshToken = JwtFactory.builder()
                 .claims(Map.of("id", member.getId()))
                 .build()
                 .createToken(jwtProperties);
 
-        refreshTokenRepository.save(new RefreshToken(member.getId(), refreshToekn));
+        refreshTokenRepository.save(new RefreshToken(member.getId(), refreshToken));
 
         CreateAccessTokenRequest request = new CreateAccessTokenRequest();
-        request.setRefreshToken(refreshToekn);
+        request.setRefreshToken(refreshToken);
         final String requestBody = objectMapper.writeValueAsString(request);
 
         // when

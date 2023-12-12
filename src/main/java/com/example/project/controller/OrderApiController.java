@@ -2,6 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.domain.Order;
 import com.example.project.dto.order.OrderRequest;
+import com.example.project.dto.order.OrderResponse;
 import com.example.project.service.OrderService;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -40,8 +42,18 @@ public class OrderApiController {
     }
 
     //음식점 id과 condition에 따라 [ORDER, READY, CANCEL, COMP] 출력
-//    @GetMapping("/api/orders/{id}")
-//    public
+    //store_id, orderStatus, user 정보를 통해 목록을 가져와야 함 전용 DTO와 querydsl 코드 만들기
+    @GetMapping("/api/orders/{id}")
+    public ResponseEntity<List<OrderResponse>> getOrders(@PathVariable("id") long store_id) {
+        List<Order> orders = orderService.findAllByStore(store_id);
+
+        List<OrderResponse> orderResponse = orders.stream()
+                .map(OrderResponse::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok()
+                .body(orderResponse);
+    }
 
     //접수대기[수락or거절], 처리중[배달or취소] 상태에서 둘중 하나를 눌렀을 때 orderStatus 변경 [READY, CANCEL, COMP]
     @PatchMapping("/api/orders/{id}/{status}")

@@ -2,7 +2,7 @@ package com.example.project.config.oauth;
 
 import com.example.project.domain.Grade;
 import com.example.project.domain.User;
-import com.example.project.repository.UserRepository;
+import com.example.project.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

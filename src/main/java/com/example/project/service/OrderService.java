@@ -3,7 +3,7 @@ package com.example.project.service;
 import com.example.project.domain.*;
 import com.example.project.dto.order.OrderRequest;
 import com.example.project.repository.order.OrderRepository;
-import com.example.project.repository.UserRepository;
+import com.example.project.repository.user.UserRepository;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

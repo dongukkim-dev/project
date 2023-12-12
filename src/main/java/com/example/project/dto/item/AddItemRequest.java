@@ -1,6 +1,7 @@
 package com.example.project.dto.item;
 
 import com.example.project.domain.Item;
+import com.example.project.domain.ItemStatus;
 import com.example.project.domain.Store;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class AddItemRequest {
                 .picture(picture)
                 .content(content)
                 .store(store)
+                .status(ItemStatus.SALE)
                 .build();
     }
 }

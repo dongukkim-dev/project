@@ -1,4 +1,4 @@
-package com.example.project.repository;
+package com.example.project.repository.user;
 
 import com.example.project.domain.QUser;
 import com.example.project.domain.User;

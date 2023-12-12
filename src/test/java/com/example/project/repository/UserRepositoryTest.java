@@ -2,11 +2,11 @@ package com.example.project.repository;
 
 import com.example.project.domain.*;
 import com.example.project.dto.UserDto;
+import com.example.project.repository.user.UserRepository;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +16,6 @@ import java.util.List;
 
 import static com.example.project.domain.QUser.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

@@ -1,5 +1,6 @@
-package com.example.project.repository;
+package com.example.project.repository.user;
 
+import com.example.project.repository.user.UserRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 

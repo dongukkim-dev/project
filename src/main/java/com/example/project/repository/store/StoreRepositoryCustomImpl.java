@@ -73,7 +73,6 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom {
                         userNameEq(condition.getUserName())
                 );
 
-//        return new PageImpl<>(content, pageable, total);
         return PageableExecutionUtils.getPage(content, pageable, countQuery.fetch()::size);
     }
 
