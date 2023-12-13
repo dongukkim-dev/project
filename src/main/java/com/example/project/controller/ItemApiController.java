@@ -6,23 +6,45 @@ import com.example.project.dto.cart.CartResponse;
 import com.example.project.dto.item.*;
 import com.example.project.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ItemApiController {
 
     private final ItemService itemService;
 
-    //storeName을 이대로 받을 수 있나? pathvariable 방식으로 받을수 있나
+    //store_id 를 받아서 해당 store의 메뉴 추가
     @PostMapping("/api/items/{id}")
-    public ResponseEntity<ItemResponse> addItem(@PathVariable long id, @RequestBody AddItemRequest request) {
+    public ResponseEntity<ItemResponse> addItem(
+            @PathVariable long id,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("itemName") String itemName,
+            @RequestParam("price") int price,
+            @RequestParam("content") String content) {
+
+        log.info("파일정보 = {}", file.getOriginalFilename());
+
+        AddItemRequest request = new AddItemRequest();
+        request.setFile(file);
+        request.setItemName(itemName);
+        request.setPrice(price);
+        request.setContent(content);
+
         Item savedItem = itemService.save(id, request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -48,6 +70,7 @@ public class ItemApiController {
         return ResponseEntity.ok()
                 .body(items);
     }
+
     @DeleteMapping("/api/items/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable long id) {
         itemService.delete(id);

@@ -141,6 +141,20 @@ public class InitDb {
                     .build();
             em.persist(store_user3);
 
+            //유저 정보만 있고 store 정보는 없는 계정
+            User store_user4 = User.builder()
+                    .email("store1@asd.123")
+                    .password(encoder.encode("asdf1234!"))
+                    .name("가맹점4")
+                    .phone("010-5555-1111")
+                    .address("가맹점 유저 주소4")
+                    .grade(Grade.BRONZE)
+                    .gender(Gender.MALE)
+                    .point(0)
+                    .role(Role.ROLE_STORE)
+                    .build();
+            em.persist(store_user4);
+
             Store store1 = Store.builder()
                     .user(store_user1)
                     .name("일성만두")
@@ -168,7 +182,7 @@ public class InitDb {
             em.persist(store2);
 
             Store store3 = Store.builder()
-                    .user(user2)
+                    .user(store_user3)
                     .name("과자공장")
                     .address("경기도 남양주시")
                     .phone("031-571-1111")
@@ -270,12 +284,13 @@ public class InitDb {
                     .build();
             em.persist(item9);
 
+            //단순한 페이징용 더미 데이터 들
             for (int i=0; i<50; i++) {
-                AddItemRequest itemRequest = new AddItemRequest("직화구이피자" + i, 16000 + i, "사진" + i + " url", "상세정보" + i + " 입니다.");
+                AddItemRequest itemRequest = new AddItemRequest("직화구이피자" + i, 16000 + i, "사진" + i + " url", "상세정보" + i + " 입니다.", null);
                 itemService.save(3, itemRequest);
             }
 
-            AddItemRequest itemRequest1 = new AddItemRequest("직화구이피자", 16000, "사진4 url", "직화구이 피자입니다");
+            AddItemRequest itemRequest1 = new AddItemRequest("직화구이피자", 16000, "사진4 url", "직화구이 피자입니다", null);
             itemService.save(2, itemRequest1);
 
             /**

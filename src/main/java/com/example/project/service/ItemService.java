@@ -1,5 +1,6 @@
 package com.example.project.service;
 
+import com.example.project.config.fileupload.FileUpload;
 import com.example.project.domain.Item;
 import com.example.project.domain.Store;
 import com.example.project.dto.cart.CartDto;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,9 +27,20 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final StoreService storeService; //service가 service를 의존하는건 아닌거 같은데 현재 service가 findByName 같은 간단한 작업만 해서 그냥 사용
     private final ItemQueryRepository itemQueryRepository;
+    private final FileUpload fileUpload;
 
+    @Transactional
     public Item save(long id, AddItemRequest request) {
         Store store = storeService.findById(id);
+
+        if (request.getFile() == null) {
+            request.setPicture("");
+        }
+        else {
+            if (!fileUpload.uploadItemImg(request))
+                throw new IllegalArgumentException("업로드할 파일이 없습니다.");
+        }
+
         return itemRepository.save(request.toEntity(store));
     }
 

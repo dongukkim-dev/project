@@ -2,9 +2,10 @@ package com.example.project.config.fileupload;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebMvcConfig {
+public class WebMvcConfig implements WebMvcConfigurer {
 
     /**
      * 스프링 부트는 기본적으로 정적 파일을 불러올 때 현재 패키지의 static 폴더를 참조하기 때문에

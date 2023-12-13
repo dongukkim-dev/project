@@ -78,8 +78,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     }
     
     //일반 업데이트
-    public void updateUser(String email, String name, String phone, String address) {
-        this.email = email;
+    public void updateUser(String name, String phone, String address) {
         this.name = name;
         this.phone = phone;
         this.address = address;

@@ -51,7 +51,7 @@ public class Store extends BaseTimeEntity {
 
     //여기서 상품 목록이 필요한지 생각해보기(음식점에서 상품목록은 많이 쓰인다)
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarks = new ArrayList<>();
     
     @Builder

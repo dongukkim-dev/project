@@ -20,6 +20,7 @@ import com.example.project.service.ReviewService;
 import com.example.project.service.StoreService;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class StoreApiController {
@@ -38,7 +40,7 @@ public class StoreApiController {
     private final BookmarkService bookmarkService;
     private final StoreQueryRepository storeQueryRepository;
 
-    @PostMapping("/api/stores")
+    @PostMapping("/api/store")
     public ResponseEntity<Store> addStore(@RequestBody AddStoreRequest request) {
 
         String email = SecurityUtil.getCurrentUsername();
@@ -71,7 +73,7 @@ public class StoreApiController {
 //        storeService.findByCategory();
 //    }
 
-    @GetMapping("/api/stores/{id}")
+    @GetMapping("/api/store/{id}")
     public ResponseEntity<StoreResponse> findStore(@PathVariable long id) {
         Store store = storeService.findById(id);
 
@@ -79,7 +81,7 @@ public class StoreApiController {
                 .body(new StoreResponse(store));
     }
 
-    @DeleteMapping("/api/stores/{id}")
+    @DeleteMapping("/api/store/{id}")
     public ResponseEntity<Void> deleteStore(@PathVariable long id) {
         storeService.delete(id);
 
@@ -87,13 +89,13 @@ public class StoreApiController {
                 .build();
     }
 
-    @PutMapping("/api/stores/{id}")
-    public ResponseEntity<Store> updateStore(@PathVariable long id,
+    @PutMapping("/api/store/{id}")
+    public ResponseEntity<StoreResponse> updateStore(@PathVariable long id,
                                                  @RequestBody UpdateStoreRequest request) {
         Store updatedStore = storeService.update(id, request);
 
         return ResponseEntity.ok()
-                .body(updatedStore);
+                .body(new StoreResponse(updatedStore));
     }
 
     /**
@@ -131,6 +133,7 @@ public class StoreApiController {
     @PostMapping("/api/bookmark/{id}")
     public ResponseEntity<String> addBookMark(@PathVariable long id) {
         String email = SecurityUtil.getCurrentUsername();
+        log.info("email = {}", email);
 
         Bookmark bookmark = bookmarkService.addBookmark(id, email);
 
@@ -161,7 +164,8 @@ public class StoreApiController {
 
     @DeleteMapping("/api/bookmark/{id}")
     public ResponseEntity<Void> deleteBookmark(@PathVariable long id) {
-        bookmarkService.deleteBookmark(id);
+        String email = SecurityUtil.getCurrentUsername();
+        bookmarkService.deleteBookmark(id, email);
 
         return ResponseEntity.ok()
                 .build();

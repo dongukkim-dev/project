@@ -7,12 +7,14 @@ import com.example.project.dto.BookmarkResponse;
 import com.example.project.dto.BookmarkStatusResponse;
 import com.example.project.repository.BookmarkRepository;
 import com.example.project.repository.store.StoreQueryRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BookmarkService {
 
@@ -40,9 +42,14 @@ public class BookmarkService {
         return storeQueryRepository.bookmarkStatus(user, store);
     }
 
-    public void deleteBookmark(long id) {
+    //store_id로 해당 음식점 bookmark를 삭제하면 된다.
+    public void deleteBookmark(long id, String email) {
+        User user = userService.findByEmail(email);
         Store store = storeService.findById(id);
 
-        storeService.delete(id);
+        if (bookmarkRepository.existsBookmarkByUserAndStore(user, store)) {
+            Bookmark bookmark = bookmarkRepository.findBookmarkByUserAndStore(user, store);
+            bookmarkRepository.delete(bookmark);
+        }
     }
 }

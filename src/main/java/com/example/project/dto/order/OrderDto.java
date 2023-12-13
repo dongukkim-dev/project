@@ -1,24 +1,23 @@
 package com.example.project.dto.order;
 
-import com.example.project.domain.Order;
-import com.example.project.domain.User;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
 import java.util.List;
 
-@Getter @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class OrderDto {
 
-    //장바구니에서 넘어오는 정보들?
-    private Long orderId;
-    private User user;
-    private List<OrderItemDto> orderItems;
+    private List<OrderDataDto> orders;
+    private List<OrderDataDto> processingOrders;
+    private List<OrderDataDto> cancelOrders;
+    private List<OrderDataDto> compOrders;
 
-    public OrderDto(Order order) {
-        orderId = order.getId();
-        user = order.getUser();
-//        orderItems = order.
+    @QueryProjection
+    public OrderDto(List<OrderDataDto> orders, List<OrderDataDto> processingOrders, List<OrderDataDto> cancelOrders, List<OrderDataDto> compOrders) {
+        this.orders = orders;
+        this.processingOrders = processingOrders;
+        this.cancelOrders = cancelOrders;
+        this.compOrders = compOrders;
     }
 }
