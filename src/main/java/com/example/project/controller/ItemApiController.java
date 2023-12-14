@@ -71,6 +71,15 @@ public class ItemApiController {
                 .body(items);
     }
 
+    //음식 상세정보 조회
+    @GetMapping("/api/item/{itemId}")
+    public ResponseEntity<ItemResponse> findDetailItem(@PathVariable long itemId) {
+        Item item = itemService.findById(itemId);
+
+        return ResponseEntity.ok()
+                .body(new ItemResponse(item));
+    }
+
     @DeleteMapping("/api/items/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable long id) {
         itemService.delete(id);

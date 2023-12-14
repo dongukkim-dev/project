@@ -144,6 +144,7 @@ public class StoreApiController {
     @GetMapping("/api/bookmark")
     public ResponseEntity<List<BookmarkResponse>> findBookmark() {
         String email = SecurityUtil.getCurrentUsername();
+        log.info("찜목록 전체 불러오기 email = {}", email);
 
         List<BookmarkResponse> bookmark = storeQueryRepository.searchBookmark(email);
 
@@ -155,6 +156,7 @@ public class StoreApiController {
     @GetMapping("/api/bookmark/{id}")
     public ResponseEntity<BookmarkStatusResponse> bookmarkStatus(@PathVariable long id) {
         String email = SecurityUtil.getCurrentUsername();
+        log.info("음식점 상세정보에서의 유저 email = {}", email);
 
         BookmarkStatusResponse bookmarkStatus = bookmarkService.bookmarkStatus(id, email);
 
@@ -165,6 +167,8 @@ public class StoreApiController {
     @DeleteMapping("/api/bookmark/{id}")
     public ResponseEntity<Void> deleteBookmark(@PathVariable long id) {
         String email = SecurityUtil.getCurrentUsername();
+        log.info("북마크 삭제에서의 유저 email = {}", email);
+
         bookmarkService.deleteBookmark(id, email);
 
         return ResponseEntity.ok()

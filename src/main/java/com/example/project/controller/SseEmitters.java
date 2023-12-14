@@ -59,4 +59,27 @@ public class SseEmitters {
     }
 
     //여기서 event 발생시 주문 취소, 배달 완료로 이동시키는 코드를 추가해야 함
+    public void cancelOrder(Order order) {
+        emitters.forEach(emitter -> {
+            try {
+                emitter.send(SseEmitter.event()
+                        .name("cancelOrder")
+                        .data(new OrderResponse(order)));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public void compOrder(Order order) {
+        emitters.forEach(emitter -> {
+            try {
+                emitter.send(SseEmitter.event()
+                        .name("compOrder")
+                        .data(new OrderResponse(order)));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
 }

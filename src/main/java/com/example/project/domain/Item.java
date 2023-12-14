@@ -15,7 +15,6 @@ import static jakarta.persistence.FetchType.*;
 
 @Entity
 @Getter
-@Where(clause = "deleted = false")
 @SQLDelete(sql = "UPDATE item SET deleted = true WHERE item_id = ?")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item extends BaseTimeEntity {

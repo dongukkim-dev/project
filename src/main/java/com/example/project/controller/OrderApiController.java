@@ -65,6 +65,12 @@ public class OrderApiController {
         if (status.equals("READY")) {
             sseEmitters.processingOrder(order);
         }
+        else if (status.equals("CANCEL")) {
+            sseEmitters.cancelOrder(order);
+        }
+        else if (status.equals("COMP")) {
+            sseEmitters.compOrder(order);
+        }
 
         return ResponseEntity.ok()
                 .build();

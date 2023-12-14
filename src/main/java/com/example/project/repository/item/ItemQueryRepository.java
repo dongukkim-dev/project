@@ -54,6 +54,7 @@ public class ItemQueryRepository {
                         item.price,
                         item.picture,
                         item.status,
+                        item.deleted,
                         store.id,
                         store.name
                 ))
