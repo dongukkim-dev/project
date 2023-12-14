@@ -48,6 +48,7 @@ public class Store extends BaseTimeEntity {
 
     private String openTime;
     private String closeTime;
+    private int minOrderPrice;
 
     //여기서 상품 목록이 필요한지 생각해보기(음식점에서 상품목록은 많이 쓰인다)
 
@@ -55,7 +56,7 @@ public class Store extends BaseTimeEntity {
     private List<Bookmark> bookmarks = new ArrayList<>();
     
     @Builder
-    public Store(String name, User user, String picture, String content, String address, String phone, double rating, String openTime, String closeTime) {
+    public Store(String name, User user, String picture, String content, String address, String phone, double rating, String openTime, String closeTime, int minOrderPrice) {
         this.name = name;
         this.user = user;
         this.picture = picture;
@@ -65,9 +66,10 @@ public class Store extends BaseTimeEntity {
         this.rating = rating;
         this.openTime = openTime;
         this.closeTime = closeTime;
+        this.minOrderPrice = minOrderPrice;
     }
 
-    public void update(String name, String address, String phone, String picture, String content, String openTime, String closeTime) {
+    public void update(String name, String address, String phone, String picture, String content, String openTime, String closeTime, int minOrderPrice) {
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -75,6 +77,7 @@ public class Store extends BaseTimeEntity {
         this.content = content;
         this.openTime = openTime;
         this.closeTime = closeTime;
+        this.minOrderPrice = minOrderPrice;
     }
 
     public void deletedChange() {

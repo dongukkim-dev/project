@@ -25,7 +25,7 @@ public class StoreResponse {
         this.content = store.getContent();
         this.phone = store.getPhone();
         this.rating = store.getRating();
-        this.address = store.getUser().getAddress();
+        this.address = store.getAddress();
         this.openTime = store.getOpenTime();
         this.closeTime = store.getCloseTime();
         this.count = store.getBookmarks().size();

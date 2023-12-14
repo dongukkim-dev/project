@@ -6,24 +6,36 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
-@Getter
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddStoreRequest {
 
     private String name;
+    private String address;
+    private String phone;
     private String picture;
     private String content;
-    private double rating; //임시 테스트 용
+    private String openTime;
+    private String closeTime;
+    private Integer minOrderPrice;
+
+    private transient MultipartFile file;
 
     public Store toEntity(User user) {
         return Store.builder()
                 .name(name)
                 .user(user)
+                .address(address)
+                .phone(phone)
                 .picture(picture)
                 .content(content)
-                .rating(rating)
+                .openTime(openTime)
+                .closeTime(closeTime)
+                .minOrderPrice(minOrderPrice)
                 .build();
     }
 }

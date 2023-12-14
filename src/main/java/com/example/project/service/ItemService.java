@@ -5,10 +5,12 @@ import com.example.project.domain.Item;
 import com.example.project.domain.Store;
 import com.example.project.dto.cart.CartDto;
 import com.example.project.dto.cart.CartResponse;
-import com.example.project.dto.item.*;
+import com.example.project.dto.item.AddItemRequest;
+import com.example.project.dto.item.ItemSearchCondition;
+import com.example.project.dto.item.ItemStoreDto;
+import com.example.project.dto.item.UpdateItemRequest;
 import com.example.project.repository.item.ItemQueryRepository;
 import com.example.project.repository.item.ItemRepository;
-import com.example.project.repository.store.StoreQueryRepository;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 

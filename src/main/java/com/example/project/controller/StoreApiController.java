@@ -26,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -41,7 +42,25 @@ public class StoreApiController {
     private final StoreQueryRepository storeQueryRepository;
 
     @PostMapping("/api/store")
-    public ResponseEntity<Store> addStore(@RequestBody AddStoreRequest request) {
+    public ResponseEntity<Store> addStore(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("storeName") String storeName,
+            @RequestParam("address") String address,
+            @RequestParam("phone") String phone,
+            @RequestParam("content") String content,
+            @RequestParam("openTime") String openTime,
+            @RequestParam("closeTime") String closeTime,
+            @RequestParam("minOrderPrice") Integer minOrderPrice) {
+
+        AddStoreRequest request = new AddStoreRequest();
+        request.setFile(file);
+        request.setName(storeName);
+        request.setAddress(address);
+        request.setPhone(phone);
+        request.setContent(content);
+        request.setOpenTime(openTime);
+        request.setCloseTime(closeTime);
+        request.setMinOrderPrice(minOrderPrice);
 
         String email = SecurityUtil.getCurrentUsername();
         Store savedStore = storeService.save(request, email);

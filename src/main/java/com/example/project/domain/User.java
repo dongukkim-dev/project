@@ -37,6 +37,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     private String password;
     private String name;
     private String phone;
+    private String address;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -46,7 +47,8 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Grade grade; //일단 등급은 테이블 없이
 
-    private String address;
+//    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+//    private List<Address> addresses = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -58,15 +60,15 @@ public class User extends BaseTimeEntity implements UserDetails {
     private boolean deleted = Boolean.FALSE;
 
     @Builder
-    public User(String email, String password, String name, String phone, Gender gender, int point, Grade grade, String address, Role role) {
+    public User(String email, String password, String name, String phone, String address, Gender gender, int point, Grade grade, Role role) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
+        this.address = address;
         this.gender = gender;
         this.point = point;
         this.grade = grade;
-        this.address = address;
         this.role = role;
     }
 

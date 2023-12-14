@@ -16,4 +16,5 @@ public class UpdateStoreRequest {
     private String content;
     private String openTime;
     private String closeTime;
+    private Integer minOrderPrice;
 }

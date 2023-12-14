@@ -2,6 +2,7 @@ package com.example.project.config.fileupload;
 
 import com.example.project.dto.item.AddItemRequest;
 import com.example.project.dto.review.AddReviewRequest;
+import com.example.project.dto.store.AddStoreRequest;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -70,6 +71,37 @@ public class FileUpload {
 
 
         request.setPicture("upload\\" + imageUploadFolder + "\\" + itemImgName);
+
+
+        return true;
+    }
+
+    public boolean uploadStoreImg(AddStoreRequest request) {
+
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String uploadFolder= Paths.get("C:", "delivery", "upload").toString();
+        String imageUploadFolder = Paths.get("storeImg", today).toString();
+        String uploadPath = Paths.get(uploadFolder, imageUploadFolder).toString();
+
+        File dir = new File(uploadPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        UUID uuid = UUID.randomUUID();
+        String storeImgName = uuid+"_" + request.getFile().getOriginalFilename();
+
+
+        try {
+            File target = new File(uploadPath, storeImgName);
+            request.getFile().transferTo(target);
+
+        } catch (Exception e) {
+            return false;
+        }
+
+
+        request.setPicture("upload\\" + imageUploadFolder + "\\" + storeImgName);
 
 
         return true;

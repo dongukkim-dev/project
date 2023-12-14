@@ -1,5 +1,6 @@
 package com.example.project.service;
 
+import com.example.project.config.fileupload.FileUpload;
 import com.example.project.domain.Store;
 import com.example.project.domain.User;
 import com.example.project.dto.store.AddStoreRequest;
@@ -25,9 +26,18 @@ public class StoreService {
     
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
-    private final BookmarkRepository bookMarkRepository;
+    private final FileUpload fileUpload;
 
+    @Transactional
     public Store save(AddStoreRequest request, String email) {
+
+        if (request.getFile() == null) {
+            request.setPicture("");
+        }
+        else {
+            if (!fileUpload.uploadStoreImg(request))
+                throw new IllegalArgumentException("업로드할 파일이 없습니다.");
+        }
 
         //회원과 음식점 주인 계정 테이블을 분리할지 말지 고민중
         return storeRepository.save(request.toEntity(userRepository.findByEmail(email)
@@ -63,7 +73,7 @@ public class StoreService {
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
         authorizeStoreAuthor(store);
-        store.update(request.getName(), request.getAddress(), request.getPhone(), request.getPicture(), request.getContent(), request.getOpenTime(), request.getCloseTime());
+        store.update(request.getName(), request.getAddress(), request.getPhone(), request.getPicture(), request.getContent(), request.getOpenTime(), request.getCloseTime(), request.getMinOrderPrice());
 
         return store;
     }

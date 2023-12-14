@@ -22,6 +22,7 @@ public class SignUpRequest {
     @NotBlank
     private String password;
     private String phone;
+    private String address;
     private Gender gender;
     private Role role;
 
@@ -31,6 +32,7 @@ public class SignUpRequest {
                 .name(this.name)
                 .password(this.password)
                 .phone(this.phone)
+                .address(this.address)
                 .gender(this.gender)
                 .role(this.role)
                 .build();
