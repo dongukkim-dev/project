@@ -51,6 +51,7 @@ public class ItemQueryRepository {
                 .select(new QItemStoreDto(
                         item.id,
                         item.name,
+                        item.content,
                         item.price,
                         item.picture,
                         item.status,

@@ -286,12 +286,12 @@ public class InitDb {
 
             //단순한 페이징용 더미 데이터 들
             for (int i=0; i<50; i++) {
-                AddItemRequest itemRequest = new AddItemRequest("직화구이피자" + i, 16000 + i, "사진" + i + " url", "상세정보" + i + " 입니다.", null);
-                itemService.save(3, itemRequest);
+                AddItemRequest itemRequest = new AddItemRequest("직화구이피자" + i, 16000 + i, "사진" + i + " url", "상세정보" + i + " 입니다.");
+                itemService.save(3, null, itemRequest);
             }
 
-            AddItemRequest itemRequest1 = new AddItemRequest("직화구이피자", 16000, "사진4 url", "직화구이 피자입니다", null);
-            itemService.save(2, itemRequest1);
+            AddItemRequest itemRequest1 = new AddItemRequest("직화구이피자", 16000, "사진4 url", "직화구이 피자입니다");
+            itemService.save(2, null, itemRequest1);
 
             /**
              * user1 = test@test.123, , store1 = test@asd.123 store2 = test2@asd.123, store3 = test3@asd.123

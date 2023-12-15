@@ -32,20 +32,10 @@ public class ItemApiController {
     @PostMapping("/api/items/{id}")
     public ResponseEntity<ItemResponse> addItem(
             @PathVariable long id,
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("itemName") String itemName,
-            @RequestParam("price") int price,
-            @RequestParam("content") String content) {
+            @RequestPart(value = "item", required = false) AddItemRequest request,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
 
-        log.info("파일정보 = {}", file.getOriginalFilename());
-
-        AddItemRequest request = new AddItemRequest();
-        request.setFile(file);
-        request.setItemName(itemName);
-        request.setPrice(price);
-        request.setContent(content);
-
-        Item savedItem = itemService.save(id, request);
+        Item savedItem = itemService.save(id, file, request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ItemResponse(savedItem));
@@ -90,8 +80,11 @@ public class ItemApiController {
 
     @PutMapping("/api/items/{id}")
     public ResponseEntity<ItemResponse> updateItem(@PathVariable long id,
-                                                 @RequestBody UpdateItemRequest request) {
-        Item updatedItem = itemService.update(id, request);
+                                                 @RequestPart(value = "file", required = false) MultipartFile file,
+                                                 @RequestPart(value = "item", required = false) UpdateItemRequest request) {
+        log.info("item = {}, {}, {}", request.getName(), request.getStatus(), request.getContent());
+
+        Item updatedItem = itemService.update(id, file, request);
 
         return ResponseEntity.ok()
                 .body(new ItemResponse(updatedItem));

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,14 +32,14 @@ public class ItemService {
     private final FileUpload fileUpload;
 
     @Transactional
-    public Item save(long id, AddItemRequest request) {
+    public Item save(long id, MultipartFile file, AddItemRequest request) {
         Store store = storeService.findById(id);
 
-        if (request.getFile() == null) {
+        if (file == null) {
             request.setPicture("");
         }
         else {
-            if (!fileUpload.uploadItemImg(request))
+            if (!fileUpload.uploadItemImg(request, file))
                 throw new IllegalArgumentException("업로드할 파일이 없습니다.");
         }
 
@@ -64,11 +65,20 @@ public class ItemService {
     }
 
     @Transactional
-    public Item update(long id, UpdateItemRequest request) {
+    public Item update(long id, MultipartFile file, UpdateItemRequest request) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
         authorizeItemAuthor(item);
+
+        if (file == null) {
+            request.setPicture("");
+        }
+        else {
+            if (!fileUpload.uploadItemImg(request, file))
+                throw new IllegalArgumentException("업로드할 파일이 없습니다.");
+        }
+
         item.update(request.getName(), request.getPrice(), request.getPicture(), request.getContent(), request.getStatus());
 
         return item;

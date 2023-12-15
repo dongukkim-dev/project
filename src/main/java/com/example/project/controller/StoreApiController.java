@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,29 +42,15 @@ public class StoreApiController {
     private final BookmarkService bookmarkService;
     private final StoreQueryRepository storeQueryRepository;
 
-    @PostMapping("/api/store")
+    @PostMapping(value = "/api/store", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Store> addStore(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("storeName") String storeName,
-            @RequestParam("address") String address,
-            @RequestParam("phone") String phone,
-            @RequestParam("content") String content,
-            @RequestParam("openTime") String openTime,
-            @RequestParam("closeTime") String closeTime,
-            @RequestParam("minOrderPrice") Integer minOrderPrice) {
+            @RequestPart(value = "store", required = false) AddStoreRequest request,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
 
-        AddStoreRequest request = new AddStoreRequest();
-        request.setFile(file);
-        request.setName(storeName);
-        request.setAddress(address);
-        request.setPhone(phone);
-        request.setContent(content);
-        request.setOpenTime(openTime);
-        request.setCloseTime(closeTime);
-        request.setMinOrderPrice(minOrderPrice);
+        log.info("store = {}, file = {}", request.getName(), file);
 
         String email = SecurityUtil.getCurrentUsername();
-        Store savedStore = storeService.save(request, email);
+        Store savedStore = storeService.save(request, file, email);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedStore);

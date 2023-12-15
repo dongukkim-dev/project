@@ -9,6 +9,7 @@ public class ItemStoreDto {
 
     private Long itemId;
     private String itemName;
+    private String content;
     private int price;
     private String picture;
     private ItemStatus itemStatus;
@@ -17,9 +18,10 @@ public class ItemStoreDto {
     private String storeName;
 
     @QueryProjection
-    public ItemStoreDto(Long itemId, String itemName, int price, String picture, ItemStatus status, boolean deleted, Long storeId, String storeName) {
+    public ItemStoreDto(Long itemId, String itemName, String content, int price, String picture, ItemStatus status, boolean deleted, Long storeId, String storeName) {
         this.itemId = itemId;
         this.itemName = itemName;
+        this.content = content;
         this.price = price;
         this.picture = picture;
         this.itemStatus = status;

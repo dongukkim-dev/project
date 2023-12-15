@@ -23,8 +23,6 @@ public class AddStoreRequest {
     private String closeTime;
     private Integer minOrderPrice;
 
-    private transient MultipartFile file;
-
     public Store toEntity(User user) {
         return Store.builder()
                 .name(name)

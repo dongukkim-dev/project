@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,13 +30,13 @@ public class StoreService {
     private final FileUpload fileUpload;
 
     @Transactional
-    public Store save(AddStoreRequest request, String email) {
+    public Store save(AddStoreRequest request, MultipartFile file, String email) {
 
-        if (request.getFile() == null) {
+        if (file == null) {
             request.setPicture("");
         }
         else {
-            if (!fileUpload.uploadStoreImg(request))
+            if (!fileUpload.uploadStoreImg(request, file))
                 throw new IllegalArgumentException("업로드할 파일이 없습니다.");
         }
 

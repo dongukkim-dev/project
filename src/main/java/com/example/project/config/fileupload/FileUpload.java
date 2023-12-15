@@ -1,9 +1,11 @@
 package com.example.project.config.fileupload;
 
 import com.example.project.dto.item.AddItemRequest;
+import com.example.project.dto.item.UpdateItemRequest;
 import com.example.project.dto.review.AddReviewRequest;
 import com.example.project.dto.store.AddStoreRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -45,7 +47,7 @@ public class FileUpload {
         return true;
     }
 
-    public boolean uploadItemImg(AddItemRequest request) {
+    public boolean uploadItemImg(AddItemRequest request, MultipartFile file) {
 
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
         String uploadFolder= Paths.get("C:", "delivery", "upload").toString();
@@ -58,12 +60,12 @@ public class FileUpload {
         }
 
         UUID uuid = UUID.randomUUID();
-        String itemImgName = uuid+"_" + request.getFile().getOriginalFilename();
+        String itemImgName = uuid+"_" + file.getOriginalFilename();
 
 
         try {
             File target = new File(uploadPath, itemImgName);
-            request.getFile().transferTo(target);
+            file.transferTo(target);
 
         } catch (Exception e) {
             return false;
@@ -76,7 +78,38 @@ public class FileUpload {
         return true;
     }
 
-    public boolean uploadStoreImg(AddStoreRequest request) {
+    public boolean uploadItemImg(UpdateItemRequest request, MultipartFile file) {
+
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String uploadFolder= Paths.get("C:", "delivery", "upload").toString();
+        String imageUploadFolder = Paths.get("itemImg", today).toString();
+        String uploadPath = Paths.get(uploadFolder, imageUploadFolder).toString();
+
+        File dir = new File(uploadPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        UUID uuid = UUID.randomUUID();
+        String itemImgName = uuid+"_" + file.getOriginalFilename();
+
+
+        try {
+            File target = new File(uploadPath, itemImgName);
+            file.transferTo(target);
+
+        } catch (Exception e) {
+            return false;
+        }
+
+
+        request.setPicture("upload\\" + imageUploadFolder + "\\" + itemImgName);
+
+
+        return true;
+    }
+
+    public boolean uploadStoreImg(AddStoreRequest request, MultipartFile file) {
 
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
         String uploadFolder= Paths.get("C:", "delivery", "upload").toString();
@@ -89,12 +122,12 @@ public class FileUpload {
         }
 
         UUID uuid = UUID.randomUUID();
-        String storeImgName = uuid+"_" + request.getFile().getOriginalFilename();
+        String storeImgName = uuid+"_" + file.getOriginalFilename();
 
 
         try {
             File target = new File(uploadPath, storeImgName);
-            request.getFile().transferTo(target);
+            file.transferTo(target);
 
         } catch (Exception e) {
             return false;

@@ -20,8 +20,6 @@ public class AddItemRequest {
     private String picture;
     private String content;
 
-    private transient MultipartFile file;
-
     public Item toEntity(Store store) {
         return Item.builder()
                 .name(itemName)

@@ -9,6 +9,7 @@ public class ItemResponse {
 
     private final Long itemId;
     private final String itemName;
+    private final String content;
     private final int price;
     private final String picture;
     private final ItemStatus itemStatus;
@@ -16,6 +17,7 @@ public class ItemResponse {
     public ItemResponse(Item item) {
         this.itemId = item.getId();
         this.itemName = item.getName();
+        this.content = item.getContent();
         this.price = item.getPrice();
         this.picture = item.getPicture();
         this.itemStatus = item.getStatus();
