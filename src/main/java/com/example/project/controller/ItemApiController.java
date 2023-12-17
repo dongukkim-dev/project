@@ -29,7 +29,7 @@ public class ItemApiController {
     private final ItemService itemService;
 
     //store_id 를 받아서 해당 store의 메뉴 추가
-    @PostMapping("/api/items/{id}")
+    @PostMapping(value = "/api/items/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ItemResponse> addItem(
             @PathVariable long id,
             @RequestPart(value = "item", required = false) AddItemRequest request,
@@ -78,11 +78,13 @@ public class ItemApiController {
                 .build();
     }
 
-    @PutMapping("/api/items/{id}")
-    public ResponseEntity<ItemResponse> updateItem(@PathVariable long id,
-                                                 @RequestPart(value = "file", required = false) MultipartFile file,
-                                                 @RequestPart(value = "item", required = false) UpdateItemRequest request) {
-        log.info("item = {}, {}, {}", request.getName(), request.getStatus(), request.getContent());
+    @PutMapping(value = "/api/items/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ItemResponse> updateItem(
+            @PathVariable long id,
+            @RequestPart(value = "item") UpdateItemRequest request,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+
+        log.info("item = {}, {}, {}", request.getItemStatus(), request.getItemStatus(), request.getContent());
 
         Item updatedItem = itemService.update(id, file, request);
 

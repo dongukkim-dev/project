@@ -11,9 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UpdateItemRequest {
 
-    private String name;
+    private String itemName;
     private int price;
     private String picture;
     private String content;
-    private String status;
+    private String itemStatus;
 }

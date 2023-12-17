@@ -1,12 +1,16 @@
 package com.example.project.controller;
 
 import com.example.project.domain.Order;
+import com.example.project.dto.order.OrderDto;
 import com.example.project.dto.order.OrderRequest;
 import com.example.project.dto.order.OrderResponse;
+import com.example.project.dto.order.OrderSearchCondition;
 import com.example.project.service.OrderService;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +57,16 @@ public class OrderApiController {
 
         return ResponseEntity.ok()
                 .body(orderResponse);
+    }
+
+    //사용자의 주문 내역
+    @GetMapping("/api/orders")
+    public ResponseEntity<Page<OrderDto>> getOrders(OrderSearchCondition condition, Pageable pageable) {
+
+        Page<OrderDto> orders = orderService.searchOrder(condition, pageable);
+
+        return ResponseEntity.ok()
+                .body(orders);
     }
 
     //접수대기[수락or거절], 처리중[배달or취소] 상태에서 둘중 하나를 눌렀을 때 orderStatus 변경 [READY, CANCEL, COMP]

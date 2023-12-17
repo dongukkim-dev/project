@@ -4,6 +4,7 @@ import com.example.project.dto.item.AddItemRequest;
 import com.example.project.dto.item.UpdateItemRequest;
 import com.example.project.dto.review.AddReviewRequest;
 import com.example.project.dto.store.AddStoreRequest;
+import com.example.project.dto.store.UpdateStoreRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -110,6 +111,37 @@ public class FileUpload {
     }
 
     public boolean uploadStoreImg(AddStoreRequest request, MultipartFile file) {
+
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String uploadFolder= Paths.get("C:", "delivery", "upload").toString();
+        String imageUploadFolder = Paths.get("storeImg", today).toString();
+        String uploadPath = Paths.get(uploadFolder, imageUploadFolder).toString();
+
+        File dir = new File(uploadPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        UUID uuid = UUID.randomUUID();
+        String storeImgName = uuid+"_" + file.getOriginalFilename();
+
+
+        try {
+            File target = new File(uploadPath, storeImgName);
+            file.transferTo(target);
+
+        } catch (Exception e) {
+            return false;
+        }
+
+
+        request.setPicture("upload\\" + imageUploadFolder + "\\" + storeImgName);
+
+
+        return true;
+    }
+
+    public boolean uploadStoreImg(UpdateStoreRequest request, MultipartFile file) {
 
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
         String uploadFolder= Paths.get("C:", "delivery", "upload").toString();

@@ -1,12 +1,18 @@
 package com.example.project.service;
 
 import com.example.project.domain.*;
+import com.example.project.dto.order.OrderDto;
 import com.example.project.dto.order.OrderRequest;
+import com.example.project.dto.order.OrderResponse;
+import com.example.project.dto.order.OrderSearchCondition;
+import com.example.project.repository.order.OrderQueryRepository;
 import com.example.project.repository.order.OrderRepository;
 import com.example.project.repository.user.UserRepository;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +28,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ItemService itemService;
+    private final OrderQueryRepository orderQueryRepository;
 
     /**
      * 주문 - OrderRequest에 있는 정보 (item_id, amount)를 받아서 생성
@@ -69,6 +76,11 @@ public class OrderService {
     //해당 음식점에 들어온 주문들 반환
     public List<Order> findAllByStore(Long store_id) {
         return orderRepository.findAllByStore(store_id);
+    }
+
+    //관리자 페이지에서 필요한지 회원 페이지에서 필요한지 조건 검색
+    public Page<OrderDto> searchOrder(OrderSearchCondition condition, Pageable pageable) {
+        return orderQueryRepository.searchOrders(condition, pageable);
     }
 
     //마지막으로 추가된 주문만 반환

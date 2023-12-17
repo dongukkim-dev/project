@@ -69,11 +69,20 @@ public class StoreService {
     }
 
     @Transactional
-    public Store update(long id, UpdateStoreRequest request) {
+    public Store update(long id, MultipartFile file, UpdateStoreRequest request) {
         Store store = storeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
         authorizeStoreAuthor(store);
+
+        if (file == null) {
+            request.setPicture("");
+        }
+        else {
+            if (!fileUpload.uploadStoreImg(request, file))
+                throw new IllegalArgumentException("업로드할 파일이 없습니다.");
+        }
+
         store.update(request.getName(), request.getAddress(), request.getPhone(), request.getPicture(), request.getContent(), request.getOpenTime(), request.getCloseTime(), request.getMinOrderPrice());
 
         return store;

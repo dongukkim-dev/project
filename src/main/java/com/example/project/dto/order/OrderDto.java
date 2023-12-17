@@ -1,23 +1,36 @@
 package com.example.project.dto.order;
 
-import com.querydsl.core.annotations.QueryProjection;
-import lombok.*;
+import com.example.project.domain.Order;
+import com.example.project.domain.OrderStatus;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Data
+/**
+ * 임시로 일반 회원의 주문 내역에 들어갈 정보들만 만들어보자
+ */
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDto {
 
-    private List<OrderDataDto> orders;
-    private List<OrderDataDto> processingOrders;
-    private List<OrderDataDto> cancelOrders;
-    private List<OrderDataDto> compOrders;
+    private Long orderId;
+    private OrderStatus orderStatus;
+    private LocalDateTime orderDate;
+    private List<OrderItemDto> orderItems;
 
-    @QueryProjection
-    public OrderDto(List<OrderDataDto> orders, List<OrderDataDto> processingOrders, List<OrderDataDto> cancelOrders, List<OrderDataDto> compOrders) {
-        this.orders = orders;
-        this.processingOrders = processingOrders;
-        this.cancelOrders = cancelOrders;
-        this.compOrders = compOrders;
+    public OrderDto(Order order) {
+        this.orderId = order.getId();
+        this.orderStatus = order.getStatus();
+        this.orderDate = order.getCreatedDate();
+        this.orderItems = order.getOrderItems().stream()
+                .map(OrderItemDto::new)
+                .collect(Collectors.toList());
     }
 }

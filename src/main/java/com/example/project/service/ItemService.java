@@ -79,7 +79,7 @@ public class ItemService {
                 throw new IllegalArgumentException("업로드할 파일이 없습니다.");
         }
 
-        item.update(request.getName(), request.getPrice(), request.getPicture(), request.getContent(), request.getStatus());
+        item.update(request.getItemName(), request.getPrice(), request.getPicture(), request.getContent(), request.getItemStatus());
 
         return item;
     }

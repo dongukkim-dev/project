@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class OrderSearchCondition {
-    //[검색조건] store_id, order_status, 유저 정보
+    //[검색조건] store_id, userId, order_status
 
     private Long storeId;
+    private Long userId;
     private String status;
-    private String email;
 }

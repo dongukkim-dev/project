@@ -95,10 +95,13 @@ public class StoreApiController {
                 .build();
     }
 
-    @PutMapping("/api/store/{id}")
-    public ResponseEntity<StoreResponse> updateStore(@PathVariable long id,
-                                                 @RequestBody UpdateStoreRequest request) {
-        Store updatedStore = storeService.update(id, request);
+    @PutMapping(value = "/api/store/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<StoreResponse> updateStore(
+            @PathVariable long id,
+            @RequestPart(value = "store") UpdateStoreRequest request,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+
+        Store updatedStore = storeService.update(id, file, request);
 
         return ResponseEntity.ok()
                 .body(new StoreResponse(updatedStore));

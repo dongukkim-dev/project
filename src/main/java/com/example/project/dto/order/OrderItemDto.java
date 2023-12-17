@@ -20,11 +20,4 @@ public class OrderItemDto {
         this.orderPrice = orderItem.getOrderPrice();
         this.count = orderItem.getCount();
     }
-
-    @QueryProjection
-    public OrderItemDto(String itemName, int orderPrice, int count) {
-        this.itemName = itemName;
-        this.orderPrice = orderPrice;
-        this.count = count;
-    }
 }

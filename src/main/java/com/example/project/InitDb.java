@@ -160,7 +160,7 @@ public class InitDb {
                     .name("일성만두")
                     .address("경기도 하남시")
                     .phone("070-1111-2222")
-                    .picture("대표 사진 url")
+                    .picture("upload\\storeImg\\231215\\만두3.jpg")
                     .content("상세 내용1")
                     .rating(4.3)
                     .openTime("10:00")
@@ -173,7 +173,7 @@ public class InitDb {
                     .name("피자나라")
                     .address("서울시")
                     .phone("070-2222-1111")
-                    .picture("대표 사진 url")
+                    .picture("upload\\storeImg\\231215\\피자1.jpg")
                     .content("상세 내용1")
                     .rating(4.7)
                     .openTime("10:00")
@@ -183,10 +183,10 @@ public class InitDb {
 
             Store store3 = Store.builder()
                     .user(store_user3)
-                    .name("과자공장")
+                    .name("치킨공장")
                     .address("경기도 남양주시")
                     .phone("031-571-1111")
-                    .picture("대표 사진 url3")
+                    .picture("upload\\storeImg\\231215\\치킨1.jpg")
                     .content("상세 내용3")
                     .rating(3.9)
                     .openTime("12:00")
@@ -197,7 +197,7 @@ public class InitDb {
             Item item1 = Item.builder()
                     .name("김치만두")
                     .price(2000)
-                    .picture("사진1 url")
+                    .picture("upload\\itemImg\\231215\\김치만두.jpg")
                     .content("김치가 들어간 만두입니다.")
                     .store(store1)
                     .status(ItemStatus.SALE)
@@ -207,7 +207,7 @@ public class InitDb {
             Item item2 = Item.builder()
                     .name("고기만두")
                     .price(1500)
-                    .picture("사진2 url")
+                    .picture("upload\\itemImg\\231215\\고기만두.jpg")
                     .content("고기가 들어간 만두입니다.")
                     .store(store1)
                     .status(ItemStatus.SALE)
@@ -217,7 +217,7 @@ public class InitDb {
             Item item3 = Item.builder()
                     .name("파인애플피자")
                     .price(12000)
-                    .picture("사진1 url")
+                    .picture("upload\\itemImg\\231215\\파인애플피자.jpg")
                     .content("파인애플이 들어간 피자입니다.")
                     .store(store2)
                     .status(ItemStatus.SALE)
@@ -227,7 +227,7 @@ public class InitDb {
             Item item4 = Item.builder()
                     .name("치즈피자")
                     .price(10000)
-                    .picture("사진2 url")
+                    .picture("upload\\itemImg\\231215\\치즈피자.jpg")
                     .content("치즈가 들어간 피자입니다.")
                     .store(store2)
                     .status(ItemStatus.SOLD)
@@ -237,7 +237,7 @@ public class InitDb {
             Item item5 = Item.builder()
                     .name("포테이토피자")
                     .price(13000)
-                    .picture("사진3 url")
+                    .picture("upload\\itemImg\\231215\\포테이토피자.jpg")
                     .content("감자가 들어간 피자입니다.")
                     .store(store2)
                     .status(ItemStatus.SALE)
@@ -245,52 +245,73 @@ public class InitDb {
             em.persist(item5);
 
             Item item6 = Item.builder()
-                    .name("파인애플피자")
-                    .price(12000)
-                    .picture("사진1 url")
-                    .content("파인애플이 들어간 피자입니다.")
-                    .store(store3)
+                    .name("도이치피자")
+                    .price(13000)
+                    .picture("upload\\itemImg\\231215\\도이치피자.jpg")
+                    .content("도이치 피자입니다.")
+                    .store(store2)
                     .status(ItemStatus.SALE)
                     .build();
             em.persist(item6);
 
             Item item7 = Item.builder()
-                    .name("파인애플피자")
-                    .price(10000)
-                    .picture("사진2 url")
-                    .content("파인애플이 들어간 피자")
+                    .name("후라이드치킨")
+                    .price(12000)
+                    .picture("upload\\itemImg\\231215\\후라이드치킨.jpg")
+                    .content("일반 후라이드 치킨입니다")
                     .store(store3)
-                    .status(ItemStatus.SOLD)
+                    .status(ItemStatus.SALE)
                     .build();
             em.persist(item7);
 
             Item item8 = Item.builder()
-                    .name("파인애플조각피자")
-                    .price(12000)
-                    .picture("사진3 url")
-                    .content("파인애플이 들어간 조각피자입니다.")
+                    .name("양념치킨")
+                    .price(10000)
+                    .picture("upload\\itemImg\\231215\\양념치킨.jpg")
+                    .content("양념 치킨입니다")
                     .store(store3)
                     .status(ItemStatus.SOLD)
                     .build();
             em.persist(item8);
 
             Item item9 = Item.builder()
-                    .name("도이치피자")
-                    .price(13000)
-                    .picture("사진5 url")
-                    .content("도이치 피자입니다.")
+                    .name("뿌링클치킨")
+                    .price(12000)
+                    .picture("upload\\itemImg\\231215\\뿌링클치킨.jpg")
+                    .content("뿌링클 치킨입니다")
                     .store(store3)
-                    .status(ItemStatus.SALE)
+                    .status(ItemStatus.SOLD)
                     .build();
             em.persist(item9);
 
+            Item item10 = Item.builder()
+                    .name("간장치킨")
+                    .price(11000)
+                    .picture("upload\\itemImg\\231215\\간장치킨.jpg")
+                    .content("간장이 들어간 치킨입니다")
+                    .store(store3)
+                    .status(ItemStatus.SALE)
+                    .build();
+            em.persist(item10);
+
+            Item item11 = Item.builder()
+                    .name("마늘치킨")
+                    .price(14000)
+                    .picture("upload\\itemImg\\231215\\마늘치킨.jpg")
+                    .content("마늘이 들어간 치킨입니다")
+                    .store(store3)
+                    .status(ItemStatus.SALE)
+                    .build();
+            em.persist(item11);
+
+
             //단순한 페이징용 더미 데이터 들
             for (int i=0; i<50; i++) {
-                AddItemRequest itemRequest = new AddItemRequest("직화구이피자" + i, 16000 + i, "사진" + i + " url", "상세정보" + i + " 입니다.");
+                AddItemRequest itemRequest = new AddItemRequest("치킨" + i, 16000 + i, "upload\\itemImg\\231215\\테스트용.jpg", "상세정보" + i + " 입니다.");
                 itemService.save(3, null, itemRequest);
             }
 
-            AddItemRequest itemRequest1 = new AddItemRequest("직화구이피자", 16000, "사진4 url", "직화구이 피자입니다");
+            AddItemRequest itemRequest1 = new AddItemRequest("직화구이피자", 16000, "upload\\itemImg\\231215\\직화구이피자.jpg", "직화구이 피자입니다");
             itemService.save(2, null, itemRequest1);
 
             /**
@@ -307,9 +328,9 @@ public class InitDb {
 
             //user1, store3의 주문 내역 추가
             List<OrderRequest> requests2 = new ArrayList<>();
-            OrderRequest request3 = new OrderRequest(item6.getId(), 2);
-            OrderRequest request4 = new OrderRequest(item7.getId(), 1);
-            OrderRequest request5 = new OrderRequest(item9.getId(), 4);
+            OrderRequest request3 = new OrderRequest(item10.getId(), 2);
+            OrderRequest request4 = new OrderRequest(item10.getId(), 1);
+            OrderRequest request5 = new OrderRequest(item10.getId(), 4);
             requests2.add(request3);
             requests2.add(request4);
             requests2.add(request5);
@@ -330,9 +351,9 @@ public class InitDb {
 
             //user2, store3의 주문 내역 추가
             List<OrderRequest> requests4 = new ArrayList<>();
-            OrderRequest request8 = new OrderRequest(item6.getId(), 2);
-            OrderRequest request9 = new OrderRequest(item7.getId(), 1);
-            OrderRequest request10 = new OrderRequest(item9.getId(), 3);
+            OrderRequest request8 = new OrderRequest(item10.getId(), 2);
+            OrderRequest request9 = new OrderRequest(item10.getId(), 1);
+            OrderRequest request10 = new OrderRequest(item10.getId(), 3);
             requests4.add(request8);
             requests4.add(request9);
             requests4.add(request10);
@@ -376,9 +397,9 @@ public class InitDb {
 
             //user3, store3의 주문 내역 추가
             List<OrderRequest> requests9 = new ArrayList<>();
-            OrderRequest request17 = new OrderRequest(item6.getId(), 4);
-            OrderRequest request18 = new OrderRequest(item7.getId(), 5);
-            OrderRequest request19 = new OrderRequest(item9.getId(), 1);
+            OrderRequest request17 = new OrderRequest(item10.getId(), 4);
+            OrderRequest request18 = new OrderRequest(item10.getId(), 5);
+            OrderRequest request19 = new OrderRequest(item10.getId(), 1);
             requests9.add(request17);
             requests9.add(request18);
             requests9.add(request19);
@@ -387,10 +408,10 @@ public class InitDb {
 
             //user3, store3의 주문 내역 추가
             List<OrderRequest> requests10 = new ArrayList<>();
-            OrderRequest request20 = new OrderRequest(item6.getId(), 7);
-            OrderRequest request21 = new OrderRequest(item7.getId(), 3);
-            OrderRequest request22 = new OrderRequest(item8.getId(), 4);
-            OrderRequest request23 = new OrderRequest(item9.getId(), 8);
+            OrderRequest request20 = new OrderRequest(item10.getId(), 7);
+            OrderRequest request21 = new OrderRequest(item10.getId(), 3);
+            OrderRequest request22 = new OrderRequest(item10.getId(), 4);
+            OrderRequest request23 = new OrderRequest(item10.getId(), 8);
             requests10.add(request20);
             requests10.add(request21);
             requests10.add(request22);
@@ -400,8 +421,8 @@ public class InitDb {
 
             //user3, store3의 주문 내역 추가
             List<OrderRequest> requests11 = new ArrayList<>();
-            OrderRequest request24 = new OrderRequest(item6.getId(), 3);
-            OrderRequest request25 = new OrderRequest(item9.getId(), 2);
+            OrderRequest request24 = new OrderRequest(item10.getId(), 3);
+            OrderRequest request25 = new OrderRequest(item10.getId(), 2);
             requests11.add(request24);
             requests11.add(request25);
 
