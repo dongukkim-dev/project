@@ -8,14 +8,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class OrderItemDto {
 
+    private Long itemId;
     private String itemName;
     private int orderPrice;
     private int count;
 
     public OrderItemDto(OrderItem orderItem) {
+        this.itemId = orderItem.getId();
         this.itemName = orderItem.getItem().getName();
         this.orderPrice = orderItem.getOrderPrice();
         this.count = orderItem.getCount();

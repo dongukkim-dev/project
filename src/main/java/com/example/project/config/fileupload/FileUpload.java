@@ -3,6 +3,7 @@ package com.example.project.config.fileupload;
 import com.example.project.dto.item.AddItemRequest;
 import com.example.project.dto.item.UpdateItemRequest;
 import com.example.project.dto.review.AddReviewRequest;
+import com.example.project.dto.review.UpdateReviewRequest;
 import com.example.project.dto.store.AddStoreRequest;
 import com.example.project.dto.store.UpdateStoreRequest;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Component
 public class FileUpload {
 
-    public boolean uploadReviewImg(AddReviewRequest request) {
+    public boolean uploadReviewImg(AddReviewRequest request, MultipartFile file) {
 
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
         String uploadFolder= Paths.get("C:", "delivery", "upload").toString();
@@ -30,12 +31,43 @@ public class FileUpload {
         }
 
         UUID uuid = UUID.randomUUID();
-        String reviewImgName = uuid+"_" + request.getFile().getOriginalFilename();
+        String reviewImgName = uuid+"_" + file.getOriginalFilename();
 
 
         try {
             File target = new File(uploadPath, reviewImgName);
-            request.getFile().transferTo(target);
+            file.transferTo(target);
+
+        } catch (Exception e) {
+            return false;
+        }
+
+
+        request.setPicture("upload\\" + imageUploadFolder + "\\" + reviewImgName);
+
+
+        return true;
+    }
+
+    public boolean uploadReviewImg(UpdateReviewRequest request, MultipartFile file) {
+
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String uploadFolder= Paths.get("C:", "delivery", "upload").toString();
+        String imageUploadFolder = Paths.get("reviewImg", today).toString();
+        String uploadPath = Paths.get(uploadFolder, imageUploadFolder).toString();
+
+        File dir = new File(uploadPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        UUID uuid = UUID.randomUUID();
+        String reviewImgName = uuid+"_" + file.getOriginalFilename();
+
+
+        try {
+            File target = new File(uploadPath, reviewImgName);
+            file.transferTo(target);
 
         } catch (Exception e) {
             return false;

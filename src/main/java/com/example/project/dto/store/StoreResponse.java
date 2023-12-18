@@ -16,6 +16,7 @@ public class StoreResponse {
     private final String address;
     private final String openTime;
     private final String closeTime;
+    private final Integer minOrderPrice;
     private final Integer count;
 
     public StoreResponse(Store store) {
@@ -28,6 +29,7 @@ public class StoreResponse {
         this.address = store.getAddress();
         this.openTime = store.getOpenTime();
         this.closeTime = store.getCloseTime();
+        this.minOrderPrice = store.getMinOrderPrice();
         this.count = store.getBookmarks().size();
     }
 }

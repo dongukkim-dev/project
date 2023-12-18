@@ -21,17 +21,17 @@ public class OrderDataDto {
     private List<OrderItemDto> orderItems;
     private Integer totalPrice;
 
-    public OrderDataDto(Order order) {
-        this.orderId = order.getId();
-        this.name = order.getUser().getName();
-        this.address = order.getUser().getAddress();
-        this.orderStatus = order.getStatus();
-        this.orderDate = order.getCreatedDate();
-        this.completeDate = order.getLastModifiedDate();
-        this.orderItems = order.getOrderItems().stream()
-                .map(OrderItemDto::new)
-                .collect(Collectors.toList());
-    }
+//    public OrderDataDto(Order order) {
+//        this.orderId = order.getId();
+//        this.name = order.getUser().getName();
+//        this.address = order.getUser().getAddress();
+//        this.orderStatus = order.getStatus();
+//        this.orderDate = order.getCreatedDate();
+//        this.completeDate = order.getLastModifiedDate();
+//        this.orderItems = order.getOrderItems().stream()
+//                .map(OrderItemDto::new)
+//                .collect(Collectors.toList());
+//    }
 
     @QueryProjection
     public OrderDataDto(Long orderId, String name, String address, OrderStatus orderStatus, LocalDateTime orderDate, LocalDateTime completeDate, List<OrderItemDto> orderItems, Integer totalPrice) {

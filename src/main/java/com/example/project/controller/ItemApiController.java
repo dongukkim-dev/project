@@ -32,7 +32,7 @@ public class ItemApiController {
     @PostMapping(value = "/api/items/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ItemResponse> addItem(
             @PathVariable long id,
-            @RequestPart(value = "item", required = false) AddItemRequest request,
+            @RequestPart(value = "item") AddItemRequest request,
             @RequestPart(value = "file", required = false) MultipartFile file) {
 
         Item savedItem = itemService.save(id, file, request);

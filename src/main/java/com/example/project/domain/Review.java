@@ -11,8 +11,6 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
-@Where(clause = "deleted = false")
-@SQLDelete(sql = "UPDATE review SET deleted = true WHERE review_id = ?")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review extends BaseTimeEntity {
 
@@ -28,34 +26,29 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     //사진 추가
     private String picture;
 
-    private String title;
     private String content;
     private double rating;
 
-    @ColumnDefault("false")
-    private boolean deleted = Boolean.FALSE;
-
     @Builder
-    public Review(User user, Store store, String picture, String title, String content, double rating) {
+    public Review(User user, Store store, Order order, String picture, String content, double rating) {
         this.user = user;
         this.store = store;
+        this.order = order;
         this.picture = picture;
-        this.title = title;
         this.content = content;
         this.rating = rating;
     }
 
-    public void update(String title, String content, double rating, String picture) {
-        this.title = title;
+    public void update(String content, double rating, String picture) {
         this.content = content;
         this.rating = rating;
         this.picture = picture;
-    }
-
-    public void deletedChange() {
-        this.deleted = true;
     }
 }

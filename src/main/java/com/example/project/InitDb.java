@@ -165,6 +165,7 @@ public class InitDb {
                     .rating(4.3)
                     .openTime("10:00")
                     .closeTime("21:00")
+                    .minOrderPrice(6000)
                     .build();
             em.persist(store1);
 
@@ -178,6 +179,7 @@ public class InitDb {
                     .rating(4.7)
                     .openTime("10:00")
                     .closeTime("22:00")
+                    .minOrderPrice(20000)
                     .build();
             em.persist(store2);
 
@@ -191,6 +193,7 @@ public class InitDb {
                     .rating(3.9)
                     .openTime("12:00")
                     .closeTime("19:00")
+                    .minOrderPrice(16000)
                     .build();
             em.persist(store3);
 
@@ -328,8 +331,8 @@ public class InitDb {
 
             //user1, store3의 주문 내역 추가
             List<OrderRequest> requests2 = new ArrayList<>();
-            OrderRequest request3 = new OrderRequest(item10.getId(), 2);
-            OrderRequest request4 = new OrderRequest(item10.getId(), 1);
+            OrderRequest request3 = new OrderRequest(item7.getId(), 2);
+            OrderRequest request4 = new OrderRequest(item8.getId(), 1);
             OrderRequest request5 = new OrderRequest(item10.getId(), 4);
             requests2.add(request3);
             requests2.add(request4);
@@ -351,9 +354,9 @@ public class InitDb {
 
             //user2, store3의 주문 내역 추가
             List<OrderRequest> requests4 = new ArrayList<>();
-            OrderRequest request8 = new OrderRequest(item10.getId(), 2);
+            OrderRequest request8 = new OrderRequest(item9.getId(), 2);
             OrderRequest request9 = new OrderRequest(item10.getId(), 1);
-            OrderRequest request10 = new OrderRequest(item10.getId(), 3);
+            OrderRequest request10 = new OrderRequest(item11.getId(), 3);
             requests4.add(request8);
             requests4.add(request9);
             requests4.add(request10);
@@ -397,9 +400,9 @@ public class InitDb {
 
             //user3, store3의 주문 내역 추가
             List<OrderRequest> requests9 = new ArrayList<>();
-            OrderRequest request17 = new OrderRequest(item10.getId(), 4);
-            OrderRequest request18 = new OrderRequest(item10.getId(), 5);
-            OrderRequest request19 = new OrderRequest(item10.getId(), 1);
+            OrderRequest request17 = new OrderRequest(item7.getId(), 4);
+            OrderRequest request18 = new OrderRequest(item9.getId(), 5);
+            OrderRequest request19 = new OrderRequest(item11.getId(), 1);
             requests9.add(request17);
             requests9.add(request18);
             requests9.add(request19);
@@ -408,10 +411,10 @@ public class InitDb {
 
             //user3, store3의 주문 내역 추가
             List<OrderRequest> requests10 = new ArrayList<>();
-            OrderRequest request20 = new OrderRequest(item10.getId(), 7);
-            OrderRequest request21 = new OrderRequest(item10.getId(), 3);
+            OrderRequest request20 = new OrderRequest(item8.getId(), 7);
+            OrderRequest request21 = new OrderRequest(item9.getId(), 3);
             OrderRequest request22 = new OrderRequest(item10.getId(), 4);
-            OrderRequest request23 = new OrderRequest(item10.getId(), 8);
+            OrderRequest request23 = new OrderRequest(item11.getId(), 8);
             requests10.add(request20);
             requests10.add(request21);
             requests10.add(request22);
@@ -421,8 +424,8 @@ public class InitDb {
 
             //user3, store3의 주문 내역 추가
             List<OrderRequest> requests11 = new ArrayList<>();
-            OrderRequest request24 = new OrderRequest(item10.getId(), 3);
-            OrderRequest request25 = new OrderRequest(item10.getId(), 2);
+            OrderRequest request24 = new OrderRequest(item7.getId(), 3);
+            OrderRequest request25 = new OrderRequest(item8.getId(), 2);
             requests11.add(request24);
             requests11.add(request25);
 

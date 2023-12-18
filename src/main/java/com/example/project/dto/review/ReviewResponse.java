@@ -1,26 +1,36 @@
 package com.example.project.dto.review;
 
 import com.example.project.domain.Review;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReviewResponse {
 
-    private final Long id;
-    private final String storeName;
-    private final String userName;
-    private final String title;
-    private final String picture;
-    private final String content;
-    private final double rating;
+    private Long id;
+    private String storeName;
+    private String userName;
+    private String picture;
+    private String content;
+    private double rating;
+    private List<String> itemNames;
 
     public ReviewResponse(Review review) {
         this.id = review.getId();
         this.storeName = review.getStore().getName();
         this.userName = review.getUser().getName();
-        this.title = review.getTitle();
         this.picture = review.getPicture();
         this.content = review.getContent();
         this.rating = review.getRating();
+        this.itemNames = review.getOrder().getOrderItems().stream()
+                .map(o -> o.getItem().getName())
+                .collect(Collectors.toList());
     }
 }

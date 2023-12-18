@@ -1,15 +1,19 @@
 package com.example.project.service;
 
+import com.example.project.config.fileupload.FileUpload;
 import com.example.project.domain.Item;
 import com.example.project.domain.Order;
 import com.example.project.domain.Review;
+import com.example.project.domain.Store;
 import com.example.project.dto.review.AddReviewRequest;
+import com.example.project.dto.review.ReviewResponse;
 import com.example.project.dto.review.UpdateReviewRequest;
 import com.example.project.repository.ReviewRepository;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -17,21 +21,41 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final OrderService orderService;
+    private final StoreService storeService;
+    private final FileUpload fileUpload;
 
-    public Review save(AddReviewRequest request) {
-        Order order = orderService.findById(request.getOrderId());
+    @Transactional
+    public Review save(long id, MultipartFile file, AddReviewRequest request) {
+        Order order = orderService.findById(id);
 
-        return reviewRepository.save(request.toEntity(order.getStore(), order.getUser()));
+        if (file == null) {
+            request.setPicture("");
+        }
+        else {
+            if (!fileUpload.uploadReviewImg(request, file))
+                throw new IllegalArgumentException("업로드할 파일이 없습니다.");
+        }
+
+        return reviewRepository.save(request.toEntity(order.getStore(), order.getUser(), order));
     }
 
     //update 코드
     @Transactional
-    public Review update(long id, UpdateReviewRequest request) {
+    public Review update(long id, MultipartFile file, UpdateReviewRequest request) {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
         authorizeItemAuthor(review);
-        review.update(request.getTitle(), request.getContent(), request.getRating(), request.getPicture());
+
+        if (file == null) {
+            request.setPicture("");
+        }
+        else {
+            if (!fileUpload.uploadReviewImg(request, file))
+                throw new IllegalArgumentException("업로드할 파일이 없습니다.");
+        }
+
+        review.update(request.getContent(), request.getRating(), request.getPicture());
 
         return review;
     }
@@ -42,7 +66,14 @@ public class ReviewService {
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
         authorizeItemAuthor(review);
-        review.deletedChange();
+        reviewRepository.delete(review);
+    }
+
+    public Review findByStore(long id) {
+
+        Store store = storeService.findById(id);
+
+        return reviewRepository.findByStore(store);
     }
 
     //리뷰를 추가한 유저인지 확인

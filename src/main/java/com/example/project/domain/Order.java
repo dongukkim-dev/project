@@ -40,6 +40,9 @@ public class Order extends BaseTimeEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @OneToOne(mappedBy = "order")
+    private Review review;
+
     //주문 상태, 수령자는 그냥 주문한 사람으로 다 통일하자 -> 주소
     @Enumerated(EnumType.STRING)
     private OrderStatus status; //주문 상태 [ORDER, CANCEL]
@@ -49,11 +52,12 @@ public class Order extends BaseTimeEntity {
 
     //== 빌더 생성자 ==//
     @Builder
-    public Order(User user, Store store, OrderStatus status, List<OrderItem> orderItems) {
+    public Order(User user, Store store, OrderStatus status, List<OrderItem> orderItems, Review review) {
         this.user = user;
         this.store = store;
         this.status = status;
         this.orderItems = orderItems;
+        this.review = review;
     }
 
     //==생성 메소드==//

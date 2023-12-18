@@ -110,17 +110,37 @@ public class StoreApiController {
     /**
      * 리뷰 관련 코드
      */
-    @PostMapping("/api/review")
-    public ResponseEntity<ReviewResponse> addReview(@RequestBody AddReviewRequest request) {
-        Review savedReview = reviewService.save(request);
+    @PostMapping(value = "/api/review/{orderId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ReviewResponse> addReview(
+            @PathVariable("orderId") long id,
+            @RequestPart(value = "review") AddReviewRequest request,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+
+        Review savedReview = reviewService.save(id, file, request);
+
+        log.info("review 값 : {}", savedReview.getId());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ReviewResponse(savedReview));
     }
 
-    @PutMapping("/api/review/{id}")
-    public ResponseEntity<Review> updateReview(@PathVariable long id, @RequestBody UpdateReviewRequest request) {
-        Review updatedReview = reviewService.update(id, request);
+    //해당 음식점에 대한 리뷰들 가져오기
+    @GetMapping("/api/review/{storeId}")
+    public ResponseEntity<ReviewResponse> findReviews(@PathVariable("storeId") long id) {
+
+        Review review = reviewService.findByStore(id);
+
+        return ResponseEntity.ok()
+                .body(new ReviewResponse(review));
+    }
+
+    @PutMapping(value = "/api/review/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Review> updateReview(
+            @PathVariable long id,
+            @RequestPart(value = "review") UpdateReviewRequest request,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+
+        Review updatedReview = reviewService.update(id, file, request);
 
         return ResponseEntity.ok()
                 .body(updatedReview);
@@ -129,7 +149,7 @@ public class StoreApiController {
     //order_id를 받아서 해당 주문에 대한 리뷰를 삭제
     @DeleteMapping("/api/review/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable long id) {
-
+        reviewService.delete(id);
 
         return ResponseEntity.ok()
                 .build();

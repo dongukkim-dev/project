@@ -2,6 +2,7 @@ package com.example.project.dto.order;
 
 import com.example.project.domain.Order;
 import com.example.project.domain.OrderStatus;
+import com.example.project.dto.review.ReviewResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class OrderDto {
     private OrderStatus orderStatus;
     private LocalDateTime orderDate;
     private List<OrderItemDto> orderItems;
+    private ReviewResponse review;
 
     public OrderDto(Order order) {
         this.orderId = order.getId();

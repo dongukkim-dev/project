@@ -1,9 +1,6 @@
 package com.example.project.dto.review;
 
-import com.example.project.domain.Item;
-import com.example.project.domain.Review;
-import com.example.project.domain.Store;
-import com.example.project.domain.User;
+import com.example.project.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,20 +14,16 @@ import java.util.List;
 @NoArgsConstructor
 public class AddReviewRequest {
 
-    private Long orderId;
-    private String title;
     private String picture;
     private String content;
     private List<Item> itemNames;
     private double rating;
 
-    private MultipartFile file;
-
-    public Review toEntity(Store store, User user) {
+    public Review toEntity(Store store, User user, Order order) {
         return Review.builder()
                 .user(user)
                 .store(store)
-                .title(title)
+                .order(order)
                 .picture(picture)
                 .content(content)
                 .rating(rating)
