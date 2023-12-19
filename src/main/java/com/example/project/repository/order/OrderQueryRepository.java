@@ -4,10 +4,12 @@ import com.example.project.domain.Order;
 import com.example.project.domain.OrderStatus;
 import com.example.project.domain.QReview;
 import com.example.project.domain.QUser;
+import com.example.project.dto.SaleDto;
 import com.example.project.dto.order.OrderDto;
 import com.example.project.dto.order.OrderItemDto;
 import com.example.project.dto.order.OrderSearchCondition;
 import com.example.project.dto.review.ReviewResponse;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLTemplates;
@@ -75,7 +77,9 @@ public class OrderQueryRepository {
                                         order.user.name.as("userName"),
                                         order.review.picture,
                                         order.review.content,
-                                        order.review.rating
+                                        order.review.rating,
+                                        list(orderItem.item.name
+                                        ).as("itemNames")
                                 ).as("review"))
                 ));
 
@@ -91,6 +95,32 @@ public class OrderQueryRepository {
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery.fetch()::size);
     }
+
+    //매출 관리를 위한 데이터 (동적 쿼리 사용하기)
+    public List<SaleDto> searchSales(SalesSearchCondition condition) {
+        return queryFactory
+                .select(Projections.fields(SaleDto.class,
+                        order.createdDate.as("orderDate"),
+                        list(Projections.fields(OrderItemDto.class,
+                                orderItem.item.id,
+                                item.name,
+                                orderItem.orderPrice,
+                                orderItem.count
+                        ).as("orderItems"))
+                ))
+                .from(order)
+                .leftJoin(order.orderItems, orderItem)
+                .leftJoin(orderItem.item, item)
+                .where(
+                        dateEq(condition.getDate())
+                )
+                .fetch();
+    }
+
+    //입력된 날짜 데이터가 아 이거 범위로 해야 한다
+//    private BooleanExpression dateEq(String date) {
+//        return hasText(date) ? date : null;
+//    }
 
     private BooleanExpression userIdEq(Long userId) {
         return userId == null ? null : order.user.id.eq(userId);

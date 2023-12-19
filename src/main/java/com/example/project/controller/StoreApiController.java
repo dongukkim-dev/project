@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -126,12 +127,15 @@ public class StoreApiController {
 
     //해당 음식점에 대한 리뷰들 가져오기
     @GetMapping("/api/review/{storeId}")
-    public ResponseEntity<ReviewResponse> findReviews(@PathVariable("storeId") long id) {
+    public ResponseEntity<List<ReviewResponse>> findReviews(@PathVariable("storeId") long id) {
 
-        Review review = reviewService.findByStore(id);
+        List<ReviewResponse> reviews = reviewService.findByStore(id)
+                .stream()
+                .map(ReviewResponse::new)
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok()
-                .body(new ReviewResponse(review));
+                .body(reviews);
     }
 
     @PutMapping(value = "/api/review/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})

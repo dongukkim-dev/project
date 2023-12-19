@@ -38,6 +38,7 @@ public class ItemQueryRepository {
                 .select(new QCartResponse(
                         item.id,
                         item.name,
+                        item.picture,
                         item.price,
                         Expressions.as(Expressions.constant(amount), "amount")
                 ))

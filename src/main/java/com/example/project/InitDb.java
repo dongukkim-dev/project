@@ -10,10 +10,15 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -314,8 +319,25 @@ public class InitDb {
                 itemService.save(3, null, itemRequest);
             }
 
-            AddItemRequest itemRequest1 = new AddItemRequest("직화구이피자", 16000, "upload\\itemImg\\231215\\직화구이피자.jpg", "직화구이 피자입니다");
-            itemService.save(2, null, itemRequest1);
+            try {
+                // 파일을 읽어와서 byte 배열로 변환
+                byte[] fileData = Files.readAllBytes(Paths.get("C:\\delivery\\upload\\itemImg\\231215\\NoImage.avif"));
+
+                // 파일의 확장자를 추출
+                String originalFileName = Paths.get("C:\\delivery\\upload\\itemImg\\231215\\NoImage.avif").getFileName().toString();
+                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+
+                // MockMultipartFile로 변환
+                MultipartFile file = new MockMultipartFile("file", originalFileName, "image/" + fileExtension, fileData);
+
+                // 서비스 메서드 호출
+                AddItemRequest itemRequest1 = new AddItemRequest("직화구이피자", 16000, "upload\\itemImg\\231215\\직화구이피자.jpg", "직화구이 피자입니다");
+                itemService.save(2, file, itemRequest1);
+
+            } catch (IOException e) {
+                // 파일 읽기 예외 처리
+                e.printStackTrace();
+            }
 
             /**
              * user1 = test@test.123, , store1 = test@asd.123 store2 = test2@asd.123, store3 = test3@asd.123

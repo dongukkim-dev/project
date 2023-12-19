@@ -1,7 +1,6 @@
 package com.example.project.service;
 
 import com.example.project.config.fileupload.FileUpload;
-import com.example.project.domain.Item;
 import com.example.project.domain.Order;
 import com.example.project.domain.Review;
 import com.example.project.domain.Store;
@@ -14,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +46,7 @@ public class ReviewService {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
-        authorizeItemAuthor(review);
+        authorizeReviewAuthor(review);
 
         if (file == null) {
             request.setPicture("");
@@ -65,11 +66,11 @@ public class ReviewService {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
 
-        authorizeItemAuthor(review);
+        authorizeReviewAuthor(review);
         reviewRepository.delete(review);
     }
 
-    public Review findByStore(long id) {
+    public List<Review> findByStore(long id) {
 
         Store store = storeService.findById(id);
 
@@ -77,7 +78,7 @@ public class ReviewService {
     }
 
     //리뷰를 추가한 유저인지 확인
-    private static void authorizeItemAuthor(Review review) {
+    private static void authorizeReviewAuthor(Review review) {
         String email = SecurityUtil.getCurrentUsername();
         if (!review.getUser().getEmail().equals(email)) {
             throw new IllegalArgumentException("not authorized");
