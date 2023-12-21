@@ -12,8 +12,8 @@ public class StoreResponse {
     private final String picture;
     private final String content;
     private final String phone;
-    private final double rating;
     private final String address;
+    private final String detail;
     private final String openTime;
     private final String closeTime;
     private final Integer minOrderPrice;
@@ -25,8 +25,8 @@ public class StoreResponse {
         this.picture = store.getPicture();
         this.content = store.getContent();
         this.phone = store.getPhone();
-        this.rating = store.getRating();
         this.address = store.getAddress();
+        this.detail = store.getDetail();
         this.openTime = store.getOpenTime();
         this.closeTime = store.getCloseTime();
         this.minOrderPrice = store.getMinOrderPrice();

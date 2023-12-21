@@ -1,10 +1,12 @@
 package com.example.project.controller;
 
 import com.example.project.domain.Order;
+import com.example.project.dto.SaleDto;
 import com.example.project.dto.order.OrderDto;
 import com.example.project.dto.order.OrderRequest;
 import com.example.project.dto.order.OrderResponse;
 import com.example.project.dto.order.OrderSearchCondition;
+import com.example.project.repository.order.SalesSearchCondition;
 import com.example.project.service.OrderService;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +69,16 @@ public class OrderApiController {
 
         return ResponseEntity.ok()
                 .body(orders);
+    }
+
+    //매출액 확인하기
+    @GetMapping("/api/sales")
+    public ResponseEntity<List<SaleDto>> getSales(SalesSearchCondition condition) {
+
+        List<SaleDto> sales = orderService.searchSales(condition);
+
+        return ResponseEntity.ok()
+                .body(sales);
     }
 
     //접수대기[수락or거절], 처리중[배달or취소] 상태에서 둘중 하나를 눌렀을 때 orderStatus 변경 [READY, CANCEL, COMP]

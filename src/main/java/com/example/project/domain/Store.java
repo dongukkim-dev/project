@@ -28,23 +28,22 @@ public class Store extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     private String name;
 
     private String picture;
     private String content;
 
     private String address;
+    private String detail;
 
     private String phone;
 
-    //평점 0 ~ 5까지 리뷰에서 평점을 등록하는데 사람이 많아지면 불러서 계산하는 것도 리소스를 많이 먹나? 안먹으면 평점 삭제 먹으면 평점 유지
-    private double rating;
-
     @ColumnDefault("false")
     private boolean deleted = Boolean.FALSE;
-
-    //category 임시
-    private int category;
 
     private String openTime;
     private String closeTime;
@@ -56,22 +55,24 @@ public class Store extends BaseTimeEntity {
     private List<Bookmark> bookmarks = new ArrayList<>();
     
     @Builder
-    public Store(String name, User user, String picture, String content, String address, String phone, double rating, String openTime, String closeTime, int minOrderPrice) {
+    public Store(String name, User user, Category category, String picture, String content, String address, String detail, String phone, double rating, String openTime, String closeTime, int minOrderPrice) {
         this.name = name;
         this.user = user;
+        this.category = category;
         this.picture = picture;
         this.content = content;
         this.address = address;
+        this.detail = detail;
         this.phone = phone;
-        this.rating = rating;
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.minOrderPrice = minOrderPrice;
     }
 
-    public void update(String name, String address, String phone, String picture, String content, String openTime, String closeTime, int minOrderPrice) {
+    public void update(String name, String address, String detail, String phone, String picture, String content, String openTime, String closeTime, int minOrderPrice) {
         this.name = name;
         this.address = address;
+        this.detail = detail;
         this.phone = phone;
         this.picture = picture;
         this.content = content;

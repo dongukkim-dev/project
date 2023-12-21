@@ -19,6 +19,7 @@ public class UserDto {
     private int point;
     private Grade grade;
     private String address;
+    private String detail;
     private LocalDateTime createdDate;
 
     public UserDto(User user) {
@@ -29,6 +30,7 @@ public class UserDto {
         this.point = user.getPoint();
         this.grade = user.getGrade();
         this.address = user.getAddress();
+        this.detail = user.getDetail();
         this.createdDate = user.getCreatedDate();
     }
 }

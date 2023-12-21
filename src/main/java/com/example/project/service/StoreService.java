@@ -1,12 +1,14 @@
 package com.example.project.service;
 
 import com.example.project.config.fileupload.FileUpload;
+import com.example.project.domain.Category;
 import com.example.project.domain.Store;
 import com.example.project.domain.User;
 import com.example.project.dto.store.AddStoreRequest;
 import com.example.project.dto.store.StoreViewResponse;
 import com.example.project.dto.store.UpdateStoreRequest;
 import com.example.project.repository.BookmarkRepository;
+import com.example.project.repository.CategoryRepository;
 import com.example.project.repository.store.StoreRepository;
 import com.example.project.repository.user.UserRepository;
 import com.example.project.util.SecurityUtil;
@@ -27,6 +29,7 @@ public class StoreService {
     
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
     private final FileUpload fileUpload;
 
     @Transactional
@@ -40,9 +43,13 @@ public class StoreService {
                 throw new IllegalArgumentException("업로드할 파일이 없습니다.");
         }
 
+        //category를 불러오는 코드
+        Category category = categoryRepository.findByName(request.getCategory())
+                .orElseThrow(() -> new IllegalArgumentException("not found : " + request.getCategory()));
+
         //회원과 음식점 주인 계정 테이블을 분리할지 말지 고민중
         return storeRepository.save(request.toEntity(userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("not found " + email))));
+                .orElseThrow(() -> new IllegalArgumentException("not found " + email)), category));
     }
 
     public List<Store> findAll() {
@@ -83,7 +90,7 @@ public class StoreService {
                 throw new IllegalArgumentException("업로드할 파일이 없습니다.");
         }
 
-        store.update(request.getName(), request.getAddress(), request.getPhone(), request.getPicture(), request.getContent(), request.getOpenTime(), request.getCloseTime(), request.getMinOrderPrice());
+        store.update(request.getName(), request.getAddress(), request.getDetail(), request.getPhone(), request.getPicture(), request.getContent(), request.getOpenTime(), request.getCloseTime(), request.getMinOrderPrice());
 
         return store;
     }

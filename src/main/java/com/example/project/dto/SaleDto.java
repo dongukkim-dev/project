@@ -14,6 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 public class SaleDto {
 
-    private LocalDateTime orderDate;
-    private List<OrderItemDto> orderItems;
+    private String date;
+    private Integer sum;
 }

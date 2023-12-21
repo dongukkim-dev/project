@@ -15,7 +15,6 @@ public class StoreViewResponse {
     private String name;
     private String boss;
     private String content;
-    private double rating;
     private LocalDateTime createdDate;
 
     public StoreViewResponse(Store store) {
@@ -23,7 +22,6 @@ public class StoreViewResponse {
         this.name = store.getName();
         this.boss = store.getUser().getName();
         this.content = store.getContent();
-        this.rating = store.getRating();
         this.createdDate = store.getCreatedDate();
     }
 }

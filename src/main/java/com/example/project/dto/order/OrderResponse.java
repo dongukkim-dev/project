@@ -22,6 +22,7 @@ public class OrderResponse {
     private Long order_id;
     private String name; //주문자 이름
     private String address;
+    private String detail;
     private OrderStatus orderStatus;
     private LocalDateTime orderDate;
     private List<OrderItemDto> orderItems;
@@ -30,6 +31,7 @@ public class OrderResponse {
         this.order_id = order.getId();
         this.name = order.getUser().getName();
         this.address = order.getUser().getAddress();
+        this.detail = order.getUser().getDetail();
         this.orderStatus = order.getStatus();
         this.orderDate = order.getCreatedDate();
         this.orderItems = order.getOrderItems().stream()

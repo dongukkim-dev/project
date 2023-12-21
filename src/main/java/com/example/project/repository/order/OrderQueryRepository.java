@@ -12,6 +12,7 @@ import com.example.project.dto.review.ReviewResponse;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -100,26 +101,20 @@ public class OrderQueryRepository {
     public List<SaleDto> searchSales(SalesSearchCondition condition) {
         return queryFactory
                 .select(Projections.fields(SaleDto.class,
-                        order.createdDate.as("orderDate"),
-                        list(Projections.fields(OrderItemDto.class,
-                                orderItem.item.id,
-                                item.name,
-                                orderItem.orderPrice,
-                                orderItem.count
-                        ).as("orderItems"))
-                ))
+                                Expressions.stringTemplate("DATE_FORMAT({0}, {1})", order.createdDate, "%Y%m%d").as("date"),
+                                orderItem.orderPrice.multiply(orderItem.count).sum().as("sum")
+                        ))
                 .from(order)
                 .leftJoin(order.orderItems, orderItem)
                 .leftJoin(orderItem.item, item)
-                .where(
-                        dateEq(condition.getDate())
-                )
+                .groupBy(Expressions.stringTemplate(
+                        "DATE_FORMAT({0}, {1})", order.createdDate, "%Y%m%d"))
                 .fetch();
     }
 
     //입력된 날짜 데이터가 아 이거 범위로 해야 한다
-//    private BooleanExpression dateEq(String date) {
-//        return hasText(date) ? date : null;
+//    private BooleanExpression dateFilter(String dateCond) {
+//        return hasText(dateCond) ? null : order.createdDate.eq(Expressions.stringTemplate("FUNCTION('FORMATDATE', {0}, '%Y-%m-%d')"));
 //    }
 
     private BooleanExpression userIdEq(Long userId) {

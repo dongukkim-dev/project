@@ -1,12 +1,14 @@
 package com.example.project.service;
 
 import com.example.project.domain.*;
+import com.example.project.dto.SaleDto;
 import com.example.project.dto.order.OrderDto;
 import com.example.project.dto.order.OrderRequest;
 import com.example.project.dto.order.OrderResponse;
 import com.example.project.dto.order.OrderSearchCondition;
 import com.example.project.repository.order.OrderQueryRepository;
 import com.example.project.repository.order.OrderRepository;
+import com.example.project.repository.order.SalesSearchCondition;
 import com.example.project.repository.user.UserRepository;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -83,9 +85,8 @@ public class OrderService {
         return orderQueryRepository.searchOrders(condition, pageable);
     }
 
-    //마지막으로 추가된 주문만 반환
-    public Order findLastOrderByStore(Long store_id, Long order_id) {
-        return orderRepository.findLastOrderByStore(store_id, order_id);
+    public List<SaleDto> searchSales(SalesSearchCondition condition) {
+        return orderQueryRepository.searchSales(condition);
     }
 
     //update

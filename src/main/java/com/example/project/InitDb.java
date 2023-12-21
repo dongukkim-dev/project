@@ -10,7 +10,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +59,8 @@ public class InitDb {
                     .password(encoder.encode("asdf1234!"))
                     .name("lee")
                     .phone("010-8888-3333")
-                    .address("주소4")
+                    .address("관리자 주소1")
+                    .detail("관리자 상세 주소1")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -74,6 +74,7 @@ public class InitDb {
                     .name("lee")
                     .phone("010-8888-3333")
                     .address("주소4")
+                    .detail("일반 회원 상세 주소4")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -87,6 +88,7 @@ public class InitDb {
                     .name("일반회원2")
                     .phone("010-5555-1111")
                     .address("일반 회원 주소2")
+                    .detail("일반 회원 상세 주소2")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -100,6 +102,7 @@ public class InitDb {
                     .name("일반회원3")
                     .phone("010-5555-1111")
                     .address("일반 회원 주소3")
+                    .detail("일반 회원 상세 주소3")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -113,6 +116,7 @@ public class InitDb {
                     .name("kim")
                     .phone("010-1111-2222")
                     .address("주소1")
+                    .detail("상세 주소1")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -126,6 +130,7 @@ public class InitDb {
                     .name("park")
                     .phone("010-3333-2222")
                     .address("주소2")
+                    .detail("상세 주소2")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -139,6 +144,7 @@ public class InitDb {
                     .name("choi")
                     .phone("010-5555-1111")
                     .address("주소3")
+                    .detail("상세 주소3")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -153,6 +159,7 @@ public class InitDb {
                     .name("가맹점4")
                     .phone("010-5555-1111")
                     .address("가맹점 유저 주소4")
+                    .detail("가맹점 상세 주소4")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -164,10 +171,10 @@ public class InitDb {
                     .user(store_user1)
                     .name("일성만두")
                     .address("경기도 하남시")
+                    .detail("만두집 상세주소1")
                     .phone("070-1111-2222")
                     .picture("upload\\storeImg\\231215\\만두3.jpg")
                     .content("상세 내용1")
-                    .rating(4.3)
                     .openTime("10:00")
                     .closeTime("21:00")
                     .minOrderPrice(6000)
@@ -178,10 +185,10 @@ public class InitDb {
                     .user(store_user2)
                     .name("피자나라")
                     .address("서울시")
+                    .detail("피자집 상세주소1")
                     .phone("070-2222-1111")
                     .picture("upload\\storeImg\\231215\\피자1.jpg")
                     .content("상세 내용1")
-                    .rating(4.7)
                     .openTime("10:00")
                     .closeTime("22:00")
                     .minOrderPrice(20000)
@@ -192,10 +199,10 @@ public class InitDb {
                     .user(store_user3)
                     .name("치킨공장")
                     .address("경기도 남양주시")
+                    .detail("치킨집 상세주소1")
                     .phone("031-571-1111")
                     .picture("upload\\storeImg\\231215\\치킨1.jpg")
                     .content("상세 내용3")
-                    .rating(3.9)
                     .openTime("12:00")
                     .closeTime("19:00")
                     .minOrderPrice(16000)
@@ -328,11 +335,11 @@ public class InitDb {
                 String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
 
                 // MockMultipartFile로 변환
-                MultipartFile file = new MockMultipartFile("file", originalFileName, "image/" + fileExtension, fileData);
+//                MultipartFile file = new MockMultipartFile("file", originalFileName, "image/" + fileExtension, fileData);
 
                 // 서비스 메서드 호출
                 AddItemRequest itemRequest1 = new AddItemRequest("직화구이피자", 16000, "upload\\itemImg\\231215\\직화구이피자.jpg", "직화구이 피자입니다");
-                itemService.save(2, file, itemRequest1);
+                itemService.save(2, null, itemRequest1);
 
             } catch (IOException e) {
                 // 파일 읽기 예외 처리

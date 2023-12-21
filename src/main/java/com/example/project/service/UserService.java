@@ -40,7 +40,7 @@ public class UserService {
     public User update(String email, UpdateUserRequest request) {
         User user = findByEmail(email);
 
-        user.updateUser(request.getName(), request.getPhone(), request.getAddress());
+        user.updateUser(request.getName(), request.getPhone(), request.getAddress(), request.getDetail());
 
         return user;
     }

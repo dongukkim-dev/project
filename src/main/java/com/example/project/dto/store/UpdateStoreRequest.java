@@ -12,6 +12,7 @@ public class UpdateStoreRequest {
 
     private String name;
     private String address;
+    private String detail;
     private String phone;
     private String picture;
     private String content;

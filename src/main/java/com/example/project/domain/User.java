@@ -38,6 +38,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     private String name;
     private String phone;
     private String address;
+    private String detail;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -60,12 +61,13 @@ public class User extends BaseTimeEntity implements UserDetails {
     private boolean deleted = Boolean.FALSE;
 
     @Builder
-    public User(String email, String password, String name, String phone, String address, Gender gender, int point, Grade grade, Role role) {
+    public User(String email, String password, String name, String phone, String address, String detail, Gender gender, int point, Grade grade, Role role) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
         this.address = address;
+        this.detail = detail;
         this.gender = gender;
         this.point = point;
         this.grade = grade;
@@ -80,10 +82,11 @@ public class User extends BaseTimeEntity implements UserDetails {
     }
     
     //일반 업데이트
-    public void updateUser(String name, String phone, String address) {
+    public void updateUser(String name, String phone, String address, String detail) {
         this.name = name;
         this.phone = phone;
         this.address = address;
+        this.detail = detail;
     }
 
     //권한 반환
