@@ -49,7 +49,7 @@ public class ReviewService {
         authorizeReviewAuthor(review);
 
         if (file == null) {
-            request.setPicture("");
+            request.setPicture(review.getPicture());
         }
         else {
             if (!fileUpload.uploadReviewImg(request, file))

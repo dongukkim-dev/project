@@ -4,6 +4,10 @@ import com.example.project.domain.Article;
 import com.example.project.domain.Store;
 import lombok.Getter;
 
+/**
+ * 음식점의 상세정보를 받는 dto
+ */
+
 @Getter
 public class StoreResponse {
 

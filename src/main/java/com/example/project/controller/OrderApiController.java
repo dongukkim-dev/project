@@ -2,6 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.domain.Order;
 import com.example.project.dto.SaleDto;
+import com.example.project.dto.SalesDto;
 import com.example.project.dto.order.OrderDto;
 import com.example.project.dto.order.OrderRequest;
 import com.example.project.dto.order.OrderResponse;
@@ -32,19 +33,23 @@ public class OrderApiController {
     private final SseEmitters sseEmitters;
 
     @PostMapping("/api/orders")
-    public ResponseEntity<List<OrderRequest>> addOrder(@RequestBody List<OrderRequest> request) {
+    public ResponseEntity<?> addOrder(@RequestBody OrderRequest request) {
 
-        String email = SecurityUtil.getCurrentUsername();
-        Order savedOrder = orderService.addOrder(request, email);
+        try {
+            String email = SecurityUtil.getCurrentUsername();
+            Order savedOrder = orderService.addOrder(request, email);
 
-        //마지막으로 추가된 주문의 ID 갱신
-        log.info("saveOrder 데이터 존재 여부 orderSize = {}, order_id = {}", savedOrder.getOrderItems().size(), savedOrder.getId());
+            //마지막으로 추가된 주문의 ID 갱신
+            log.info("saveOrder 데이터 존재 여부 orderSize = {}, order_id = {}", savedOrder.getOrderItems().size(), savedOrder.getId());
 
-        // SSE를 통해 새로운 주문을 클라이언트에게 알리기
-        sseEmitters.newOrder(savedOrder);
+            // SSE를 통해 새로운 주문을 클라이언트에게 알리기
+            sseEmitters.newOrder(savedOrder);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(request);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(request);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     //음식점 id과 condition에 따라 [ORDER, READY, CANCEL, COMP] 출력
@@ -72,10 +77,19 @@ public class OrderApiController {
     }
 
     //매출액 확인하기
-    @GetMapping("/api/sales")
-    public ResponseEntity<List<SaleDto>> getSales(SalesSearchCondition condition) {
+    @GetMapping("/api/sales/{storeId}")
+    public ResponseEntity<SalesDto> getSales(@PathVariable("storeId") long id, SalesSearchCondition condition) {
 
-        List<SaleDto> sales = orderService.searchSales(condition);
+        SalesDto sales = orderService.searchSales(id, condition);
+
+        return ResponseEntity.ok()
+                .body(sales);
+    }
+
+    @GetMapping("/api/sales")
+    public ResponseEntity<SalesDto> getSales(SalesSearchCondition condition) {
+
+        SalesDto sales = orderService.searchAllSales(condition);
 
         return ResponseEntity.ok()
                 .body(sales);

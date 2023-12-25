@@ -12,13 +12,15 @@ import java.util.List;
 
 /**
  * 장바구니에 담긴 아이템들을 주문 하면 정보를 받는 DTO
- *
  */
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderRequest {
 
-    private Long item_id;
-    private int amount;
+    private String address;
+    private String detail;
+    private String payment;
+    private String comment;
+    private List<OrderItemRequest> orderItems;
 }

@@ -1,18 +1,20 @@
 package com.example.project.repository.store;
 
-import com.example.project.domain.QBookmark;
-import com.example.project.domain.Store;
-import com.example.project.domain.User;
+import com.example.project.domain.*;
 import com.example.project.dto.BookmarkResponse;
 import com.example.project.dto.BookmarkStatusResponse;
 import com.example.project.dto.QBookmarkResponse;
 import com.example.project.dto.QBookmarkStatusResponse;
 import com.example.project.dto.store.StoreSearchCondition;
 import com.example.project.dto.store.QStoreUserDto;
+import com.example.project.dto.store.StoreSimpleInfoResponse;
 import com.example.project.dto.store.StoreUserDto;
 import com.example.project.repository.BookmarkRepository;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.example.project.domain.QBookmark.*;
+import static com.example.project.domain.QCategory.*;
+import static com.example.project.domain.QReview.*;
 import static com.example.project.domain.QStore.store;
 import static com.example.project.domain.QUser.user;
 import static org.springframework.util.StringUtils.hasText;
@@ -53,6 +57,28 @@ public class StoreQueryRepository {
                         storeNameEq(condition.getStoreName()),
                         userNameEq(condition.getUserName())
                 )
+                .fetch();
+    }
+
+    //메인 화면의 데이터 review 값을 가져와야 함
+    public List<StoreSimpleInfoResponse> searchMainInfo() {
+        return queryFactory
+                .select(Projections.fields(StoreSimpleInfoResponse.class,
+                        store.id,
+                        store.name.as("name"),
+                        store.picture,
+                        store.category.name.as("category"),
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(review.rating.avg())
+                                        .from(review)
+                                        .where(review.store.id.eq(store.id)), "rating"
+                        )
+                ))
+                .from(store)
+                .leftJoin(store.reviews, review)
+                .leftJoin(store.category, category)
+                .groupBy(store.id)
                 .fetch();
     }
 

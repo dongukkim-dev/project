@@ -72,7 +72,7 @@ public class ItemService {
         authorizeItemAuthor(item);
 
         if (file == null) {
-            request.setPicture("");
+            request.setPicture(item.getPicture());
         }
         else {
             if (!fileUpload.uploadItemImg(request, file))

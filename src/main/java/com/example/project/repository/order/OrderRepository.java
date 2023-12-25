@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Query("select o from Order o where o.store.id= :store_id")
+    @Query("select o from Order o where o.store.id= :store_id order by o.createdDate")
     List<Order> findAllByStore(@Param("store_id") long store_id);
 
     @Query("select o from Order o where o.store.id= :store_id and o.id= :order_id")

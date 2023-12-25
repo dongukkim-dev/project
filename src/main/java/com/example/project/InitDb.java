@@ -33,7 +33,7 @@ public class InitDb {
 
     @PostConstruct
     public void init() {
-        initService.dbInit1();
+//        initService.dbInit1();
     }
 
     @Component
@@ -59,8 +59,7 @@ public class InitDb {
                     .password(encoder.encode("asdf1234!"))
                     .name("lee")
                     .phone("010-8888-3333")
-                    .address("관리자 주소1")
-                    .detail("관리자 상세 주소1")
+                    .address("주소4")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -74,7 +73,6 @@ public class InitDb {
                     .name("lee")
                     .phone("010-8888-3333")
                     .address("주소4")
-                    .detail("일반 회원 상세 주소4")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -88,7 +86,6 @@ public class InitDb {
                     .name("일반회원2")
                     .phone("010-5555-1111")
                     .address("일반 회원 주소2")
-                    .detail("일반 회원 상세 주소2")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -102,7 +99,6 @@ public class InitDb {
                     .name("일반회원3")
                     .phone("010-5555-1111")
                     .address("일반 회원 주소3")
-                    .detail("일반 회원 상세 주소3")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -116,7 +112,6 @@ public class InitDb {
                     .name("kim")
                     .phone("010-1111-2222")
                     .address("주소1")
-                    .detail("상세 주소1")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -130,7 +125,6 @@ public class InitDb {
                     .name("park")
                     .phone("010-3333-2222")
                     .address("주소2")
-                    .detail("상세 주소2")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -144,7 +138,6 @@ public class InitDb {
                     .name("choi")
                     .phone("010-5555-1111")
                     .address("주소3")
-                    .detail("상세 주소3")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -159,7 +152,6 @@ public class InitDb {
                     .name("가맹점4")
                     .phone("010-5555-1111")
                     .address("가맹점 유저 주소4")
-                    .detail("가맹점 상세 주소4")
                     .grade(Grade.BRONZE)
                     .gender(Gender.MALE)
                     .point(0)
@@ -171,7 +163,6 @@ public class InitDb {
                     .user(store_user1)
                     .name("일성만두")
                     .address("경기도 하남시")
-                    .detail("만두집 상세주소1")
                     .phone("070-1111-2222")
                     .picture("upload\\storeImg\\231215\\만두3.jpg")
                     .content("상세 내용1")
@@ -185,7 +176,6 @@ public class InitDb {
                     .user(store_user2)
                     .name("피자나라")
                     .address("서울시")
-                    .detail("피자집 상세주소1")
                     .phone("070-2222-1111")
                     .picture("upload\\storeImg\\231215\\피자1.jpg")
                     .content("상세 내용1")
@@ -199,7 +189,6 @@ public class InitDb {
                     .user(store_user3)
                     .name("치킨공장")
                     .address("경기도 남양주시")
-                    .detail("치킨집 상세주소1")
                     .phone("031-571-1111")
                     .picture("upload\\storeImg\\231215\\치킨1.jpg")
                     .content("상세 내용3")
@@ -350,6 +339,7 @@ public class InitDb {
              * user1 = test@test.123, , store1 = test@asd.123 store2 = test2@asd.123, store3 = test3@asd.123
              */
             //user1, store2의 주문 내역 추가하기
+/*
             List<OrderRequest> requests1 = new ArrayList<>();
             OrderRequest request1 = new OrderRequest(item5.getId(), 2);
             OrderRequest request2 = new OrderRequest(item4.getId(), 1);
@@ -369,9 +359,11 @@ public class InitDb {
 
             orderService.addOrder(requests2, user1.getEmail());
 
-            /**
+            */
+/**
              * user2 = test2@asd.123
-             */
+             *//*
+
             //user2, store1의 주문 내역 추가
             List<OrderRequest> requests3 = new ArrayList<>();
             OrderRequest request6 = new OrderRequest(item1.getId(), 5);
@@ -392,9 +384,11 @@ public class InitDb {
 
             orderService.addOrder(requests4, user1.getEmail());
 
-            /**
+            */
+/**
              * test3@asd.123
-             */
+             *//*
+
             //user3, store1의 주문 내역 추가
             List<OrderRequest> requests5 = new ArrayList<>();
             OrderRequest request11 = new OrderRequest(item1.getId(), 9);
@@ -459,6 +453,7 @@ public class InitDb {
             requests11.add(request25);
 
             orderService.addOrder(requests11, user3.getEmail());
+*/
         }
     }
 }

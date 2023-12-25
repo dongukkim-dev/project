@@ -2,14 +2,11 @@ package com.example.project.repository.order;
 
 import com.example.project.domain.Order;
 import com.example.project.domain.OrderStatus;
-import com.example.project.domain.QReview;
-import com.example.project.domain.QUser;
 import com.example.project.dto.SaleDto;
 import com.example.project.dto.order.OrderDto;
 import com.example.project.dto.order.OrderItemDto;
 import com.example.project.dto.order.OrderSearchCondition;
 import com.example.project.dto.review.ReviewResponse;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -27,9 +24,9 @@ import java.util.List;
 import static com.example.project.domain.QItem.item;
 import static com.example.project.domain.QOrder.order;
 import static com.example.project.domain.QOrderItem.orderItem;
-import static com.example.project.domain.QReview.*;
+import static com.example.project.domain.QReview.review;
 import static com.example.project.domain.QStore.store;
-import static com.example.project.domain.QUser.*;
+import static com.example.project.domain.QUser.user;
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
 import static org.springframework.util.StringUtils.hasText;
@@ -98,7 +95,7 @@ public class OrderQueryRepository {
     }
 
     //매출 관리를 위한 데이터 (동적 쿼리 사용하기)
-    public List<SaleDto> searchSales(SalesSearchCondition condition) {
+    public List<SaleDto> searchSales(long id, SalesSearchCondition condition) {
         return queryFactory
                 .select(Projections.fields(SaleDto.class,
                                 Expressions.stringTemplate("DATE_FORMAT({0}, {1})", order.createdDate, "%Y%m%d").as("date"),
@@ -107,15 +104,88 @@ public class OrderQueryRepository {
                 .from(order)
                 .leftJoin(order.orderItems, orderItem)
                 .leftJoin(orderItem.item, item)
+                .where(order.store.id.eq(id))
                 .groupBy(Expressions.stringTemplate(
                         "DATE_FORMAT({0}, {1})", order.createdDate, "%Y%m%d"))
                 .fetch();
     }
 
-    //입력된 날짜 데이터가 아 이거 범위로 해야 한다
-//    private BooleanExpression dateFilter(String dateCond) {
-//        return hasText(dateCond) ? null : order.createdDate.eq(Expressions.stringTemplate("FUNCTION('FORMATDATE', {0}, '%Y-%m-%d')"));
-//    }
+    public List<SaleDto> searchMonthSales(long id, SalesSearchCondition condition) {
+        return queryFactory
+                .select(Projections.fields(SaleDto.class,
+                        Expressions.stringTemplate("DATE_FORMAT({0}, {1})", order.createdDate, "%Y%m").as("date"),
+                        orderItem.orderPrice.multiply(orderItem.count).sum().as("sum")
+                ))
+                .from(order)
+                .leftJoin(order.orderItems, orderItem)
+                .leftJoin(orderItem.item, item)
+                .where(order.store.id.eq(id))
+                .groupBy(Expressions.stringTemplate(
+                        "DATE_FORMAT({0}, {1})", order.createdDate, "%Y%m"))
+                .fetch();
+    }
+
+    public List<SaleDto> searchYearSales(long id, SalesSearchCondition condition) {
+        return queryFactory
+                .select(Projections.fields(SaleDto.class,
+                        Expressions.stringTemplate("DATE_FORMAT({0}, {1})", order.createdDate, "%Y").as("date"),
+                        orderItem.orderPrice.multiply(orderItem.count).sum().as("sum")
+                ))
+                .from(order)
+                .leftJoin(order.orderItems, orderItem)
+                .leftJoin(orderItem.item, item)
+                .where(order.store.id.eq(id))
+                .groupBy(Expressions.stringTemplate(
+                        "DATE_FORMAT({0}, {1})", order.createdDate, "%Y"))
+                .fetch();
+    }
+
+    public List<SaleDto> searchAllSales(SalesSearchCondition condition) {
+        return queryFactory
+                .select(Projections.fields(SaleDto.class,
+                        Expressions.stringTemplate("DATE_FORMAT({0}, {1})", order.createdDate, "%Y%m%d").as("date"),
+                        orderItem.orderPrice.multiply(orderItem.count).sum().as("sum")
+                ))
+                .from(order)
+                .leftJoin(order.orderItems, orderItem)
+                .leftJoin(orderItem.item, item)
+                .groupBy(Expressions.stringTemplate(
+                        "DATE_FORMAT({0}, {1})", order.createdDate, "%Y%m%d"))
+                .orderBy(order.createdDate.desc())
+                .limit(7)
+                .fetch();
+    }
+
+    public List<SaleDto> searchAllMonthSales(SalesSearchCondition condition) {
+        return queryFactory
+                .select(Projections.fields(SaleDto.class,
+                        Expressions.stringTemplate("DATE_FORMAT({0}, {1})", order.createdDate, "%Y%m").as("date"),
+                        orderItem.orderPrice.multiply(orderItem.count).sum().as("sum")
+                ))
+                .from(order)
+                .leftJoin(order.orderItems, orderItem)
+                .leftJoin(orderItem.item, item)
+                .groupBy(Expressions.stringTemplate(
+                        "DATE_FORMAT({0}, {1})", order.createdDate, "%Y%m"))
+                .orderBy(order.createdDate.desc())
+                .limit(12)
+                .fetch();
+    }
+
+    public List<SaleDto> searchAllYearSales(SalesSearchCondition condition) {
+        return queryFactory
+                .select(Projections.fields(SaleDto.class,
+                        Expressions.stringTemplate("DATE_FORMAT({0}, {1})", order.createdDate, "%Y").as("date"),
+                        orderItem.orderPrice.multiply(orderItem.count).sum().as("sum")
+                ))
+                .from(order)
+                .leftJoin(order.orderItems, orderItem)
+                .leftJoin(orderItem.item, item)
+                .groupBy(Expressions.stringTemplate(
+                        "DATE_FORMAT({0}, {1})", order.createdDate, "%Y"))
+                .orderBy(order.createdDate.desc())
+                .fetch();
+    }
 
     private BooleanExpression userIdEq(Long userId) {
         return userId == null ? null : order.user.id.eq(userId);

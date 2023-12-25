@@ -8,10 +8,9 @@ import com.example.project.dto.BookmarkStatusResponse;
 import com.example.project.dto.review.AddReviewRequest;
 import com.example.project.dto.review.ReviewResponse;
 import com.example.project.dto.review.UpdateReviewRequest;
-import com.example.project.dto.store.StoreSearchCondition;
 import com.example.project.dto.store.AddStoreRequest;
 import com.example.project.dto.store.StoreResponse;
-import com.example.project.dto.store.StoreUserDto;
+import com.example.project.dto.store.StoreSimpleInfoResponse;
 import com.example.project.dto.store.UpdateStoreRequest;
 import com.example.project.repository.store.StoreQueryRepository;
 import com.example.project.repository.store.StoreRepository;
@@ -21,8 +20,6 @@ import com.example.project.service.StoreService;
 import com.example.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +35,6 @@ import java.util.stream.Collectors;
 public class StoreApiController {
 
     private final StoreService storeService;
-    private final StoreRepository storeRepository;
     private final ReviewService reviewService;
     private final BookmarkService bookmarkService;
     private final StoreQueryRepository storeQueryRepository;
@@ -57,28 +53,12 @@ public class StoreApiController {
                 .body(savedStore);
     }
 
-    //스프링 데이터와 페이징의 조합
-    @GetMapping("/api/storesTest")
-    public Page<StoreUserDto> searchStore(StoreSearchCondition condition, Pageable pageable) {
-        return storeRepository.searchComplex(condition, pageable);
-    }
-
     @GetMapping("/api/stores")
-    public ResponseEntity<List<StoreResponse>> findAllStores() {
-        List<StoreResponse> stores = storeService.findAll()
-                .stream()
-                .map(StoreResponse::new)
-                .toList();
+    public ResponseEntity<List<StoreSimpleInfoResponse>> findStoreSimpleInfo() {
 
         return ResponseEntity.ok()
-                .body(stores);
+                .body(storeQueryRepository.searchMainInfo());
     }
-
-    //category를 이용한 음식점 찾기
-//    @GetMapping("/api/stores/{category}")
-//    public String store(@PathVariable long category) {
-//        storeService.findByCategory();
-//    }
 
     @GetMapping("/api/store/{id}")
     public ResponseEntity<StoreResponse> findStore(@PathVariable long id) {

@@ -83,7 +83,7 @@ public class StoreService {
         authorizeStoreAuthor(store);
 
         if (file == null) {
-            request.setPicture("");
+            request.setPicture(store.getPicture());
         }
         else {
             if (!fileUpload.uploadStoreImg(request, file))
@@ -93,12 +93,6 @@ public class StoreService {
         store.update(request.getName(), request.getAddress(), request.getDetail(), request.getPhone(), request.getPicture(), request.getContent(), request.getOpenTime(), request.getCloseTime(), request.getMinOrderPrice());
 
         return store;
-    }
-
-    public List<StoreViewResponse> findAllDesc() {
-        return storeRepository.findAllDesc().stream()
-                .map(StoreViewResponse::new)
-                .collect(Collectors.toList());
     }
 
     //음식점을 추가한 유저인지 확인

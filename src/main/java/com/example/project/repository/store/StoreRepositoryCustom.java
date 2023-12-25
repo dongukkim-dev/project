@@ -9,5 +9,4 @@ import java.util.List;
 
 public interface StoreRepositoryCustom {
     List<StoreUserDto> search(StoreSearchCondition condition);
-    Page<StoreUserDto> searchComplex(StoreSearchCondition condition, Pageable pageable);
 }

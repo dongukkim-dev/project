@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Store extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
     private Long id;
 
@@ -49,13 +49,14 @@ public class Store extends BaseTimeEntity {
     private String closeTime;
     private int minOrderPrice;
 
-    //여기서 상품 목록이 필요한지 생각해보기(음식점에서 상품목록은 많이 쓰인다)
-
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
     
     @Builder
-    public Store(String name, User user, Category category, String picture, String content, String address, String detail, String phone, double rating, String openTime, String closeTime, int minOrderPrice) {
+    public Store(String name, User user, Category category, String picture, String content, String address, String detail, String phone, String openTime, String closeTime, int minOrderPrice) {
         this.name = name;
         this.user = user;
         this.category = category;

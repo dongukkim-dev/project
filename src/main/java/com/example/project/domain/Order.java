@@ -11,6 +11,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private Long id;
 
@@ -35,7 +36,16 @@ public class Order extends BaseTimeEntity {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    private String address; //수령자 최종 주소
+    private String detail;
+
     //배송 완료 시간 저장 예정
+    private LocalDateTime compDate;
+
+    @Enumerated(EnumType.STRING)
+    private Payment payment; //결제 수단
+
+    private String comment;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
@@ -52,19 +62,27 @@ public class Order extends BaseTimeEntity {
 
     //== 빌더 생성자 ==//
     @Builder
-    public Order(User user, Store store, OrderStatus status, List<OrderItem> orderItems, Review review) {
+    public Order(User user, Store store, String address, String detail, Payment payment, String comment, OrderStatus status, List<OrderItem> orderItems, Review review) {
         this.user = user;
         this.store = store;
+        this.address = address;
+        this.detail = detail;
+        this.payment = payment;
+        this.comment = comment;
         this.status = status;
         this.orderItems = orderItems;
         this.review = review;
     }
 
     //==생성 메소드==//
-    public static Order createOrder(User user, Store store, OrderItem... orderItems) {
+    public static Order createOrder(User user, Store store, String address, String detail, Payment payment, String comment, OrderItem... orderItems) {
         final Order order = Order.builder()
                 .user(user)
                 .store(store)
+                .address(address)
+                .detail(detail)
+                .payment(payment)
+                .comment(comment)
                 .status(OrderStatus.ORDER)
                 .orderItems(new ArrayList<>())
                 .build();

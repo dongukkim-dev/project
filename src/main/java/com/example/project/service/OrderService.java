@@ -2,6 +2,7 @@ package com.example.project.service;
 
 import com.example.project.domain.*;
 import com.example.project.dto.SaleDto;
+import com.example.project.dto.SalesDto;
 import com.example.project.dto.order.OrderDto;
 import com.example.project.dto.order.OrderRequest;
 import com.example.project.dto.order.OrderResponse;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,32 +38,42 @@ public class OrderService {
      * 주문 - OrderRequest에 있는 정보 (item_id, amount)를 받아서 생성
      * 로그인된 유저 정보를 통해 수령자, 전화번호, 주소를 가져온다
      */
-    public Order addOrder(List<OrderRequest> request, String email) {
+    public Order addOrder(OrderRequest request, String email) {
 
         //엔티티 조회
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("주문할 사람 정보가 없습니다"));
 
+        List<String> soldMenu = new ArrayList<>();
 
         //주문 상품 생성
-        OrderItem[] orderItems = new OrderItem[request.size()];
-        log.info("request size = {}", request.size());
+        OrderItem[] orderItems = new OrderItem[request.getOrderItems().size()];
+        log.info("request size = {}", request.getOrderItems().size());
         log.info("orderItems size = {}", orderItems.length);
-        for (int i=0; i< request.size(); ++i) {
-            Item item = itemService.findById(request.get(i).getItem_id());
+        for (int i=0; i< request.getOrderItems().size(); ++i) {
+            Item item = itemService.findById(request.getOrderItems().get(i).getItemId());
+            if (item.getStatus().equals(ItemStatus.SOLD)) {
+                soldMenu.add(item.getName());
+            }
+
             OrderItem orderItem = OrderItem.builder()
                     .item(item)
                     .orderPrice(item.getPrice())
-                    .count(request.get(i).getAmount())
+                    .count(request.getOrderItems().get(i).getAmount())
                     .build();
 
             orderItems[i] = orderItem;
         }
 
+        if (!soldMenu.isEmpty()) {
+            throw new IllegalArgumentException(soldMenu + " 메뉴는 재고 소진되었습니다.");
+        }
+
         log.info("최종 orderItems 사이즈: {}", Arrays.stream(orderItems).count());
 
         //주문 생성
-        Order order = Order.createOrder(user, orderItems[0].getItem().getStore(), orderItems);
+        Order order = Order.createOrder(user, orderItems[0].getItem().getStore(), request.getAddress(), request.getDetail(),
+                request.getPayment().equals("CARD") ? Payment.CARD : Payment.CASH, request.getComment(), orderItems);
 
         log.info("order에서의 orderItems size = {}", order.getOrderItems().size());
 
@@ -85,8 +97,22 @@ public class OrderService {
         return orderQueryRepository.searchOrders(condition, pageable);
     }
 
-    public List<SaleDto> searchSales(SalesSearchCondition condition) {
-        return orderQueryRepository.searchSales(condition);
+    public SalesDto searchSales(long id, SalesSearchCondition condition) {
+        SalesDto sales = new SalesDto();
+        sales.setDailySales(orderQueryRepository.searchSales(id, condition));
+        sales.setMonthSales(orderQueryRepository.searchMonthSales(id, condition));
+        sales.setYearSales(orderQueryRepository.searchYearSales(id, condition));
+
+        return sales;
+    }
+
+    public SalesDto searchAllSales(SalesSearchCondition condition) {
+        SalesDto sales = new SalesDto();
+        sales.setDailySales(orderQueryRepository.searchAllSales(condition));
+        sales.setMonthSales(orderQueryRepository.searchAllMonthSales(condition));
+        sales.setYearSales(orderQueryRepository.searchAllYearSales(condition));
+
+        return sales;
     }
 
     //update
